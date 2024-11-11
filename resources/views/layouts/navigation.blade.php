@@ -8,7 +8,11 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="log_nav">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        {{--
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> --}}
+                        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" id="logo_container">
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+                        </div>
                         <p class="logo_title">Eclipse</p>
                     </a>
                 </div>
@@ -19,7 +23,8 @@
                 {{-- Nav for customer --}}
                 @if(auth()->user()->u_type==="customer")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
+                    <x-nav-link :href="route('beforelogin')" :active="request()->routeIs('dashboard')"
+                        class="nav_links">
                         {{ __('Customer Home') }}
                     </x-nav-link>
                 </div>
@@ -34,7 +39,8 @@
                 @else
                 {{-- Nav for before login --}}
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
+                    <x-nav-link :href="route('beforelogin')" :active="request()->routeIs('beforelogin')"
+                        class="nav_links">
                         {{ __('Home') }}
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
@@ -162,14 +168,14 @@
         @if(auth()->user()->u_type==="customer")
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="nav_link">
+                class="responsive_links">
                 {{ __('CUSTOMER HOME') }}
             </x-responsive-nav-link>
         </div>
         @elseif(auth()->user()->u_type==="admin")
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="nav_link">
+                class="responsive_links">
                 {{ __('ADMIN HOME') }}
             </x-responsive-nav-link>
         </div>
@@ -177,19 +183,19 @@
         @else
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="nav_link">
+                class="responsive_links">
                 {{ __('Eclipse') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="nav_link">
+                class="responsive_links">
                 {{ __('Movie') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="nav_link">
+                class="responsive_links">
                 {{ __('Session') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="nav_link">
+                class="responsive_links">
                 {{ __('Contact Us') }}
             </x-responsive-nav-link>
         </div>
@@ -206,7 +212,7 @@
 
             <div class="mt-3 space-y-1">
                 @auth
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link :href="route('profile.edit')" class="responsive_links">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
@@ -215,17 +221,17 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
-                                    this.closest('form').submit();">
+                                    this.closest('form').submit();" class="responsive_links">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
                 @endauth
 
                 @guest
-                <x-responsive-nav-link :href="route('login')">
+                <x-responsive-nav-link :href="route('login')" class="responsive_links">
                     {{ __('Login') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('register')">
+                <x-responsive-nav-link :href="route('register')" class="responsive_links">
                     {{ __('Register') }}
                 </x-responsive-nav-link>
                 @endguest

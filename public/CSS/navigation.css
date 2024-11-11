@@ -1,18 +1,19 @@
+/* --- NAV BAR --- */
 .nav_bars{
     background-color: #cd1f30;
 }
 
-.nav_links{
+.nav_links, .responsive_links{
     color: white;;
 }
 
-.nav_links:hover{
+.nav_links:hover, .responsive_links:hover{
     color: #ffbf00
     /* color: white; */
     /* letter-spacing: 0.1rem; */
-    
 }
 
+/* -- NAV_LOGO -- */
 .log_nav{
     display: flex;
 }
@@ -30,6 +31,22 @@
     transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
+#logo_container {
+    width: auto; /* Adjust based on content */
+    height: auto; /* Adjust based on content */
+    display: flex; /* Flexbox can help align and resize items */
+    justify-content: center; /* Optional: Centers the image */
+    align-items: center; /* Optional: Vertically centers the image */
+}
+
+#logo_container img {
+    width: 2rem; /* Set the desired width */
+    height: auto; /* Automatically adjusts the height to maintain the aspect ratio */
+    max-width: 100%; /* Prevents the image from exceeding the container's width */
+    max-height: 100%; /* Prevents the image from exceeding the container's height */
+}
+
+/* --- DROPDOWN BTN --- */
 
 #dropdown_btn:hover{
     color: #cd1f30;
@@ -42,4 +59,3 @@
 .dropdown_content:hover{
     color: #cd1f30;
 }
-
