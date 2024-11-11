@@ -1,0 +1,29 @@
+.nav_bars{
+    background-color: #dc3545;
+}
+
+.nav_links{
+    color: white;
+}
+
+.log_nav{
+    display: flex;
+}
+
+.logo_title {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.25rem; /* px-1 pt-1 */
+    border-bottom: 2px solid transparent; /* border-b-2 */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    line-height: 1.25rem; /* leading-5 */
+    color: #6b7280; /* text-gray-500 */
+    transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.logo_title:hover {
+}
+
+.logo_title:focus {
+}
