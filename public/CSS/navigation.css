@@ -1,9 +1,16 @@
 .nav_bars{
-    background-color: #dc3545;
+    background-color: #cd1f30;
 }
 
 .nav_links{
-    color: white;
+    color: white;;
+}
+
+.nav_links:hover{
+    color: #ffbf00
+    /* color: white; */
+    /* letter-spacing: 0.1rem; */
+    
 }
 
 .log_nav{
@@ -14,16 +21,25 @@
     display: inline-flex;
     align-items: center;
     padding: 0.25rem 0.25rem; /* px-1 pt-1 */
+    padding-left: 0.45rem;
     border-bottom: 2px solid transparent; /* border-b-2 */
-    font-size: 0.875rem; /* text-sm */
+    font-size: 1.2rem; /* text-sm */
     font-weight: 500; /* font-medium */
     line-height: 1.25rem; /* leading-5 */
-    color: #6b7280; /* text-gray-500 */
+    color: #ffbf00; /* text-gray-500 */
     transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
-.logo_title:hover {
+
+#dropdown_btn:hover{
+    color: #cd1f30;
 }
 
-.logo_title:focus {
+#dropdown_btn:focus{
+    color: #cd1f30;
 }
+
+.dropdown_content:hover{
+    color: #cd1f30;
+}
+

@@ -14,13 +14,16 @@
                 </div>
 
                 <!-- Navigation Links -->
+                {{-- Nav for after auth --}}
                 @if(auth()->check())
+                {{-- Nav for customer --}}
                 @if(auth()->user()->u_type==="customer")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
                         {{ __('Customer Home') }}
                     </x-nav-link>
                 </div>
+                {{-- Nav for admin --}}
                 @elseif(auth()->user()->u_type==="admin")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
@@ -29,9 +32,10 @@
                 </div>
                 @endif
                 @else
+                {{-- Nav for before login --}}
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
-                        {{ __('Eclipse') }}
+                        {{ __('Home') }}
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
                         {{ __('Movies') }}
@@ -47,19 +51,22 @@
             </div>
 
 
-            @auth
             <!-- Settings Dropdown -->
+            @auth
+            {{-- Dropdown for b4 page after auth --}}
             @if (Route::currentRouteName() === 'beforelogin')
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <a href=" {{ url('/dashboard') }}"
                     class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
                     Dashboard</a>
             </div>
+
+            {{-- dropdown for after login --}}
             @else
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button
+                        <button id="dropdown_btn"
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->u_name }}</div>
 
@@ -75,7 +82,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route('profile.edit')" class="dropdown_content">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
@@ -84,7 +91,7 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
-                                    this.closest('form').submit();">
+                                    this.closest('form').submit();" class="dropdown_content">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
@@ -94,11 +101,12 @@
             @endif
             @endauth
 
+            {{-- dropdown before login --}}
             @guest
             <div class="hidden sm:flex sm:items-center sm:ms-6 auth_btn">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button
+                        <button id="dropdown_btn"
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>Get Started</div>
 
@@ -115,13 +123,13 @@
 
                     <x-slot name="content">
                         @if (Route::has('login'))
-                        <x-dropdown-link :href="route('login')">
+                        <x-dropdown-link :href="route('login')" class="dropdown_content">
                             {{ __('Login') }}
                         </x-dropdown-link>
                         @endif
 
                         @if (Route::has('register'))
-                        <x-dropdown-link :href="route('register')">
+                        <x-dropdown-link :href="route('register')" class="dropdown_content">
                             {{ __('Register') }}
                         </x-dropdown-link>
                         @endif
