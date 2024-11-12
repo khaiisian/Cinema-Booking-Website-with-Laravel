@@ -19,13 +19,13 @@
 
 <body>
     {{-- <x-guest-layout> --}}
-        <div class="login_form">
+        <div class="_form">
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
 
             {{-- login logo and title --}}
-            <div class="logo_slider">
+            <div class="logo_slider" id="login_slider">
                 <div class="logo_title">
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" id="logo_container">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo">

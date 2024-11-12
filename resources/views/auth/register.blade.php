@@ -19,29 +19,14 @@
 
 <body>
     {{-- <x-guest-layout> --}}
-        <div class="login_form">
+        <div class="_form" id="register_form">
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
-
-            {{-- login logo and title --}}
-            <div class="logo_slider">
-                <div class="logo_title">
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" id="logo_container">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo">
-                    </div>
-                    <p>Eclipse</p>
-                </div>
-                <div class="cinema_icon">
-                    <img src="{{asset('images/cinema_icon.png')}}" alt="">
-                </div>
-                <p>Feel the magic at Eclipse—where every film unveils like a premiere, and each moment lingers beyond
-                    the screen.</p>
-            </div>
-
-
+            {{-- register form --}}
             <form method="POST" action="{{ route('register') }}">
                 @csrf
+                <h1>Register</h1>
 
                 <!-- Name -->
                 <div>
@@ -98,6 +83,22 @@
                     </x-primary-button>
                 </div>
             </form>
+
+            {{-- login logo and title --}}
+            <div class="logo_slider" id="register_slider">
+                <div class="logo_title">
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" id="logo_container">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo">
+                    </div>
+                    <p>Eclipse</p>
+                </div>
+                <div class="cinema_icon">
+                    <img src="{{asset('images/register_icon.png')}}" alt="">
+                </div>
+                <p>Register with Eclipse—your gateway to moments that move, thrill, and inspire. Because cinema should
+                    feel personal</p>
+            </div>
+
         </div>
         {{--
     </x-guest-layout> --}}

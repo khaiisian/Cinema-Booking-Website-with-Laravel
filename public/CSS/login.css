@@ -1,37 +1,56 @@
-.login_form{
+._form{
     width: 50rem;
-    height: 500px;
+    min-height: 500px;
     background-color: rgb(255, 255, 255);
     margin: 3.5rem auto; 
     display: flex;
     /* justify-content: center; */
-    align-items: center;
+    /* align-items: center; */
     border-radius: 1.5rem;
     overflow: hidden;
     border: 0.5px solid rgb(215, 215, 215);
 }
 
+#register_form{
+    width: 60rem;
+}
+
+#register_form>.logo_slider{
+    width: 55%;
+    background-color: #333333 ;
+}
+
+
 .logo_slider{
     width: 55%;
-    height: 100%;
+    min-height: 100%;
     background-color: #cd1f30;
-    border-top-right-radius: 2.5rem;
-    border-bottom-right-radius: 2.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.login_form>form{
-    width: 45%;
-    padding: 1rem 1.5rem;
+#login_slider{
+    border-top-right-radius: 2.5rem;
+    border-bottom-right-radius: 2.5rem;
 }
 
-.login_form>form>h1{
+#register_slider{
+    border-top-left-radius: 2.5rem;
+    border-bottom-left-radius: 2.5rem;
+}
+
+._form>form{
+    width: 45%;
+    padding: 5rem 1.5rem;
+}
+
+._form>form>h1{
     font-size: 2.3rem;
     font-weight: bolder;
     text-align: center;
+    color: #cd1f30;
 }
 
 body{
