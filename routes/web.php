@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::get('/b4', function () {
+Route::get('/', function () {
     return view('before_login.bhome');
 })->name('beforelogin');
 

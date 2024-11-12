@@ -40,7 +40,7 @@
 }
 
 #logo_container img {
-    width: 2rem; /* Set the desired width */
+    width: 2.2rem; /* Set the desired width */
     height: auto; /* Automatically adjusts the height to maintain the aspect ratio */
     max-width: 100%; /* Prevents the image from exceeding the container's width */
     max-height: 100%; /* Prevents the image from exceeding the container's height */
