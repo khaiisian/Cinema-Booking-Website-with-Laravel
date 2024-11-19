@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->id('session_id');
             $table->unsignedBigInteger('movie_id');
             $table->unsignedBigInteger(column: 'theater_id');
-            $table->time('session_time');
+            $table->time('session_start');
+            $table->time('session_end');
             $table->date('session_date');
             $table->timestamps();
             $table->foreign('movie_id')->references('movie_id')->on('movies')->onDelete('cascade');

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +19,11 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::get('/', function () {
-    return view('before_login.bhome');
-})->name('beforelogin');
+Route::get('/', [HomeController::class, 'bIndex'])->name('beforelogin');
+
+// Route::get('/', function () {
+//     return view('before_login.bhome');
+// })->name('beforelogin');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

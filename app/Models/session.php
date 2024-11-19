@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class session extends Model
 {
-    protected $fillable = ['session_time', 'session_date'];
+    protected $fillable = ['session_start', 'session_end', 'session_date'];
     public function movie()
     {
-        return $this->belongsTo(movie::class);
+        return $this->belongsTo(movie::class, 'movie_id', 'movie_id');
     }
 
     public function theater()
@@ -18,7 +18,8 @@ class session extends Model
         return $this->belongsTo(theater::class);
     }
 
-    public function booking(){
+    public function booking()
+    {
         return $this->hasMany(booking::class);
     }
 

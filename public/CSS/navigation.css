@@ -1,6 +1,7 @@
 /* --- NAV BAR --- */
 .nav_bars{
-    background-color: #cd1f30;
+    background-color: #333333;
+    /* background-color: #cd1f30; */
 }
 
 .nav_links, .responsive_links{
