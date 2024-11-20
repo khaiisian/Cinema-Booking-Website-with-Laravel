@@ -72,7 +72,7 @@
 
     </x-slot> --}}
 
-    <div class="py-12 bg-white">
+    <div class="py-20 bg-white">
         <div class="bg-white max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-7">
             <h2 class="text-3xl font-bold text-[#ffbf00]">Upcoming Movies</h2>
             <div class="bg-white flex justify-center items-stretch gap-10 w-full flex-wrap _blogs">
@@ -83,23 +83,25 @@
                 @foreach ($movies as $movie)
                 @if ($movie->movie_status === "Upcoming")
                 <div
-                    class="bg-[#474747] sm:rounded-lg min-h-[24rem] w-[17rem] flex flex-col items-center py-5 px-2 gap-6 upmovie_blog">
-                    <div class="w-[85%] h-[13rem] bg-[#EBEBEB] rounded-lg upmovie_img">
+                    class="bg-[#242424] sm:rounded-lg min-h-[24rem] w-[17rem] flex flex-col items-center gap-5 px-3 pb-7 upmovie_blog">
+                    <div class="w-[100%] h-[15rem] bg-[#EBEBEB] rounded-lg overflow-hidden mt-3 upmovie_img">
                         <!-- Image goes here -->
+                        <img class="w-full h-full" src="{{asset('images/'.$movie->movie_image)}}"
+                            alt="{{$movie->movie_image}}">
                     </div>
-                    <div class="flex justify-center items-center flex-col text-[#E8E8E8] gap-3 upmovie_info">
+                    <div class="flex justify-center items-center flex-col px-1 text-[#DFDFDF] gap-3 upmovie_info">
                         <div class="text-center">
-                            <p class="text-lg font-bold">{{ $movie->movie_title }}</p>
-                            <div class="flex justify-center items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg"
-                                    width="16" height="16" fill="currentColor" class="bi bi-calendar"
-                                    viewBox="0 0 16 16">
+                            <p class="text-base font-bold text-[#DEA60E]">{{ $movie->movie_title }}</p>
+                            <div class="flex justify-center items-center pt-1 gap-2"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-calendar" viewBox="0 0 16 16">
                                     <path
                                         d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
                                 </svg> {{ $movie->release_date }}</div>
                         </div>
-                        <x-secondary-button class="mx-auto mt-1" as="a" href="{{ route('beforelogin') }}">
+                        <x-primary-button class="mx-auto mt-1" as="a" href="{{ route('beforelogin') }}">
                             More Info
-                        </x-secondary-button>
+                        </x-primary-button>
                     </div>
                 </div>
                 @php
@@ -117,25 +119,47 @@
         </div>
     </div>
 
-    <div class="py-12 bg-[#333333]">
+    <div class="py-20 bg-[#eaeaea]">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-[#f5b000]">Today Session</h2>
-            <div class="flex justify-center items-stretch gap-12 flex-wrap">
+            <h2 class="text-3xl font-bold pb-8 text-[#DFAD23]">Today Session</h2>
+            <div class="flex justify-between items-stretch gap-y-12 flex-wrap">
                 {{-- --}}
 
                 @if ($todaySessions->isEmpty())
                 <p class="text-2xl font-bold text-red-700">No Sessions Today</p>
                 @else
+                @php
+                $counter=0
+                @endphp
                 @foreach ($todaySessions as $session)
-                <div class="w-[48%]  min-h-12 flex-col justify-center rounded-lg items-center bg-white">
-                    <p>Movie Name: {{ $session->movie->movie_title }}</p>
-                    <p>Session No: {{ $session->session_id }}</p>
-                    <p>Start Time: {{ $session->session_start }}</p>
-                    <p>End Time: {{ $session->session_end }}</p>
-                    <p>Date: {{ $session->session_date}}</p>
+                <div class="w-[45%]  min-h-52 flex justify-start py-1 px-7 gap-7 rounded-lg items-center bg-[#252525]">
+                    <div class="w-[30%] bg-white h-[90%] rounded-lg overflow-hidden session_img">
+                        <img class="w-full h-full" src="{{ asset('images/' . $session->movie->movie_image) }}"
+                            alt="{{$session->movie->movie_image}}">
+                    </div>
+                    <div class="text-[#DEA60E] session_info">
+                        <p>Movie Name: {{ $session->movie->movie_title }}</p>
+                        <p>Theater: {{ $session->theater->theater_name }}</p>
+                        <p>Time: {{ $session->session_start }}-{{ $session->session_end }} </p>
+                        <p>Date: {{ $session->session_date}}</p>
+                        <x-primary-button class="mt-3" as="a" href="{{ route('beforelogin') }}">
+                            More Info
+                        </x-primary-button>
+                    </div>
                 </div>
+                @php
+                $counter++;
+                @endphp
+                @if ($counter==3)
+                @break
+                @endif
                 @endforeach
                 @endif
+                <div class="w-full flex justify-center">
+                    <x-secondary-button class="mr-6" as="a" href="{{ route('beforelogin') }}">
+                        See More
+                    </x-secondary-button>
+                </div>
             </div>
         </div>
     </div>

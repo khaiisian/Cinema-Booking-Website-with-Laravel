@@ -15,7 +15,7 @@ class session extends Model
 
     public function theater()
     {
-        return $this->belongsTo(theater::class);
+        return $this->belongsTo(theater::class, 'theater_id', 'theater_id');
     }
 
     public function booking()
