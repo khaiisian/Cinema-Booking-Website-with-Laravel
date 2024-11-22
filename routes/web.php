@@ -26,6 +26,7 @@ Route::get('/welcome', function () {
 // })->name('movies');
 Route::get('/', [HomeController::class, 'bIndex'])->name('beforelogin');
 Route::get('/movies', [MovieController::class, 'index'])->name('movies');
+Route::post('/movies/ajax', [MovieController::class, 'ajax']);
 
 
 
