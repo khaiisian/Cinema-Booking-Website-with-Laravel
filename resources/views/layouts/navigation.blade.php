@@ -10,7 +10,7 @@
                     <a href="{{ route('dashboard') }}" class="log_nav">
                         {{--
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> --}}
-                        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" id="logo_container">
+                        <div class="hidden space-x-8 sm:-my-px md:ms-0 lg:ms-5 sm:flex" id="logo_container">
                             <img src="{{ asset('images/logo.png') }}" alt="Logo">
                         </div>
                         <p class="logo_title">Eclipse</p>
@@ -38,16 +38,19 @@
                 @endif
                 @else
                 {{-- Nav for before login --}}
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden sm:space-x-6 md:space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('beforelogin')" :active="request()->routeIs('beforelogin')"
                         class="nav_links">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
+                    <x-nav-link :href="route('movies')" :active="request()->routeIs('movies')" class="nav_links">
                         {{ __('Movies') }}
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
                         {{ __('Sessions') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
+                        {{ __('About Us') }}
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
                         {{ __('Contact Us') }}

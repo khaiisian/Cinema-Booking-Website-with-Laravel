@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +21,13 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
+// Route::get('/movies', function () {
+//     return view('before_login.movies');
+// })->name('movies');
 Route::get('/', [HomeController::class, 'bIndex'])->name('beforelogin');
+Route::get('/movies', [MovieController::class, 'index'])->name('movies');
+
+
 
 // Route::get('/', function () {
 //     return view('before_login.bhome');
