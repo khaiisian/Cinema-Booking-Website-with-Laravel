@@ -22,12 +22,23 @@ class MovieController extends Controller
     public function ajax(Request $request)
     {
         $status = $request->status;
+        $search_value = $request->search_value;
 
         $movies = movie::all();
 
-        if ($status) {
+        if ($status and !$search_value) {
             $movies = movie::where('movie_status', $status)->get();
+        } elseif ($status and $search_value) {
+            $movies = movie::where('movie_status', $status)
+                ->where('movie_title', $search_value)
+                ->get();
+        } elseif (!$status and $search_value) {
+            $movies = movie::where('movie_title', $search_value)->get();
         }
+
+        // if ($search_value) {
+        //     $movies = movie::where('movie_title', $search_value)->get();
+        // }
 
         return response()->json([
             'movies' => $movies, // You can return the filtered movies if needed

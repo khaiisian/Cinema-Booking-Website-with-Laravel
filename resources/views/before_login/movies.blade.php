@@ -12,12 +12,13 @@
     </div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-10 px-1 flex justify-between items-center">
         <div class="">
-            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md" id="btnAllmovies">All Movies</button>
-            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md" id="btnShowing">Now Showing</button>
-            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md" id="btnComing">Upcoming</button>
+            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md btn active" id="btnAllmovies">All
+                Movies</button>
+            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md btn" id="btnShowing">Now Showing</button>
+            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md btn" id="btnComing">Upcoming</button>
         </div>
         <div class="flex items-center gap-x-1">
-            <input type="text" placeholder="Search" class="w-50 h-10 rounded-md border-gray-300">
+            <input type="text" placeholder="Search" id="searchbox"" class=" w-50 h-10 rounded-md border-gray-300">
             <select name="" id="" class="h-10 rounded-md border-gray-300">
                 <option value="0">All Genres</option>
                 @php
@@ -60,13 +61,20 @@
     </div>
 
     <script>
-        function ajaxchanges(status) {        
+        function ajaxchanges(status, search_value) {      
+            console.log("here status is", status) 
+            if(search_value==undefined){
+                search_value = null;
+                console.log("Search is null")
+            }
+            console.log("SEARCH",search_value)
             $.ajax({
                 type: 'POST', 
                 url: '/movies/ajax', 
                 data: {
                     _token: "{{ csrf_token() }}", 
-                    status: status 
+                    status: status,
+                    search_value: search_value 
                 },
                 dataType: 'json', 
                 success: function (data) {
@@ -112,19 +120,75 @@
         }
     
         $('#btnAllmovies').click(function() {
-            let status = null; 
-            ajaxchanges(status); 
+            $('#searchbox').val('');
+            $('.btn').removeClass('active');
+            $(this).addClass('active'); 
+            search_function();
         });
 
-        $('#btnShowing').click(function(){
-            let status = "Showing";
-            ajaxchanges(status);
+        $('#btnShowing').click(function(){ 
+            $('#searchbox').val('');           
+            $('.btn').removeClass('active');
+            $(this).addClass('active'); 
+            search_function();
         })
 
-        $('#btnComing').click(function(){
-            let status = "Upcoming"
-            ajaxchanges(status);
+        $('#btnComing').click(function(){    
+            $('#searchbox').val('');        
+            $('.btn').removeClass('active');
+            $(this).addClass('active'); 
+            search_function();
         })
+        
+
+        function search_function(){
+            $('#searchbox').off('input');
+            let status=null;
+
+            if($('#btnAllmovies').hasClass('active')){
+                console.log("All is active")
+                ajaxchanges(status);
+                $('#searchbox').on('input',function(){
+                    let search_value = $(this).val();
+                    status = null
+                    console.log("All + Searching")
+                    console.log('Text changed to: ' + search_value);
+                    ajaxchanges(status, search_value);
+                })
+            }
+            else if($('#btnShowing').hasClass('active')){
+                console.log("Showing is active")
+                status = "Showing"
+                ajaxchanges(status);
+                $('#searchbox').on('input',function(){
+                    let search_value = $(this).val();
+                    status = "Showing"
+                    console.log("Showing + Searching")
+                    console.log('Text changed to: ' + search_value);
+                    ajaxchanges(status, search_value);
+                })
+            }
+            else if($('#btnComing').hasClass('active')){
+               console.log("Coming is active")
+                status = "Upcoming"
+                ajaxchanges(status);
+                $('#searchbox').on('input',function(){
+                    let search_value = $(this).val();
+                    status = "Upcoming"
+                    console.log("Upcoming + Searching")
+                    console.log('Text changed to: ' + search_value);
+                    console.log('Status:'+ status);
+                    ajaxchanges(status, search_value);
+             })
+         }
+        }
+
+        search_function();
+        
+
+        
+
+
     </script>
 
 
