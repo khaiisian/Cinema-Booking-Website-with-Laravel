@@ -28,12 +28,13 @@ class MovieController extends Controller
 
         if ($status and !$search_value) {
             $movies = movie::where('movie_status', $status)->get();
+            // $movies = movie::where('movie_status', '=', $status)->get();
         } elseif ($status and $search_value) {
             $movies = movie::where('movie_status', $status)
-                ->where('movie_title', $search_value)
+                ->where('movie_title', '=', $search_value)
                 ->get();
         } elseif (!$status and $search_value) {
-            $movies = movie::where('movie_title', $search_value)->get();
+            $movies = movie::where('movie_title', '=', $search_value)->get();
         }
 
         // if ($search_value) {
