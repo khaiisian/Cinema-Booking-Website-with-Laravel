@@ -32,9 +32,12 @@ class MovieController extends Controller
         } elseif ($status and $search_value) {
             $movies = movie::where('movie_status', $status)
                 ->where('movie_title', '=', $search_value)
+                ->orWhere('movie_title', 'LIKE', "%$search_value%")
                 ->get();
         } elseif (!$status and $search_value) {
-            $movies = movie::where('movie_title', '=', $search_value)->get();
+            $movies = movie::where('movie_title', '=', $search_value)
+                ->orWhere('movie_title', 'LIKE', "%$search_value%")
+                ->get();
         }
 
         // if ($search_value) {
