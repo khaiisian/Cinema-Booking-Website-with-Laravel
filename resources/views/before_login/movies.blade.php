@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ asset('CSS/slider.css') }}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script>
-    const baseAssetUrl = "{{ asset('') }}"; // Generates the base URL for your `public` directory
+    const baseAssetUrl = "{{ asset('') }}"; 
 </script>
 
 <x-app-layout>
@@ -62,12 +62,12 @@
 
     <script>
         function ajaxchanges(status, search_value) {      
-            console.log("here status is", status) 
+            // console.log("here status is", status) 
             if(search_value==undefined){
                 search_value = null;
-                console.log("Search is null")
+                // console.log("Search is null")
             }
-            console.log("SEARCH",search_value)
+            // console.log("SEARCH",search_value)
             $.ajax({
                 type: 'POST', 
                 url: '/movies/ajax', 
@@ -78,7 +78,7 @@
                 },
                 dataType: 'json', 
                 success: function (data) {
-                    console.log(data.movies);
+                    // console.log(data.movies);
                     let movie_container = $('#movie_container');
                     movie_container.empty();
                     let movie_list ='';
@@ -107,14 +107,14 @@
             </div>
         </div>
                         `;
-                        console.log(movie.movie_title)
+                        // console.log(movie.movie_title)
                         movie_list+=movieHTML
 
                     });
                     $('#movie_container').html(movie_list);
                 },
                 error: function (xhr, status, error) {
-                    console.error('Error:', error); 
+                    // console.error('Error:', error); 
                 }
             });
         }
@@ -146,38 +146,38 @@
             let status=null;
 
             if($('#btnAllmovies').hasClass('active')){
-                console.log("All is active")
+                // console.log("All is active")
                 ajaxchanges(status);
                 $('#searchbox').on('input',function(){
                     let search_value = $(this).val();
                     status = null
-                    console.log("All + Searching")
-                    console.log('Text changed to: ' + search_value);
+                    // console.log("All + Searching")
+                    // console.log('Text changed to: ' + search_value);
                     ajaxchanges(status, search_value);
                 })
             }
             else if($('#btnShowing').hasClass('active')){
-                console.log("Showing is active")
+                // console.log("Showing is active")
                 status = "Showing"
                 ajaxchanges(status);
                 $('#searchbox').on('input',function(){
                     let search_value = $(this).val();
                     status = "Showing"
-                    console.log("Showing + Searching")
-                    console.log('Text changed to: ' + search_value);
+                    // console.log("Showing + Searching")
+                    // console.log('Text changed to: ' + search_value);
                     ajaxchanges(status, search_value);
                 })
             }
             else if($('#btnComing').hasClass('active')){
-               console.log("Coming is active")
+               // console.log("Coming is active")
                 status = "Upcoming"
                 ajaxchanges(status);
                 $('#searchbox').on('input',function(){
                     let search_value = $(this).val();
                     status = "Upcoming"
-                    console.log("Upcoming + Searching")
-                    console.log('Text changed to: ' + search_value);
-                    console.log('Status:'+ status);
+                    // console.log("Upcoming + Searching")
+                    // console.log('Text changed to: ' + search_value);
+                    // console.log('Status:'+ status);
                     ajaxchanges(status, search_value);
              })
          }
