@@ -134,6 +134,7 @@
                 $counter=0
                 @endphp
                 @foreach ($todaySessions as $session)
+                {{-- {{ $session }} --}}
                 <div class="w-[45%]  min-h-52 flex justify-start py-1 px-7 gap-7 rounded-lg items-center bg-[#252525]">
                     <div class="w-[30%] bg-white h-[90%] rounded-lg overflow-hidden session_img">
                         <img class="w-full h-full" src="{{ asset('images/' . $session->movie->movie_image) }}"

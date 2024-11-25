@@ -9,12 +9,12 @@ class genre_movie extends Model
 {
     public function genre()
     {
-        return $this->belongsTo(genre::class);
+        return $this->belongsTo(genre::class, 'genre_id', 'genre_id');
     }
 
     public function movie()
     {
-        return $this->belongsTo(movie::class);
+        return $this->belongsTo(movie::class, 'movie_id', 'movie_id');
     }
 
     use HasFactory;

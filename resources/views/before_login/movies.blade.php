@@ -18,8 +18,8 @@
             <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md btn" id="btnComing">Upcoming</button>
         </div>
         <div class="flex items-center gap-x-1">
-            <input type="text" placeholder="Search" id="searchbox"" class=" w-50 h-10 rounded-md border-gray-300">
-            <select name="" id="" class="h-10 rounded-md border-gray-300">
+            <input type="text" placeholder="Search" id="searchbox" class=" w-50 h-10 rounded-md border-gray-300">
+            <select name="" id="genre_id" class="h-10 rounded-md border-gray-300" onchange="search_function()">
                 <option value="0">All Genres</option>
                 @php
                 $value=1;
@@ -61,7 +61,7 @@
     </div>
 
     <script>
-        function ajaxchanges(status, search_value) {      
+        function ajaxchanges(status, genre_id, search_value) {      
             // console.log("here status is", status) 
             if(search_value==undefined){
                 search_value = null;
@@ -74,6 +74,7 @@
                 data: {
                     _token: "{{ csrf_token() }}", 
                     status: status,
+                    genre_id: genre_id,
                     search_value: search_value 
                 },
                 dataType: 'json', 
@@ -83,6 +84,7 @@
                     movie_container.empty();
                     let movie_list ='';
                     let movies = data.movies;
+                    console.log(movies);
                     movies.forEach(movie => {
                         const movieHTML = `
                         <div
@@ -121,20 +123,23 @@
     
         $('#btnAllmovies').click(function() {
             $('#searchbox').val('');
+            $('#genre_id').prop('selectedIndex', 0);
             $('.btn').removeClass('active');
             $(this).addClass('active'); 
             search_function();
         });
 
         $('#btnShowing').click(function(){ 
-            $('#searchbox').val('');           
+            $('#searchbox').val('');   
+            $('#genre_id').prop('selectedIndex', 0);        
             $('.btn').removeClass('active');
             $(this).addClass('active'); 
             search_function();
         })
 
         $('#btnComing').click(function(){    
-            $('#searchbox').val('');        
+            $('#searchbox').val('');    
+            $('#genre_id').prop('selectedIndex', 0);    
             $('.btn').removeClass('active');
             $(this).addClass('active'); 
             search_function();
@@ -144,41 +149,46 @@
         function search_function(){
             $('#searchbox').off('input');
             let status=null;
+            let genre_id = $('#genre_id').val();
 
             if($('#btnAllmovies').hasClass('active')){
                 // console.log("All is active")
-                ajaxchanges(status);
+                ajaxchanges(status, genre_id);
+                // if(genre_id!=0){
+                //     // genre_id = "Exist";
+                // }
+                console.log('Genre_id:', genre_id)
                 $('#searchbox').on('input',function(){
                     let search_value = $(this).val();
                     status = null
                     // console.log("All + Searching")
                     // console.log('Text changed to: ' + search_value);
-                    ajaxchanges(status, search_value);
+                    ajaxchanges(status, genre_id,search_value);
                 })
             }
             else if($('#btnShowing').hasClass('active')){
                 // console.log("Showing is active")
                 status = "Showing"
-                ajaxchanges(status);
+                ajaxchanges(status, genre_id);
                 $('#searchbox').on('input',function(){
                     let search_value = $(this).val();
                     status = "Showing"
                     // console.log("Showing + Searching")
                     // console.log('Text changed to: ' + search_value);
-                    ajaxchanges(status, search_value);
+                    ajaxchanges(status, genre_id,search_value);
                 })
             }
             else if($('#btnComing').hasClass('active')){
                // console.log("Coming is active")
                 status = "Upcoming"
-                ajaxchanges(status);
+                ajaxchanges(status, genre_id);
                 $('#searchbox').on('input',function(){
                     let search_value = $(this).val();
                     status = "Upcoming"
                     // console.log("Upcoming + Searching")
                     // console.log('Text changed to: ' + search_value);
                     // console.log('Status:'+ status);
-                    ajaxchanges(status, search_value);
+                    ajaxchanges(status, genre_id,search_value);
              })
          }
         }
