@@ -16,9 +16,9 @@ class HomeController extends Controller
         $movies = movie::all();
         // $sessions = session::all();$students = Student::where('status', 1)
 
-        $todaySessions = showtime::where('showtime_date', today())->with('movie', 'theater')->get();
-        // $session_movie = $todaySessions->pluck('movie');
+        $todayShowtimes = showtime::where('showtime_date', today())->with('movie', 'theater')->get();
+        // $session_movie = $todayShowtimes->pluck('movie');
 
-        return view('before_login.bhome', compact('movies', 'todaySessions'));
+        return view('before_login.bhome', compact('movies', 'todayShowtimes'));
     }
 }
