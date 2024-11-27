@@ -143,8 +143,8 @@
                     <div class="text-[#DEA60E] session_info">
                         <p>Movie Name: {{ $session->movie->movie_title }}</p>
                         <p>Theater: {{ $session->theater->theater_name }}</p>
-                        <p>Time: {{ $session->session_start }}-{{ $session->session_end }} </p>
-                        <p>Date: {{ $session->session_date}}</p>
+                        <p>Time: {{ $session->showtime_start }}-{{ $session->showtime_end }} </p>
+                        <p>Date: {{ $session->showtime_date}}</p>
                         <x-primary-button class="mt-3" as="a" href="{{ route('beforelogin') }}">
                             More Info
                         </x-primary-button>

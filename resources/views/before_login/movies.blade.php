@@ -1,5 +1,6 @@
-@yield('css')
-<link rel="stylesheet" href="{{ asset('CSS/slider.css') }}">
+{{-- @yield('css') --}}
+{{--
+<link rel="stylesheet" href="{{ asset('CSS/slider.css') }}"> --}}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script>
     const baseAssetUrl = "{{ asset('') }}"; 
@@ -11,11 +12,12 @@
         <h2 class="text-3xl font-bold text-[#ffbf00]">Movie Library</h2>
     </div>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-10 px-1 flex justify-between items-center">
-        <div class="">
-            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md btn active" id="btnAllmovies">All
+        <div class="border-[0.5px] border-gray-200 rounded-md p-[0.2rem] bg-gray-200">
+            <button class="px-2 py-1 bg-white border-[0.5px] border-gray-100 rounded-md btn active"
+                id="btnAllmovies">All
                 Movies</button>
-            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md btn" id="btnShowing">Now Showing</button>
-            <button class="px-2 py-1 border-[0.5px] border-gray-300 rounded-md btn" id="btnComing">Upcoming</button>
+            <button class="px-2 py-1  rounded-md btn" id="btnShowing">Now Showing</button>
+            <button class="px-2 py-1 rounded-md btn" id="btnComing">Upcoming</button>
         </div>
         <div class="flex items-center gap-x-1">
             <input type="text" placeholder="Search" id="searchbox" class=" w-50 h-10 rounded-md border-gray-300">
@@ -125,7 +127,9 @@
             $('#searchbox').val('');
             $('#genre_id').prop('selectedIndex', 0);
             $('.btn').removeClass('active');
-            $(this).addClass('active'); 
+            $(this).addClass('active');  
+            $('.btn').removeClass('bg-white border-[0.5px] border-gray-100');
+            $(this).addClass('bg-white border-[0.5px] border-gray-100');  
             search_function();
         });
 
@@ -133,7 +137,9 @@
             $('#searchbox').val('');   
             $('#genre_id').prop('selectedIndex', 0);        
             $('.btn').removeClass('active');
-            $(this).addClass('active'); 
+            $(this).addClass('active');   
+            $('.btn').removeClass('bg-white border-[0.5px] border-gray-100');
+            $(this).addClass('bg-white border-[0.5px] border-gray-100');
             search_function();
         })
 
@@ -141,7 +147,9 @@
             $('#searchbox').val('');    
             $('#genre_id').prop('selectedIndex', 0);    
             $('.btn').removeClass('active');
-            $(this).addClass('active'); 
+            $(this).addClass('active');   
+            $('.btn').removeClass('bg-white border-[0.5px] border-gray-100');
+            $(this).addClass('bg-white border-[0.5px] border-gray-100');
             search_function();
         })
         

@@ -47,7 +47,7 @@
                         {{ __('Movies') }}
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
-                        {{ __('Sessions') }}
+                        {{ __('Showtimes') }}
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
                         {{ __('About Us') }}

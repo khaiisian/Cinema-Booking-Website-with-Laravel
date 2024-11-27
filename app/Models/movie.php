@@ -30,7 +30,7 @@ class movie extends Model
 
     public function sessions()
     {
-        return $this->hasMany(session::class);
+        return $this->hasMany(showtime::class);
     }
     use HasFactory;
 }

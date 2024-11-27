@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class session extends Model
+class showtime extends Model
 {
-    protected $fillable = ['session_start', 'session_end', 'session_date'];
+    protected $fillable = ['showtime_start', 'showtime_end', 'showtime_date'];
     public function movie()
     {
         return $this->belongsTo(movie::class, 'movie_id', 'movie_id');

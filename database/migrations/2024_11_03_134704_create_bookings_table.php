@@ -16,9 +16,9 @@ return new class extends Migration {
             $table->date('booking_date');
             $table->string('booking_status');
             $table->unsignedBigInteger('u_id');
-            $table->unsignedBigInteger('session_id');
+            $table->unsignedBigInteger('showtime_id');
             $table->foreign('u_id')->references('u_id')->on('users')->onDelete('cascade');
-            $table->foreign('session_id')->references('session_id')->on('sessions')->onDelete('cascade');
+            $table->foreign('showtime_id')->references('showtime_id')->on('showtimes')->onDelete('cascade');
             $table->timestamps();
         });
     }
