@@ -11,7 +11,7 @@ class GenreController extends Controller
     public function index()
     {
         $genres = genre::all();
-        // return view('before_login.movies', compact('genres'));
+        // return view('Customer.movies', compact('genres'));
         return $genres;
     }
 }

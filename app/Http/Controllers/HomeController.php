@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     //
-    public function bIndex()
+    public function Index()
     {
         $movies = movie::all();
         // $sessions = session::all();$students = Student::where('status', 1)
@@ -19,6 +19,6 @@ class HomeController extends Controller
         $todayShowtimes = showtime::where('showtime_date', today())->with('movie', 'theater')->get();
         // $session_movie = $todayShowtimes->pluck('movie');
 
-        return view('before_login.bhome', compact('movies', 'todayShowtimes'));
+        return view('Customer.home', compact('movies', 'todayShowtimes'));
     }
 }

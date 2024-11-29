@@ -35,44 +35,19 @@
             </select>
         </div>
     </div>
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-5 flex justify-start flex-wrap gap-x-10 gap-y-10"
-        id="movie_container">
-        @foreach ($movies as $movie)
-        <div
-            class="bg-[#242424] sm:rounded-lg min-h-[24rem] w-[17rem] flex flex-col items-center gap-x-3 px-3 pb-5 upmovie_blog">
-            <div class="w-[100%] h-[15rem] bg-[#EBEBEB] rounded-lg overflow-hidden mt-3 upmovie_img">
-                <!-- Image goes here -->
-                <img class="w-full h-full" src="{{asset('images/'.$movie->movie_image)}}" alt="{{$movie->movie_image}}">
-            </div>
-            <div class="flex justify-center items-center flex-col px-1 text-[#DFDFDF] gap-3 upmovie_info">
-                <div class="text-center">
-                    <p class="text-base font-bold text-[#DEA60E]">{{ $movie->movie_title }}</p>
-                    <div class="text-sm flex justify-center items-center pt-1 gap-2"><svg
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12"
-                            class="bi bi-calendar" viewBox="0 0 16 16">
-                            <path
-                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                        </svg> {{ $movie->release_date }}</div>
-                </div>
-                <x-primary-button class="mx-auto mt-1" as="a" href="{{ route('beforelogin') }}">
-                    More Info
-                </x-primary-button>
-            </div>
-        </div>
-        @endforeach
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-5" id="movie_container">
+
     </div>
 
     <script>
-        function ajaxchanges(status, genre_id, search_value) {      
-            // console.log("here status is", status) 
+        function ajaxchanges(status, genre_id, search_value){
             if(search_value==undefined){
                 search_value = null;
                 // console.log("Search is null")
             }
-            // console.log("SEARCH",search_value)
             $.ajax({
                 type: 'POST', 
-                url: '/movies/ajax', 
+                url: '/before/movies/ajax', 
                 data: {
                     _token: "{{ csrf_token() }}", 
                     status: status,
@@ -80,47 +55,11 @@
                     search_value: search_value 
                 },
                 dataType: 'json', 
-                success: function (data) {
-                    // console.log(data.movies);
-                    let movie_container = $('#movie_container');
-                    movie_container.empty();
-                    let movie_list ='';
-                    let movies = data.movies;
-                    console.log(movies);
-                    movies.forEach(movie => {
-                        const movieHTML = `
-                        <div
-            class="bg-[#242424] sm:rounded-lg min-h-[24rem] w-[17rem] flex flex-col items-center gap-x-3 px-3 pb-5 upmovie_blog">
-            <div class="w-[100%] h-[15rem] bg-[#EBEBEB] rounded-lg overflow-hidden mt-3 upmovie_img">
-                <!-- Image goes here -->
-                <img class="w-full h-full" src="${baseAssetUrl}images/${movie.movie_image}" alt="${movie.movie_title}">
-            </div>
-            <div class="flex justify-center items-center flex-col px-1 text-[#DFDFDF] gap-3 upmovie_info">
-                <div class="text-center">
-                    <p class="text-base font-bold text-[#DEA60E]">${movie.movie_title}</p>
-                    <div class="text-sm flex justify-center items-center pt-1 gap-2"><svg
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12"
-                            class="bi bi-calendar" viewBox="0 0 16 16">
-                            <path
-                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                        </svg>${movie.release_date}</div>
-                </div>
-                <x-primary-button class="mx-auto mt-1" as="a" href="{{ route('beforelogin') }}">
-                    More Info
-                </x-primary-button>
-            </div>
-        </div>
-                        `;
-                        // console.log(movie.movie_title)
-                        movie_list+=movieHTML
-
-                    });
-                    $('#movie_container').html(movie_list);
-                },
-                error: function (xhr, status, error) {
-                    // console.error('Error:', error); 
-                }
-            });
+                success: function(response){
+                        $('#movie_container').html(response.data);
+                        console.log(response.data)
+                    }
+            })
         }
     
         $('#btnAllmovies').click(function() {
@@ -202,12 +141,69 @@
         }
 
         search_function();
-        
 
         
+        function ajaxchanges01(status, genre_id, search_value) {      
+            // console.log("here status is", status) 
+            if(search_value==undefined){
+                search_value = null;
+                // console.log("Search is null")
+            }
+            // console.log("SEARCH",search_value)
+            $.ajax({
+                type: 'POST', 
+                url: '/before/movies/ajax', 
+                data: {
+                    _token: "{{ csrf_token() }}", 
+                    status: status,
+                    genre_id: genre_id,
+                    search_value: search_value 
+                },
+                dataType: 'json', 
+                success: function (data) {
+                    // console.log(data.movies);
+                    let movie_container = $('#movie_container');
+                    movie_container.empty();
+                    let movie_list ='';
+                    let movies = data.movies;
+                    console.log(movies);
+                    movies.forEach(movie => {
+                        const movieHTML = `
+                        <div
+            class="bg-[#242424] sm:rounded-lg min-h-[24rem] w-[17rem] flex flex-col items-center gap-x-3 px-3 pb-5 upmovie_blog">
+            <div class="w-[100%] h-[15rem] bg-[#EBEBEB] rounded-lg overflow-hidden mt-3 upmovie_img">
+                <!-- Image goes here -->
+                <img class="w-full h-full" src="${baseAssetUrl}images/${movie.movie_image}" alt="${movie.movie_title}">
+            </div>
+            <div class="flex justify-center items-center flex-col px-1 text-[#DFDFDF] gap-3 upmovie_info">
+                <div class="text-center">
+                    <p class="text-base font-bold text-[#DEA60E]">${movie.movie_title}</p>
+                    <div class="text-sm flex justify-center items-center pt-1 gap-2"><svg
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="12" height="12"
+                            class="bi bi-calendar" viewBox="0 0 16 16">
+                            <path
+                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                        </svg>${movie.release_date}</div>
+                </div>
+                <x-primary-button class="mx-auto mt-1" as="a" href="{{ route('beforelogin') }}">
+                    More Info
+                </x-primary-button>
+            </div>
+        </div>
+                        `;
+                        // console.log(movie.movie_title)
+                        movie_list+=movieHTML
 
-
+                    });
+                    $('#movie_container').html(movie_list);
+                },
+                error: function (xhr, status, error) {
+                    // console.error('Error:', error); 
+                }
+            });
+        }
     </script>
+
 
 
 

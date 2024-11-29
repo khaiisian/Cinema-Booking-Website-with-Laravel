@@ -37,7 +37,7 @@ $day4 = $day1->copy()->addDay(3);
                 console.log(date);
                 $.ajax({
                     type: 'POST',
-                    url: 'showtimes/ajax',
+                    url: '/before/showtimes/ajax',
                     data: {
                         _token: "{{ csrf_token() }}",
                         date: date

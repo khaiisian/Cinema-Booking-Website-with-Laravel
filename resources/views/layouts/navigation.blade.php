@@ -7,7 +7,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="log_nav">
+                    <a href="{{ route('home') }}" class="log_nav">
                         {{--
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> --}}
                         <div class="hidden space-x-8 sm:-my-px md:ms-0 lg:ms-5 sm:flex" id="logo_container">
@@ -22,16 +22,27 @@
                 @if(auth()->check())
                 {{-- Nav for customer --}}
                 @if(auth()->user()->u_type==="customer")
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('beforelogin')" :active="request()->routeIs('dashboard')"
-                        class="nav_links">
-                        {{ __('Customer Home') }}
+                <div class="hidden sm:space-x-6 md:space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
+                        {{ __('Home') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('movies')" :active="request()->routeIs('movies')" class="nav_links">
+                        {{ __('Movies') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('showtimes')" :active="request()->routeIs('showtimes')" class="nav_links">
+                        {{ __('Showtimes') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
+                        {{ __('About Us') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
+                        {{ __('Contact Us') }}
                     </x-nav-link>
                 </div>
                 {{-- Nav for admin --}}
                 @elseif(auth()->user()->u_type==="admin")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
                         {{ __('Admin Home') }}
                     </x-nav-link>
                 </div>
@@ -43,16 +54,17 @@
                         class="nav_links">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('movies')" :active="request()->routeIs('movies')" class="nav_links">
+                    <x-nav-link :href="route('bmovies')" :active="request()->routeIs('bmovies')" class="nav_links">
                         {{ __('Movies') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('showtimes')" :active="request()->routeIs('showtimes')" class="nav_links">
+                    <x-nav-link :href="route('bshowtimes')" :active="request()->routeIs('bshowtimes')"
+                        class="nav_links">
                         {{ __('Showtimes') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
                         {{ __('About Us') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="nav_links">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
                         {{ __('Contact Us') }}
                     </x-nav-link>
                 </div>
@@ -65,9 +77,9 @@
             {{-- Dropdown for b4 page after auth --}}
             @if (Route::currentRouteName() === 'beforelogin')
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <a href=" {{ url('/dashboard') }}"
+                <a href=" {{ url('/home') }}"
                     class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-                    Dashboard</a>
+                    home</a>
             </div>
 
             {{-- dropdown for after login --}}
@@ -170,35 +182,29 @@
         @if(auth()->check())
         @if(auth()->user()->u_type==="customer")
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="responsive_links">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
                 {{ __('CUSTOMER HOME') }}
             </x-responsive-nav-link>
         </div>
         @elseif(auth()->user()->u_type==="admin")
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="responsive_links">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
                 {{ __('ADMIN HOME') }}
             </x-responsive-nav-link>
         </div>
         @endif
         @else
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="responsive_links">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
                 {{ __('Eclipse') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="responsive_links">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
                 {{ __('Movie') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="responsive_links">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
                 {{ __('Session') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                class="responsive_links">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
                 {{ __('Contact Us') }}
             </x-responsive-nav-link>
         </div>

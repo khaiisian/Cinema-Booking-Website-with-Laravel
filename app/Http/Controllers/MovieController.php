@@ -16,7 +16,7 @@ class MovieController extends Controller
 
         $genres = genre::all();
 
-        return view('before_login.movies', compact('movies', 'genres'));
+        return view('Customer.movies', compact('movies', 'genres'));
     }
 
     public function ajax(Request $request)
@@ -125,8 +125,18 @@ class MovieController extends Controller
             }
         }
 
+        // return response()->json([
+        //     'movies' => $movies, // You can return the filtered movies if needed
+        // ]);
+
         return response()->json([
-            'movies' => $movies, // You can return the filtered movies if needed
+            'data' => view('Customer.movie_data', compact('movies'))->render(),
         ]);
+    }
+
+    public function showDetail($id)
+    {
+        $movie = movie::findOrFail($id);
+        return view('Customer.booking', compact('movie'));
     }
 }

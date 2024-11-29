@@ -25,7 +25,7 @@ class ShowtimeController extends Controller
         }
 
         return response()->json([
-            'data' => view('before_login.showtime_data', compact('showtimes'))->render(),
+            'data' => view('Customer.showtime_data', compact('showtimes'))->render(),
         ]);
     }
 }
