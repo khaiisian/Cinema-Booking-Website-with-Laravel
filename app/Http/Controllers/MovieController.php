@@ -133,10 +133,4 @@ class MovieController extends Controller
             'data' => view('Customer.movie_data', compact('movies'))->render(),
         ]);
     }
-
-    public function showDetail($id)
-    {
-        $movie = movie::findOrFail($id);
-        return view('Customer.booking', compact('movie'));
-    }
 }

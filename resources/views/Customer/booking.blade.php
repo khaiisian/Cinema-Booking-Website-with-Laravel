@@ -1,3 +1,11 @@
+@php
+use Carbon\Carbon;
+$day1 = Carbon::now();
+$day2 = $day1->copy()->addDay();
+$day3 = $day1->copy()->addDays(2);
+$day4 = $day1->copy()->addDays(3);
+
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -19,6 +27,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 
 <body class="font-sans antialiased bg-gray-100 ">
@@ -44,14 +53,19 @@
                 </div>
             </div>
             <div id="booking_side" class="w-[65%] h-screen rounded-lg overflow-hidden px-3">
-                <div class="flex justify-between" id="showtimes">
-                    <div class="w-[23%] h-20 bg-[#333333] rounded-lg"></div>
-                    <div class="w-[23%] h-20 bg-[#333333] rounded-lg"></div>
-                    <div class="w-[23%] h-20 bg-[#333333] rounded-lg"></div>
-                    <div class="w-[23%] h-20 bg-[#333333] rounded-lg"></div>
+                <div class="flex justify-between text-white" id=" showtimes">
+                    <button class="w-[23%] h-16 bg-[#B90000] rounded-lg btn" id="day1btn">{{ $day1->format('F j')
+                        }}</button>
+                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" id="day2btn">{{ $day2->format('F j')
+                        }}</button>
+                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" id="day3btn">{{ $day3->format('F j')
+                        }}</button>
+                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" id="day4btn">{{ $day4->format('F j')
+                        }}</button>
                 </div>
 
-                <div class="w-[100%] h-44 mt-4 rounded-lg bg-[#333333]" id="showtime_info">
+                <div class="w-[100%] min-h-44 mt-4 rounded-lg bg-[#333333] py-3 px-3" id="showtime_info">
+                    @include('Customer.booking_showtime')
                 </div>
 
                 <div id="seat_allocation" class="w-[100%] h-screen bg-[#333333] mt-4 rounded-lg">
@@ -60,6 +74,61 @@
             </div>
         </div>
     </div>
+    <div>
+        {{-- {{ $showtimes }} --}}
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            function ajaxShowtime(date){
+                if(date==undefined){
+                    date='day1';
+                }
+                console.log(date);
+                $.ajax({
+                    type: 'POST',
+                    url: '/movies/ajaxShowtimes',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        date: date,
+                        id: {{$id}}
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        $('#showtime_info').html(response.data);
+                        console.log(response.data)
+                    }
+                })
+            }
+
+            $('#day1btn').click(function () { 
+                ajaxShowtime('day1');
+                $('.btn').removeClass('bg-[#B90000]');
+                $('.btn').addClass('bg-[#333333]');
+                $(this).addClass('bg-[#B90000]');         
+            });
+            $('#day2btn').click(function () { 
+                ajaxShowtime('day2'); 
+                $('.btn').removeClass('bg-[#B90000]');
+                $('.btn').addClass('bg-[#333333]');
+                $(this).addClass('bg-[#B90000]');           
+            });
+            $('#day3btn').click(function () { 
+                ajaxShowtime('day3');  
+                $('.btn').removeClass('bg-[#B90000]');
+                $('.btn').addClass('bg-[#333333]');
+                $(this).addClass('bg-[#B90000]');         
+            });
+            $('#day4btn').click(function () { 
+                ajaxShowtime('day4'); 
+                $('.btn').removeClass('bg-[#B90000]');
+                $('.btn').addClass('bg-[#333333]');
+                $(this).addClass('bg-[#B90000]');           
+            });
+
+            ajaxShowtime();
+        })
+    </script>
 </body>
 
 </html>

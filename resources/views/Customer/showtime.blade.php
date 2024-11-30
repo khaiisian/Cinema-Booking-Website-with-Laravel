@@ -2,8 +2,8 @@
 use Carbon\Carbon;
 $day1 = Carbon::now();
 $day2 = $day1->copy()->addDay();
-$day3 = $day1->copy()->addDay(2);
-$day4 = $day1->copy()->addDay(3);
+$day3 = $day1->copy()->addDays(2);
+$day4 = $day1->copy()->addDays(3);
 @endphp
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProfileController;
@@ -39,7 +40,7 @@ Route::get('/before/showtimes', function () {
 Route::get('/home', [HomeController::class, 'Index'])->middleware(['auth', 'verified'])->name('home');
 Route::middleware('auth')->group(function () {
     Route::get('/movies', [MovieController::class, 'index'])->name('movies');
-    Route::get('/movies/{id}', [MovieController::class, 'showDetail'])->name('movies.show');
+    Route::get('/movies/{id}', [BookingController::class, 'showMovieDetail'])->name('movies.show');
     Route::post('/movies/ajax', [MovieController::class, 'ajax']);
 
     Route::get('/showtimes', function () {
@@ -47,9 +48,11 @@ Route::middleware('auth')->group(function () {
     })->name('showtimes');
     Route::post('showtimes/ajax', [ShowtimeController::class, 'showtime_ajax']);
 
-    Route::get('/booking', function () {
-        return view('Customer.booking');
-    });
+    Route::post('/movies/ajaxShowtimes', [BookingController::class, 'ajaxShowtime']);
+
+    // Route::get('/booking', function () {
+    //     return view('Customer.booking');
+    // });
 });
 
 

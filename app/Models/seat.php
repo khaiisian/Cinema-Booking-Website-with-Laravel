@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class seat extends Model
 {
+    protected $primaryKey = 'seat_id';
     protected $fillable = [
         'seat_code'
     ];
@@ -18,7 +19,7 @@ class seat extends Model
 
     public function theater()
     {
-        return $this->belongsTo(theater::class);
+        return $this->belongsTo(theater::class, 'theater_id');
     }
 
     public function booking_seat()
