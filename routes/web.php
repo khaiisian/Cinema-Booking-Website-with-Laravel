@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/movies/ajaxShowtimes', [BookingController::class, 'ajaxShowtime']);
 
+    Route::post('/booking/seat_available', [BookingController::class, 'seat_availablility']);
+
     // Route::get('/booking', function () {
     //     return view('Customer.booking');
     // });

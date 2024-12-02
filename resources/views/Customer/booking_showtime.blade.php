@@ -5,7 +5,8 @@
     @endif
     @foreach ($showtimes as $showtime)
     <button
-        class="flex flex-wrap justify-between px-2 py-2 gap-y-3 w-[100%] text-white border border-gray-500 rounded-lg">
+        class="flex flex-wrap justify-between px-2 py-2 gap-y-3 w-[100%] text-white border border-gray-500 rounded-lg showtime_btn"
+        data-id="{{$showtime->showtime_id}}" id="showtime_btn">
         {{-- @php
         $showtime = $showtimes->first();
         @endphp --}}
@@ -15,7 +16,7 @@
                 <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
             </svg>
-            <p>&nbsp;: {{ $showtime->showtime_start }} - {{ $showtime->showtime_end }}</p>
+            <p>&nbsp;: {{ $showtime->showtime_start }} - {{ $showtime->showtime_end }} {{ $showtime->showtime_id }}</p>
         </div>
         <div class="flex items-center w-[30%] p-1 h-6"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                 fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
@@ -36,5 +37,9 @@
         </div>
     </button>
     @endforeach
-
 </div>
+
+<script>
+    // const showtime_id = $('#showtime_btn').data('id');
+    // console.log( "Showtime Id is", showtime_id)
+</script>

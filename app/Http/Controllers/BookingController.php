@@ -16,14 +16,29 @@ class BookingController extends Controller
     {
         $movie = movie::findOrFail($id);
 
-        $showtimes = showtime::where('showtime_date', today())
-            ->where('movie_id', $id)
-            ->with('movie', 'theater')->get();
-
-        $data = showtime::with(['movie', 'theater.seat'])->get();
+        // $data = showtime::with(['movie', 'theater.seat'])->get();
         $theater = theater::with('seat')->get();
-        $seat = seat::all();
-        return view('Customer.booking', compact('movie', 'showtimes', 'data', 'theater', 'seat', 'id'));
+        $seats = seat::all();
+
+
+        $showtime_id = showtime::where('showtime_date', today())
+            ->where('movie_id', $id)
+            ->pluck('showtime_id')
+            ->first();
+
+
+        $unavailable_seats = seat::whereIn('seat_id', function ($query) use ($showtime_id) {
+            $query->select('booking_seats.seat_id')
+                ->from('booking_seats')
+                ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
+                ->where('bookings.showtime_id', $showtime_id);
+        })->get();
+
+        $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
+
+        $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
+
+        return view('Customer.booking', compact('movie', 'theater', 'seats', 'id', 'unavailable_seats', 'available_seats'));
     }
 
     public function ajaxShowtime(Request $request)
@@ -52,12 +67,42 @@ class BookingController extends Controller
                 ->get();
         }
 
-        // return response()->json([
-        //     'data' => view('Customer.showtime_data', compact('showtimes'))->render(),
-        // ]);
+        $showtime_id = $showtimes->pluck('showtime_id');
+
+        $unavailable_seats = seat::whereIn('seat_id', function ($query) use ($showtime_id) {
+            $query->select('booking_seats.seat_id')
+                ->from('booking_seats')
+                ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
+                ->where('bookings.showtime_id', $showtime_id);
+        })->get();
+
+        $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
+
+        $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
 
         return response()->json([
-            'data' => view('Customer.booking_showtime', compact('showtimes'))->render()
+            'data' => view('Customer.booking_showtime', compact('showtimes'))->render(),
+            'unavailable_seats' => $unavailable_seats,
+            'available_seats' => $available_seats
         ]);
+    }
+
+    public function seat_availablility(Request $request)
+    {
+        $showtime_id = $request->showtime_id;
+        $unavailable_seats = seat::whereIn('seat_id', function ($query) use ($showtime_id) {
+            $query->select('booking_seats.seat_id')
+                ->from('booking_seats')
+                ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
+                ->where('bookings.showtime_id', $showtime_id);
+        })->get();
+
+        $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
+
+        $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
+
+
+        return response()->json(['unavailable_seats' => $unavailable_seats, 'available_seats' => $available_seats]);
+
     }
 }
