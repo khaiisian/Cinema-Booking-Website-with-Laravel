@@ -11,6 +11,8 @@ class booking extends Model
         'booking_time',
         'booking_date',
         'booking_status',
+        'u_id',
+        'showtime_id'
     ];
 
     public function user()
@@ -20,7 +22,7 @@ class booking extends Model
 
     public function session()
     {
-        return $this->belongsTo(session::class);
+        return $this->belongsTo(showtime::class);
     }
 
     public function booking_seat()
@@ -28,5 +30,9 @@ class booking extends Model
         return $this->hasMany(booking_seat::class);
     }
 
+    public function seats()
+    {
+        return $this->belongsToMany(seat::class, 'booking_seats', 'booking_id', 'seat_id');
+    }
     use HasFactory;
 }

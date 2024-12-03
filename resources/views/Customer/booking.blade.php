@@ -91,6 +91,11 @@ $day4 = $day1->copy()->addDays(3);
                         @endif
                         @endforeach
                     </div>
+                    <div class="mt-16 min-w-[100%] flex justify-end px-20">
+                        <button id="book_btn">
+                            Book
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,6 +182,8 @@ $day4 = $day1->copy()->addDays(3);
             let selected_seats = [];
             $('.available_seat').addClass('testing');
 
+            console.log({{$showtime_id}})
+
             $('.available_seat').click(function(){
                 const seat_id = $(this).data('id');
                 console.log('seat id', seat_id);
@@ -190,6 +197,28 @@ $day4 = $day1->copy()->addDays(3);
                 console.log('selected seats', selected_seats)
             })
 
+            $('#book_btn').click(function(){
+                if(selected_seats.length==0){
+                    alert ("No seat selected");
+                    console.log({{$showtime_id}})
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/booking/book',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        seats: selected_seats,
+                        showtime_id: {{$showtime_id}}
+                    },
+                    dataType: 'json',
+                    success: function(response){
+                        console.log(response.msg);
+                        location.reload();
+                    }
+                })
+            })
 
             
         })

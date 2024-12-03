@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/booking/seat_available', [BookingController::class, 'seat_availablility']);
 
+    Route::post('/booking/book', [BookingController::class, 'booking_create']);
+
     // Route::get('/booking', function () {
     //     return view('Customer.booking');
     // });

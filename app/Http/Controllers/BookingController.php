@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\booking;
+use App\Models\booking_seat;
 use App\Models\seat;
 use App\Models\showtime;
 use App\Models\theater;
 use Illuminate\Http\Request;
 use App\Models\movie;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -38,7 +42,7 @@ class BookingController extends Controller
 
         $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
 
-        return view('Customer.booking', compact('movie', 'theater', 'seats', 'id', 'unavailable_seats', 'available_seats'));
+        return view('Customer.booking', compact('movie', 'theater', 'seats', 'id', 'showtime_id', 'unavailable_seats', 'available_seats'));
     }
 
     public function ajaxShowtime(Request $request)
@@ -83,7 +87,8 @@ class BookingController extends Controller
         return response()->json([
             'data' => view('Customer.booking_showtime', compact('showtimes'))->render(),
             'unavailable_seats' => $unavailable_seats,
-            'available_seats' => $available_seats
+            'available_seats' => $available_seats,
+            'showtime_id' => $showtime_id
         ]);
     }
 
@@ -105,4 +110,28 @@ class BookingController extends Controller
         return response()->json(['unavailable_seats' => $unavailable_seats, 'available_seats' => $available_seats]);
 
     }
+
+    public function booking_create(Request $request)
+    {
+        $showtime_id = $request->showtime_id;
+        $seat_ids = $request->input('seats');
+        $user_id = Auth::id();
+
+        if (empty($seat_ids)) {
+            return response()->json(['msg' => "No seats selected"]);
+        }
+
+        $booking = booking::create([
+            'booking_status' => 'booked',
+            'u_id' => $user_id,
+            'showtime_id' => $showtime_id
+        ]);
+
+        $booking->seats()->attach($seat_ids);
+
+        return response()->json([
+            'msg' => "Booking Successful"
+        ]);
+    }
+
 }

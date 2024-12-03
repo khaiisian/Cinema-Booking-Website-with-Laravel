@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class booking_seat extends Model
 {
+    protected $table = 'booking_seats';
     public function booking()
     {
         return $this->belongsTo(booking::class);

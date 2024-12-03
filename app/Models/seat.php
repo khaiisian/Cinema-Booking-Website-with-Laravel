@@ -27,5 +27,10 @@ class seat extends Model
         return $this->hasMany(booking_seat::class);
     }
 
+    public function bookings()
+    {
+        return $this->belongsToMany(booking::class, 'booking_seats', 'seat_id', 'booking_id');
+    }
+
     use HasFactory;
 }
