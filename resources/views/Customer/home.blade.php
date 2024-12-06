@@ -14,7 +14,7 @@
                         amet
                         fugiat aspernatur! Debitis temporibus, voluptate dicta porro ut repudiandae odit unde labore
                         asperiores deserunt nisi totam cupiditate.</p>
-                    <a href="{{ route('beforelogin') }}" class="slider_link">Book Now</a>
+                    <a href="{{ route('home') }}" class="slider_link">Book Now</a>
                 </div>
                 <div class="slider_img">
                     <img src="{{asset('images/dune2.jpg')}}" alt="">
@@ -32,7 +32,7 @@
                         amet
                         fugiat aspernatur! Debitis temporibus, voluptate dicta porro ut repudiandae odit unde labore
                         asperiores deserunt nisi totam cupiditate.</p>
-                    <a href="{{ route('beforelogin') }}" class="slider_link">Book Now</a>
+                    <a href="{{ route('home') }}" class="slider_link">Book Now</a>
                 </div>
             </div>
             <input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
@@ -43,7 +43,7 @@
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, cum? Sit molestias nihil rerum,
                         laudantium dolorem voluptatum, explicabo eum facere reiciendis aliquid dolor quidem, facilis
                         sunt illo animi cum ut.</p>
-                    <a href="{{ route('beforelogin') }}" class="slider_link">Book Now</a>
+                    <a href="{{ route('home') }}" class="slider_link">Book Now</a>
                 </div>
                 <div class="slider_img">
                     <img src="{{asset('images/moana2.jpg')}}" alt="">
@@ -105,7 +105,7 @@
                                         d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
                                 </svg> {{ $movie->release_date }}</div>
                         </div>
-                        <x-primary-button class="mx-auto mt-1" as="a" href="{{ route('beforelogin') }}">
+                        <x-primary-button class="mx-auto mt-1" as="a" href="{{ route('home') }}">
                             More Info
                         </x-primary-button>
                     </div>
@@ -119,7 +119,7 @@
                 @endif
                 @endforeach
             </div>
-            <x-secondary-button class="mx-auto mt-1 min-w-32 justify-center" as="a" href="{{ route('beforelogin') }}">
+            <x-secondary-button class="mx-auto mt-1 min-w-32 justify-center" as="a" href="{{ route('home') }}">
                 See More
             </x-secondary-button>
         </div>
@@ -150,7 +150,7 @@
                         <p>Theater: {{ $session->theater->theater_name }}</p>
                         <p>Time: {{ $session->showtime_start }}-{{ $session->showtime_end }} </p>
                         <p>Date: {{ $session->showtime_date}}</p>
-                        <x-primary-button class="mt-3" as="a" href="{{ route('beforelogin') }}">
+                        <x-primary-button class="mt-3" as="a" href="{{ route('home') }}">
                             More Info
                         </x-primary-button>
                     </div>
@@ -164,7 +164,7 @@
                 @endforeach
                 @endif
                 <div class="w-full flex justify-center">
-                    <x-secondary-button class="mr-6" as="a" href="{{ route('beforelogin') }}">
+                    <x-secondary-button class="mr-6" as="a" href="{{ route('home') }}">
                         See More
                     </x-secondary-button>
                 </div>

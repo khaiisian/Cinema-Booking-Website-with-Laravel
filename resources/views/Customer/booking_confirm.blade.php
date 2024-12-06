@@ -21,12 +21,19 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+        // $(document).ready(function() {
+        //     if (performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+        //         window.location.reload(true);
+        //     }
+        // });
+    </script>
 </head>
 
 <body>
     <div class="w-[35%] mx-auto mt-4 rounded-xl p-6 bg-[#333333]  text-white">
         @php
-        $_showtime = $showtime_info[0];
+        $_showtime = $booking_details['showtime_info'][0];
         @endphp
         @if (session('booking_token'))
         <p>{{ session('booking_token') }}</p>
@@ -34,9 +41,13 @@
         <p>No session</p>
         @endif
         <h1 class="text-3xl font-semibold mb-4 text-[#ffbf00]">Booking Details</h1>
+        {{-- hello
+        {{ $_showtime }} --}}
         <div class="flex justify-center w-[100%] gap-x-4 mt-6">
             <div class="w-[45%] h-80 bg-white rounded-lg overflow-hidden img">
-                <img class="h-full w-full" src="{{asset('images/'.$_showtime->movie->movie_image)}}" alt="">
+                {{-- {{ $_showtime['movie']['movie_image'] }} --}}
+                <img class="h-full w-full" src="{{asset('images/'.$_showtime['movie']['movie_image'])}}" alt="">
+
             </div>
             <div class="w-[53%] h-96 booking_info ">
                 <h2 class="text-2xl font-semibold mb-3">{{ $_showtime->movie->movie_title }}</h2>
@@ -65,17 +76,19 @@
                     <p>&nbsp;: {{ $_showtime->theater->theater_name }}</p>
                 </div>
                 <p class="ml-1 mb-2">Seats :
-                    @foreach ($seats as $seat)
+                    @foreach ($booking_details['seats'] as $seat)
                     <span>{{ $seat->seat_code }} @if (!$loop->last), @endif </span>
                     @endforeach
                 </p>
-                <p class="ml-1 mb-2">Total : {{ $total_price }} kyats</p>
-                <form action="/booking/books" method="POST">
+                <p class="ml-1 mb-2">Total : {{ $booking_details['total_price'] }} kyats</p>
+                <form action="/booking/book" method="POST">
                     @csrf
-                    {{-- <input type="hidden" name="booking_token" value="{{ $booking_token }}"> --}}
+                    <input type="hidden" name="booking_token" value="{{ session('booking_token') }}">
                     <input type="hidden" name="showtime_id" id="showtime_id" value="{{$_showtime->showtime_id}}">
-                    <input type="hidden" name="seat_ids" id="seat_ids" value="{{json_encode($seats)}}">
-                    <input type="hidden" name="total_price" id="total_price" value="{{$total_price}}">
+                    <input type="hidden" name="seat_ids" id="seat_ids"
+                        value="{{json_encode($booking_details['seats'])}}">
+                    <input type="hidden" name="total_price" id="total_price"
+                        value="{{$booking_details['total_price']}}">
                     <x-primary-button id="book_btn" class="mt-10 ml-2">
                         Book
                     </x-primary-button>
@@ -85,13 +98,6 @@
     </div>
     {{-- {{$seats}} --}}
     {{-- {{$total_price}} --}}
-    <script>
-        $(document).ready(function(){
-            $('#book_btn').click(function () {
-                location.reload();
-            });
-        })
-    </script>
 </body>
 
 </html>

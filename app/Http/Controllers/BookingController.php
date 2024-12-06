@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class BookingController extends Controller
 {
     //
-    public function ShowBookingDetail(Request $request)
+    public function booking_details(Request $request)
     {
         $booking_token = session('booking_token');
         if (!$booking_token) {
@@ -35,17 +35,56 @@ class BookingController extends Controller
 
         $showtime_info = showtime::where('showtime_id', $showtime_id)->with('movie', 'theater')->get();
 
-        return view('Customer.booking_confirm', compact('seats', 'showtime_info', 'total_price'));
+        $request->session()->put('booking_details', [
+            'showtime_info' => $showtime_info,
+            'seats' => $seats,
+            'total_price' => $total_price,
+
+
+        ]);
+
+        return redirect()->route('show_booking_details');
+
+        // return view('Customer.booking_confirm', compact('seats', 'showtime_info', 'total_price'));
+
+        // return response()
+        //     ->view('Customer.booking_confirm', compact('seats', 'showtime_info', 'total_price'))
+        //     ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        //     ->header('Pragma', 'no-cache')
+        //     ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+
+    }
+
+    public function show_booking_details(Request $request)
+    {
+        if (!$request->session()->has('booking_details')) {
+            return redirect()->route('home')
+                ->with('error', 'Session expired');
+        }
+
+        $booking_details = $request->session()->get('booking_details');
+
+        return response()
+            ->view('Customer.booking_confirm', compact('booking_details'))
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     }
 
     public function booking_create(Request $request)
     {
+        if (!$request->session()->has('booking_details')) {
+            return redirect()->route('home')
+                ->with('error', 'Session expired');
+        }
+
+        $booking_details = $request->session()->get('booking_details');
 
         $user_id = Auth::id();
-        $showtime_id = $request->showtime_id;
-        $total_price = $request->total_price;
-        $seats = json_decode($request->input('seat_ids', '[]'), true);
-        $seat_ids = array_column($seats, 'seat_id');
+        $showtime_id = $booking_details['showtime_info'][0]['showtime_id'];
+        $total_price = $booking_details['total_price'];
+        $seats = $booking_details['seats'];
+        $seat_ids = collect($seats)->pluck('seat_id')->toArray();
 
         $booking = booking::create([
             'booking_status' => 'booked',
@@ -55,7 +94,7 @@ class BookingController extends Controller
         ]);
 
         $booking->seats()->attach($seat_ids);
-        session()->forget('booking_token');
+        session()->forget('booking_details');
 
         return redirect()->route("home");
 

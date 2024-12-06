@@ -33,7 +33,7 @@ return $movieDuration;
                 <li>Time: {{$showtime->showtime_start}}-{{$showtime->showtime_end}}</li>
                 <li>Date: {{$showtime->showtime_date}}</li>
             </ul>
-            <x-primary-button class="mx-auto mt-6" as="a" href="{{ route('beforelogin') }}">
+            <x-primary-button class="mx-auto mt-6" as="a" href="{{ route('home') }}">
                 Book Now
             </x-primary-button>
         </div>

@@ -237,7 +237,10 @@ $current_time = now()->format('Y-m-d H:i');
                     alert ("No seat selected");
                     e.preventDefault();
                     return;
-                }})
+                }
+                location.reload();
+            
+            })
 
             // $('#book_btn').click(function(){
             //     if(selected_seats.length==0){
@@ -287,34 +290,34 @@ $current_time = now()->format('Y-m-d H:i');
 
         });
 
-        // $(document).on('click', '.showtime_btn', function(){
-        //     let showtime_id = $('.showtime_btn').data('id');
-        //     $('#showtime_id').val(showtime_id);
-        //     console.log("Value isss", showtime_id);
-        //     console.log("SHOW TIME ID", showtime_id)
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/booking/seat_available',
-        //         data: {
-        //             _token: "{{ csrf_token() }}",
-        //             showtime_id: showtime_id,
-        //         },
-        //         dataType: 'json',
-        //         success:function(response){
-        //             let unavailable_seats = response.unavailable_seats;
-        //                 unavailable_seats.forEach(seat => {
-        //                 $('#seat'+seat.seat_id).removeClass('bg-gray-50 bg-[#ffbf00] available_seat');
-        //                 $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
-        //                 });
+        $(document).on('click', '.showtime_btn', function(){
+            let showtime_id = $('.showtime_btn').data('id');
+            $('#showtime_id').val(showtime_id);
+            console.log("Value isss", showtime_id);
+            console.log("SHOW TIME ID", showtime_id)
+            $.ajax({
+                type: 'POST',
+                url: '/booking/seat_available',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    showtime_id: showtime_id,
+                },
+                dataType: 'json',
+                success:function(response){
+                    let unavailable_seats = response.unavailable_seats;
+                        unavailable_seats.forEach(seat => {
+                        $('#seat'+seat.seat_id).removeClass('bg-gray-50 bg-[#ffbf00] available_seat');
+                        $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
+                        });
 
-        //                 let available_seats = response.available_seats;
-        //                 available_seats.forEach(seat=>{
-        //                 $('#seat'+seat.seat_id).addClass('bg-gray-50 bg-[#ffbf00] available_seat');
-        //                 $('#seat'+seat.seat_id).removeClass('bg-[#B90000] bg-[#ffbf00] booked_seat');
-        //                 })
-        //         }
-        //     })
-        // })
+                        let available_seats = response.available_seats;
+                        available_seats.forEach(seat=>{
+                        $('#seat'+seat.seat_id).addClass('bg-gray-50 bg-[#ffbf00] available_seat');
+                        $('#seat'+seat.seat_id).removeClass('bg-[#B90000] bg-[#ffbf00] booked_seat');
+                        })
+                }
+            })
+        })
     </script>
 </body>
 

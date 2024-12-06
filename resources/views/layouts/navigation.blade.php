@@ -54,11 +54,10 @@
                         class="nav_links">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('bmovies')" :active="request()->routeIs('bmovies')" class="nav_links">
+                    <x-nav-link :href="route('movies')" :active="request()->routeIs('movies')" class="nav_links">
                         {{ __('Movies') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('bshowtimes')" :active="request()->routeIs('bshowtimes')"
-                        class="nav_links">
+                    <x-nav-link :href="route('showtimes')" :active="request()->routeIs('showtimes')" class="nav_links">
                         {{ __('Showtimes') }}
                     </x-nav-link>
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
@@ -75,7 +74,7 @@
             <!-- Settings Dropdown -->
             @auth
             {{-- Dropdown for b4 page after auth --}}
-            {{-- @if (Route::currentRouteName() === 'beforelogin')
+            {{-- @if (Route::currentRouteName() === 'home')
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
