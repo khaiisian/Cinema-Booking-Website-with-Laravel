@@ -12,9 +12,8 @@ return new class extends Migration {
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id('booking_id');
-            $table->time('booking_time');
-            $table->date('booking_date');
             $table->string('booking_status');
+            $table->decimal('total_price');
             $table->unsignedBigInteger('u_id');
             $table->unsignedBigInteger('showtime_id');
             $table->foreign('u_id')->references('u_id')->on('users')->onDelete('cascade');

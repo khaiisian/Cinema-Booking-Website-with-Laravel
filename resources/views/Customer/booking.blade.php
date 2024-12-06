@@ -5,6 +5,7 @@ $day2 = $day1->copy()->addDay();
 $day3 = $day1->copy()->addDays(2);
 $day4 = $day1->copy()->addDays(3);
 
+$current_time = now()->format('Y-m-d H:i');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -70,32 +71,41 @@ $day4 = $day1->copy()->addDays(3);
 
                 <div
                     class="w-[100%] min-h-screen bg-[#333333] rounded-lg overflow-hidden mt-4 py-14 flex flex-col justify-center">
-                    <div id="std_seats" class="w-[90%] mx-auto grid grid-cols-12 gap-x-0 gap-y-10">
-                        @foreach ($seats as $seat)
-                        @if ($seat->seat_type_id==1|| $seat->seat_type_id==2)
-                        <div>
-                            <div class="w-7 h-8 bg-gray-200 mx-auto available_seat" id="seat{{$seat->seat_id}}"
-                                data-id="{{$seat->seat_id}}"></div>
-                            <p class="text-center text-gray-200">{{ $seat->seat_code }}</p>
+                    <form action="/booking/booking_details" method="POST">
+                        <div id="std_seats" class="w-[90%] mx-auto grid grid-cols-12 gap-x-0 gap-y-10">
+                            @foreach ($seats as $seat)
+                            @if ($seat->seat_type_id==1|| $seat->seat_type_id==2)
+                            <div>
+                                <div class="w-7 h-8 bg-gray-50 mx-auto rounded-sm available_seat seats"
+                                    id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
+                                <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
+                            </div>
+                            @endif
+                            @endforeach
                         </div>
-                        @endif
-                        @endforeach
-                    </div>
-                    <div id="exp_seats" class="w-[85%] mx-auto grid grid-cols-10 gap-x-0 gap-y-10 mt-10">
-                        @foreach ($seats as $seat)
-                        @if ($seat->seat_type_id==3|| $seat->seat_type_id==4)
-                        <div>
-                            <div class="w-7 h-8 bg-gray-200 mx-auto available_seat" id="seat{{$seat->seat_id}}"></div>
-                            <p class="text-center text-gray-200">{{ $seat->seat_code }}</p>
+                        <div id="exp_seats" class="w-[85%] mx-auto grid grid-cols-10 gap-x-0 gap-y-10 mt-10">
+                            @foreach ($seats as $seat)
+                            @if ($seat->seat_type_id==3|| $seat->seat_type_id==4)
+                            <div>
+                                <div class="w-7 h-8 bg-gray-50 mx-auto rounded-sm available_seat seats"
+                                    id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
+                                <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
+                            </div>
+                            @endif
+                            @endforeach
                         </div>
-                        @endif
-                        @endforeach
-                    </div>
-                    <div class="mt-16 min-w-[100%] flex justify-end px-20">
-                        <button id="book_btn">
-                            Book
-                        </button>
-                    </div>
+                        <div class="mt-16 min-w-[100%] flex justify-end px-20">
+                            @csrf
+                            <input type="hidden" name="showtime_id" id="showtime_id">
+                            <input type="hidden" name="selectedSeats" id="selectedSeats">
+                            {{-- <x-primary-button id="book_btn">
+                                Book
+                            </x-primary-button> --}}
+                            <x-primary-button type="submit" id="book_btn">
+                                Book
+                            </x-primary-button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -105,11 +115,16 @@ $day4 = $day1->copy()->addDays(3);
     </div>
 
     <script>
+        let selected_seats = [];
         $(document).ready(function () {
+            let showtime_id = {{$showtime_id}};
+
             function ajaxShowtime(date){
                 if(date==undefined){
                     date='day1';
                 }
+
+                selected_seats =[];
                 // console.log(date);
                 $.ajax({
                     type: 'POST',
@@ -125,18 +140,52 @@ $day4 = $day1->copy()->addDays(3);
                         // console.log(response.data)
                         let unavailable_seats = response.unavailable_seats;
                         unavailable_seats.forEach(seat => {
-                        $('#seat'+seat.seat_id).removeClass('bg-gray-200 available_seat');
+                        $('#seat'+seat.seat_id).removeClass('bg-gray-50 bg-[#ffbf00] available_seat');
                         $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
                         });
 
                         let available_seats = response.available_seats;
                         available_seats.forEach(seat=>{
-                        $('#seat'+seat.seat_id).addClass('bg-gray-200 available_seat');
-                        $('#seat'+seat.seat_id).removeClass('bg-[#B90000] booked_seat');
+                        $('#seat'+seat.seat_id).addClass('bg-gray-50 bg-[#ffbf00] available_seat');
+                        $('#seat'+seat.seat_id).removeClass('bg-[#B90000] bg-[#ffbf00] booked_seat');
                         })
+
+                        let showtime_ids = response.show_id;
+                        console.log(showtime_ids)
+                        showtime_id = showtime_ids[0];
+                        $('#showtime_id').val(showtime_id);
+                        console.log("Value is", showtime_id)
+
+                        let current_time = "{{$current_time}}";
+
+                        let showtime_end = response.showtime_end;
+
+                        console.log(current_time);
+
+                        console.log(showtime_end);
+
+                        if(current_time>showtime_end){
+
+                            $('.seats').removeClass('bg-gray-50 available_seat bg-[#B90000] bg-[#ffbf00] booked_seat')
+
+                            $('.seats').addClass('bg-gray-500 overdue_seat')
+                            $('#book_btn').text('Overdue booking time')
+                            $('#book_btn').prop('disabled', true)
+
+                            console.log('current is lareger')
+
+                        } else {
+                            $('.seats').removeClass('bg-gray-500 overdue_seat')    
+                            $('#book_btn').text('Book')
+                            $('#book_btn').prop('disabled', false)                     
+                        }
                         }
                 })
             }
+
+            // showUnavailable();
+            ajaxShowtime();
+            // $('.available_seat').addClass('testing');
 
             $('#day1btn').click(function () { 
                 ajaxShowtime('day1');
@@ -163,92 +212,109 @@ $day4 = $day1->copy()->addDays(3);
                 $(this).addClass('bg-[#B90000]');           
             });
 
-            function showUnavailable(){
-                let unavailable_seats = @json($unavailable_seats);
-                unavailable_seats.forEach(seat => {
-                    $('#seat'+seat.seat_id).removeClass('bg-gray-200 available_seat');
-                    $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
-                });
-                let available_seats = @json($available_seats);
-                available_seats.forEach(seat => {
-                    $('#seat'+seat.seat_id).addClass('bg-gray-200 available_seat');
-                    $('#seat'+seat.seat_id).removeClass('bg-[#B90000] booked_seat');
-                });
-            }
+            // function showUnavailable(){
+            //     let unavailable_seats = @json($unavailable_seats);
+            //     unavailable_seats.forEach(seat => {
+            //         $('#seat'+seat.seat_id).removeClass('bg-gray-50 available_seat');
+            //         $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
+            //     });
+            //     let available_seats = @json($available_seats);
+            //     available_seats.forEach(seat => {
+            //         $('#seat'+seat.seat_id).addClass('bg-gray-50 available_seat');
+            //         $('#seat'+seat.seat_id).removeClass('bg-[#B90000] booked_seat');
+            //     });
+            // }
 
-            showUnavailable();
-            ajaxShowtime();
+            
 
-            let selected_seats = [];
-            $('.available_seat').addClass('testing');
+            // console.log(showtime_id)
 
-            console.log({{$showtime_id}})
-
-            $('.available_seat').click(function(){
-                const seat_id = $(this).data('id');
-                console.log('seat id', seat_id);
-
-                if(selected_seats.includes(seat_id)){
-                    selected_seats= selected_seats.filter(id=>id!=seat_id)
-                } else {
-                    selected_seats.push(seat_id);
-                }
-
-                console.log('selected seats', selected_seats)
-            })
-
-            $('#book_btn').click(function(){
+            // $('.available_seat').click(function(){
+                
+            // })
+            $('#book_btn').click(function(e){
                 if(selected_seats.length==0){
                     alert ("No seat selected");
-                    console.log({{$showtime_id}})
+                    e.preventDefault();
                     return;
-                }
+                }})
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/booking/book',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        seats: selected_seats,
-                        showtime_id: {{$showtime_id}}
-                    },
-                    dataType: 'json',
-                    success: function(response){
-                        console.log(response.msg);
-                        location.reload();
-                    }
-                })
-            })
+            // $('#book_btn').click(function(){
+            //     if(selected_seats.length==0){
+            //         alert ("No seat selected");
+            //         console.log({{$showtime_id}})
+            //         return;
+            //     }
+
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '/booking/book',
+            //         data: {
+            //             _token: "{{ csrf_token() }}",
+            //             seats: selected_seats,
+            //             showtime_id: showtime_id
+            //         },
+            //         dataType: 'json',
+            //         success: function(response){
+            //             console.log(response.msg);
+            //             console.log(response.totalprice);
+            //             location.reload();
+            //         }
+            //     })
+            // })
 
             
         })
 
-        $(document).on('click', '.showtime_btn', function(){
-            let showtime_id = $('.showtime_btn').data('id');
-            console.log("SHOW TIME ID", showtime_id)
-            $.ajax({
-                type: 'POST',
-                url: '/booking/seat_available',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    showtime_id: showtime_id,
-                },
-                dataType: 'json',
-                success:function(response){
-                    let unavailable_seats = response.unavailable_seats;
-                    unavailable_seats.forEach(seat => {
-                    $('#seat'+seat.seat_id).removeClass('bg-gray-200 available_seat');
-                    $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
-                    });
+        $(document).on('click', '.available_seat', function() {
+    // Your click logic
+                const seat_id = $(this).data('id');
+                console.log('seat id', seat_id);
 
-                    let available_seats = response.available_seats;
-                    available_seats.forEach(seat=>{
-                    $('#seat'+seat.seat_id).addClass('bg-gray-200 available_seat');
-                    $('#seat'+seat.seat_id).removeClass('bg-[#B90000] booked_seat');
-                    })
+                if(selected_seats.includes(seat_id)){
+                    selected_seats= selected_seats.filter(id=>id!=seat_id);
+                    $(this).addClass('bg-gray-50');
+                    $(this).removeClass('bg-[#ffbf00]');
+                } else {
+                    selected_seats.push(seat_id);
+                    $(this).removeClass('bg-gray-50');
+                    $(this).addClass('bg-[#ffbf00]');
                 }
-            })
-        })
+
+                console.log('selected seats', selected_seats)
+                $('#selectedSeats').val(JSON.stringify(selected_seats));
+                console.log("value", $('#selectedSeats').val())
+
+        });
+
+        // $(document).on('click', '.showtime_btn', function(){
+        //     let showtime_id = $('.showtime_btn').data('id');
+        //     $('#showtime_id').val(showtime_id);
+        //     console.log("Value isss", showtime_id);
+        //     console.log("SHOW TIME ID", showtime_id)
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '/booking/seat_available',
+        //         data: {
+        //             _token: "{{ csrf_token() }}",
+        //             showtime_id: showtime_id,
+        //         },
+        //         dataType: 'json',
+        //         success:function(response){
+        //             let unavailable_seats = response.unavailable_seats;
+        //                 unavailable_seats.forEach(seat => {
+        //                 $('#seat'+seat.seat_id).removeClass('bg-gray-50 bg-[#ffbf00] available_seat');
+        //                 $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
+        //                 });
+
+        //                 let available_seats = response.available_seats;
+        //                 available_seats.forEach(seat=>{
+        //                 $('#seat'+seat.seat_id).addClass('bg-gray-50 bg-[#ffbf00] available_seat');
+        //                 $('#seat'+seat.seat_id).removeClass('bg-[#B90000] bg-[#ffbf00] booked_seat');
+        //                 })
+        //         }
+        //     })
+        // })
     </script>
 </body>
 

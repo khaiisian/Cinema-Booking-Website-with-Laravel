@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\SelectionController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ProfileController;
@@ -40,7 +41,7 @@ Route::get('/before/showtimes', function () {
 Route::get('/home', [HomeController::class, 'Index'])->middleware(['auth', 'verified'])->name('home');
 Route::middleware('auth')->group(function () {
     Route::get('/movies', [MovieController::class, 'index'])->name('movies');
-    Route::get('/movies/{id}', [BookingController::class, 'showMovieDetail'])->name('movies.show');
+    Route::get('/movies/{id}', [SelectionController::class, 'showMovieDetail'])->name('movies.show');
     Route::post('/movies/ajax', [MovieController::class, 'ajax']);
 
     Route::get('/showtimes', function () {
@@ -48,11 +49,15 @@ Route::middleware('auth')->group(function () {
     })->name('showtimes');
     Route::post('showtimes/ajax', [ShowtimeController::class, 'showtime_ajax']);
 
-    Route::post('/movies/ajaxShowtimes', [BookingController::class, 'ajaxShowtime']);
+    Route::post('/movies/ajaxShowtimes', [SelectionController::class, 'ajaxShowtime']);
 
-    Route::post('/booking/seat_available', [BookingController::class, 'seat_availablility']);
+    Route::post('/booking/seat_available', [SelectionController::class, 'seat_availablility']);
 
-    Route::post('/booking/book', [BookingController::class, 'booking_create']);
+    Route::post('/booking/book', [SelectionController::class, 'booking_create']);
+
+    Route::post('/booking/booking_details', [BookingController::class, 'ShowBookingDetail'])->name('ShowBookingDetail');
+
+    Route::post('/booking/books', [BookingController::class, 'booking_create'])->name('Booking');
 
     // Route::get('/booking', function () {
     //     return view('Customer.booking');
