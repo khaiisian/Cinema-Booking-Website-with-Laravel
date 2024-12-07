@@ -53,7 +53,7 @@ $current_time = now()->format('Y-m-d H:i');
                     <p class="text-white">{{ $movie->movie_content }}</p>
                 </div>
             </div>
-            <div id="booking_side" class="w-[65%] min-h-screen rounded-lg overflow-hidden px-3">
+            <div id="booking_side" class="w-[66%] min-h-screen rounded-lg overflow-hidden px-3">
                 <div class="flex justify-between text-white" id=" showtimes">
                     <button class="w-[23%] h-16 bg-[#B90000] rounded-lg btn" id="day1btn">{{ $day1->format('F j')
                         }}</button>
@@ -67,10 +67,56 @@ $current_time = now()->format('Y-m-d H:i');
 
                 <div class="w-[100%] min-h-44 mt-4 rounded-lg bg-[#333333] py-3 px-3" id="showtime_info">
                     {{-- @include('Customer.booking_showtime') --}}
+
                 </div>
 
                 <div
                     class="w-[100%] min-h-screen bg-[#333333] rounded-lg overflow-hidden mt-4 py-14 flex flex-col justify-center">
+
+                    {{-- Seat satatus --}}
+                    <div class="flex gap-x-6 px-6 mb-6 justify-between">
+                        <div class="flex items-center gap-x-2 text-gray-50">
+                            <div class="w-5 h-6 bg-gray-50 mx-auto rounded-sm"></div>
+                            <p class="text-sm">Available seats</p>
+                        </div>
+                        <div class="flex items-center gap-x-2 text-gray-50">
+                            <div class="w-5 h-6 bg-[#ffbf00] mx-auto rounded-sm"></div>
+                            <p class="text-sm">Selected seats</p>
+                        </div>
+                        <div class="flex gap-x-2 items-center text-gray-50">
+                            <div class="w-5 h-6 bg-[#B90000] mx-auto rounded-sm"></div>
+                            <p class="text-sm">Booked seats</p>
+                        </div>
+                        <div class="flex gap-x-2 items-center text-gray-50">
+                            <div class="w-5 h-6 bg-gray-500 mx-auto rounded-sm"></div>
+                            <p class="text-sm">Overdue seats</p>
+                        </div>
+                    </div>
+
+                    {{-- Seat Types --}}
+                    <div class="flex justify-start gap-x-2 text-gray-50 text-sm px-4 mb-12">
+                        <div>
+                            <p><span class="border rounded-lg border-gray-500 px-2 py-0"> A001-C012</span>
+                                Standard(10000)
+                            </p>
+                        </div>
+                        <div>
+                            <p><span class="border rounded-lg border-gray-500 px-2 py-0"> D001-E012</span>
+                                Premium(15000)
+                            </p>
+                        </div>
+                        <div>
+                            <p><span class="border rounded-lg border-gray-500 px-2 py-0"> F001-F010</span>
+                                VIP(20000)
+                            </p>
+                        </div>
+                        <div>
+                            <p><span class="border rounded-lg border-gray-500 px-2 py-0"> G001-G010</span>
+                                Couple(23000)
+                            </p>
+                        </div>
+                    </div>
+
                     <form action="/booking/booking_details" method="POST">
                         <div id="std_seats" class="w-[90%] mx-auto grid grid-cols-12 gap-x-0 gap-y-10">
                             @foreach ($seats as $seat)
@@ -117,7 +163,6 @@ $current_time = now()->format('Y-m-d H:i');
     <script>
         let selected_seats = [];
         $(document).ready(function () {
-            let showtime_id = {{$showtime_id}};
 
             function ajaxShowtime(date){
                 if(date==undefined){
@@ -136,8 +181,8 @@ $current_time = now()->format('Y-m-d H:i');
                     },
                     dataType: 'json',
                     success: function(response){
-                        $('#showtime_info').html(response.data);
-                        // console.log(response.data)
+                        $('#showtime_info').html(response.data); // Showtime information
+
                         let unavailable_seats = response.unavailable_seats;
                         unavailable_seats.forEach(seat => {
                         $('#seat'+seat.seat_id).removeClass('bg-gray-50 bg-[#ffbf00] available_seat');
@@ -212,19 +257,6 @@ $current_time = now()->format('Y-m-d H:i');
                 $(this).addClass('bg-[#B90000]');           
             });
 
-            // function showUnavailable(){
-            //     let unavailable_seats = @json($unavailable_seats);
-            //     unavailable_seats.forEach(seat => {
-            //         $('#seat'+seat.seat_id).removeClass('bg-gray-50 available_seat');
-            //         $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
-            //     });
-            //     let available_seats = @json($available_seats);
-            //     available_seats.forEach(seat => {
-            //         $('#seat'+seat.seat_id).addClass('bg-gray-50 available_seat');
-            //         $('#seat'+seat.seat_id).removeClass('bg-[#B90000] booked_seat');
-            //     });
-            // }
-
             
 
             // console.log(showtime_id)
@@ -242,29 +274,6 @@ $current_time = now()->format('Y-m-d H:i');
             
             })
 
-            // $('#book_btn').click(function(){
-            //     if(selected_seats.length==0){
-            //         alert ("No seat selected");
-            //         console.log({{$showtime_id}})
-            //         return;
-            //     }
-
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '/booking/book',
-            //         data: {
-            //             _token: "{{ csrf_token() }}",
-            //             seats: selected_seats,
-            //             showtime_id: showtime_id
-            //         },
-            //         dataType: 'json',
-            //         success: function(response){
-            //             console.log(response.msg);
-            //             console.log(response.totalprice);
-            //             location.reload();
-            //         }
-            //     })
-            // })
 
             
         })

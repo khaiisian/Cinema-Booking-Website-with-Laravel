@@ -18,34 +18,14 @@ class SelectionController extends Controller
     //
     public function showMovieDetail($id)
     {
-
         $booking_token = Str::uuid();
         session(['booking_token' => $booking_token]);
         $movie = movie::findOrFail($id);
 
-        // $data = showtime::with(['movie', 'theater.seat'])->get();
         $theater = theater::with('seat')->get();
         $seats = seat::all();
 
-
-        $showtime_id = showtime::where('showtime_date', today())
-            ->where('movie_id', $id)
-            ->pluck('showtime_id')
-            ->first();
-
-
-        $unavailable_seats = seat::whereIn('seat_id', function ($query) use ($showtime_id) {
-            $query->select('booking_seats.seat_id')
-                ->from('booking_seats')
-                ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
-                ->where('bookings.showtime_id', $showtime_id);
-        })->get();
-
-        $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
-
-        $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
-
-        return view('Customer.booking', compact('movie', 'theater', 'seats', 'id', 'showtime_id', 'unavailable_seats', 'available_seats'));
+        return view('Customer.booking', compact('movie', 'theater', 'seats', 'id'));
     }
 
     public function ajaxShowtime(Request $request)
@@ -74,12 +54,27 @@ class SelectionController extends Controller
                 ->get();
         }
 
-        $show_id = $showtimes->pluck('showtime_id');
-        $time_end = $showtimes->pluck('showtime_end')->first(); // '14:30'
-        $time_end = Carbon::parse($time_end)->format('H:i');
-        $show_date = $showtimes->pluck('showtime_date')->first(); // '2024-12-04'
+        if ($showtimes->isEmpty()) {
+            $unavailable_seats = seat::all();
+            return response()->json(
+                [
+                    'data' => '<div class="h-14 mt-10 flex items-center justify-center text-2xl font-bold text-red-600">
+                    <p>There is no showtime</p>
+                </div>
+                ',
+                    'unavailable_seats' => [],
+                    'available_seats' => [],
+                    'show_id' => [],
+                    'showtime_end' => '0000-00-00 00:00',
+                ]
+            );
+        }
 
-        // Concatenate the date and time
+        $show_id = $showtimes->pluck('showtime_id');
+
+        $time_end = $showtimes->pluck('showtime_end')->first(); // '14:30'
+        // $time_end = Carbon::parse($time_end)->format('H:i');
+        $show_date = $showtimes->pluck('showtime_date')->first(); // '2024-12-04'
         $showtime_end = $show_date . ' ' . $time_end;
 
         $unavailable_seats = seat::whereIn('seat_id', function ($query) use ($show_id) {
