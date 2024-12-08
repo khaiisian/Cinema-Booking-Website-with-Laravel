@@ -15,10 +15,13 @@
                             d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
                     </svg> {{ $movie->release_date }}</div>
             </div>
-            <a href="{{ route('movies.show', ['id' => $movie->movie_id]) }}"
-                class="inline-flex items-center px-4 py-2 bg-[#cd1f30] border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                View Item
-            </a>
+            <form action="{{route('movies.show')}}" method="POST">
+                @csrf
+                <input type="hidden" name="movie_id" value="{{$movie->movie_id}}">
+                <x-primary-button type='submit'>
+                    View Details
+                </x-primary-button>
+            </form>
         </div>
     </div>
     @endforeach

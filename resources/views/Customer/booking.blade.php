@@ -55,13 +55,21 @@ $current_time = now()->format('Y-m-d H:i');
             </div>
             <div id="booking_side" class="w-[66%] min-h-screen rounded-lg overflow-hidden px-3">
                 <div class="flex justify-between text-white" id=" showtimes">
-                    <button class="w-[23%] h-16 bg-[#B90000] rounded-lg btn" id="day1btn">{{ $day1->format('F j')
+                    <button class="w-[23%] h-16 bg-[#B90000] rounded-lg btn" data-id="{{$day1->format('Y-m-d')}}"
+                        id="day1btn">{{
+                        $day1->format('F j')
                         }}</button>
-                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" id="day2btn">{{ $day2->format('F j')
+                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" data-id="{{$day2->format('Y-m-d')}}"
+                        id="day2btn">{{
+                        $day2->format('F j')
                         }}</button>
-                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" id="day3btn">{{ $day3->format('F j')
+                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" data-id="{{$day3->format('Y-m-d')}}"
+                        id="day3btn">{{
+                        $day3->format('F j')
                         }}</button>
-                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" id="day4btn">{{ $day4->format('F j')
+                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" data-id="{{$day4->format('Y-m-d')}}"
+                        id="day4btn">{{
+                        $day4->format('F j')
                         }}</button>
                 </div>
 
@@ -164,22 +172,46 @@ $current_time = now()->format('Y-m-d H:i');
         let selected_seats = [];
         $(document).ready(function () {
 
-            function ajaxShowtime(date){
-                if(date==undefined){
-                    date='day1';
-                }
+            // Properly handle showtime_id
+            let showtime_id = {!! isset($showtime_id) ? json_encode($showtime_id) : 'null' !!};
 
+            let showtime_dates = @json($showtime_date);
+            let showtime_date = showtime_dates[0];
+            if(showtime_date){
+                $('.btn').removeClass('bg-[#B90000] bg-[#333333]');
+                $('.btn').addClass('bg-[#333333]');
+                $('button[data-id="'+showtime_date+'"]').addClass('bg-[#B90000]');
+            console.log(showtime_date)
+            }
+
+            function ajaxShowtime(date) {             
+                let data = {
+                    _token: "{{ csrf_token() }}",
+                    id: {{$id}}
+                };
+              
+               if (date === undefined && showtime_id) {
+                   console.log('Both date and showtime_id exist');
+                    data.showtime_id = showtime_id;
+                 } else if (date === undefined) {
+                      data.date = 'day1';  // Provide a default value
+                      console.log('Default date value assigned');
+                 } else {
+                     data.date = date;
+                    console.log("Date provided:", date);
+                }
+             
+               console.log('Data to send:', data);
+
+
+                console.log(data)
                 selected_seats =[];
                 // console.log(date);
                 $.ajax({
                     type: 'POST',
                     url: '/movies/ajaxShowtimes',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        date: date,
-                        id: {{$id}}
-                    },
-                    dataType: 'json',
+                    data: data,
+                    // dataType: 'json',
                     success: function(response){
                         $('#showtime_info').html(response.data); // Showtime information
 

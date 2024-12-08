@@ -41,7 +41,7 @@ Route::get('/showtimes', function () {
 Route::get('/home', [HomeController::class, 'Index'])->middleware(['auth', 'verified'])->name('home');
 Route::middleware('auth')->group(function () {
     // Route::get('/movies', [MovieController::class, 'index'])->name('movies');
-    Route::get('/movies/{id}', [SelectionController::class, 'showMovieDetail'])->name('movies.show');
+    Route::post('/movies/details', [SelectionController::class, 'showMovieDetail'])->name('movies.show');
     // Route::post('/movies/ajax', [MovieController::class, 'ajax']);
 
     // Route::get('/showtimes', function () {

@@ -33,9 +33,21 @@ return $movieDuration;
                 <li>Time: {{$showtime->showtime_start}}-{{$showtime->showtime_end}}</li>
                 <li>Date: {{$showtime->showtime_date}}</li>
             </ul>
-            <x-primary-button class="mx-auto mt-6" as="a" href="{{ route('home') }}">
-                Book Now
-            </x-primary-button>
+            <form method="POST" action="/movies/details">
+                @csrf
+                <input type="hidden" name="movie_id" value="{{$showtime->movie->movie_id}}">
+                <input type="hidden" name="showtime_id" value="{{$showtime->showtime_id}}">
+                <x-primary-button type='submit'>
+                    View Details
+                </x-primary-button>
+            </form>
+            {{-- <form action="{{route('movies.show')}}" method="POST">
+                @csrf
+                <input type="hidden" name="movie_id" value="{{$movie->movie_id}}">
+                <x-primary-button type='submit'>
+                    View Details
+                </x-primary-button>
+            </form> --}}
         </div>
     </div>
     @endforeach

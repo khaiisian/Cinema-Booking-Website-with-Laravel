@@ -16,86 +16,95 @@ use Illuminate\Support\Str;
 class SelectionController extends Controller
 {
     //
-    public function showMovieDetail($id)
+    public function showMovieDetail(Request $request)
     {
         $booking_token = Str::uuid();
         session(['booking_token' => $booking_token]);
+
+        $id = $request->movie_id;
         $movie = movie::findOrFail($id);
+
+        $showtime_id = $request->showtime_id;
+        $showtime_date = showtime::where('showtime_id', $showtime_id)->pluck('showtime_date');
 
         $theater = theater::with('seat')->get();
         $seats = seat::all();
 
-        return view('Customer.booking', compact('movie', 'theater', 'seats', 'id'));
+        return view('Customer.booking', compact('movie', 'theater', 'seats', 'id', 'showtime_id', 'showtime_date'));
     }
 
     public function ajaxShowtime(Request $request)
     {
         $date = $request->date;
         $id = $request->id;
-        // $id = $request->id;
-        if ($date == 'day1') {
-            $showtimes = showtime::where('showtime_date', today())
-                ->where('movie_id', $id)
-                ->with('movie', 'theater')->get();
-        } elseif ($date == 'day2') {
-            $showtimes = showtime::where('showtime_date', today()->addDay())
-                ->where('movie_id', $id)
-                ->with('movie', 'theater')
-                ->get();
-        } elseif ($date == 'day3') {
-            $showtimes = showtime::where('showtime_date', today()->addDays(2))
-                ->where('movie_id', $id)
-                ->with('movie', 'theater')
-                ->get();
-        } elseif ($date == 'day4') {
-            $showtimes = showtime::where('showtime_date', today()->addDays(3))
-                ->where('movie_id', $id)
-                ->with('movie', 'theater')
-                ->get();
+
+        if ($request->has('showtime_id')) {
+            $show_id = $request->showtime_id;
+            $showtimes = Showtime::where('showtime_id', $show_id)->get();
+        } else {
+            if ($date == 'day1') {
+                $showtimes = Showtime::where('showtime_date', today())
+                    ->where('movie_id', $id)
+                    ->with('movie', 'theater')
+                    ->get();
+            } elseif ($date == 'day2') {
+                $showtimes = Showtime::where('showtime_date', today()->addDay())
+                    ->where('movie_id', $id)
+                    ->with('movie', 'theater')
+                    ->get();
+            } elseif ($date == 'day3') {
+                $showtimes = Showtime::where('showtime_date', today()->addDays(2))
+                    ->where('movie_id', $id)
+                    ->with('movie', 'theater')
+                    ->get();
+            } elseif ($date == 'day4') {
+                $showtimes = Showtime::where('showtime_date', today()->addDays(3))
+                    ->where('movie_id', $id)
+                    ->with('movie', 'theater')
+                    ->get();
+            }
         }
 
-        if ($showtimes->isEmpty()) {
-            $unavailable_seats = seat::all();
-            return response()->json(
-                [
-                    'data' => '<div class="h-14 mt-10 flex items-center justify-center text-2xl font-bold text-red-600">
-                    <p>There is no showtime</p>
-                </div>
-                ',
-                    'unavailable_seats' => [],
-                    'available_seats' => [],
-                    'show_id' => [],
-                    'showtime_end' => '0000-00-00 00:00',
-                ]
-            );
+        if ($showtimes && !$showtimes->isEmpty()) {
+            $show_id = $showtimes->first()->showtime_id;
+
+            $unavailable_seats = Seat::whereIn('seat_id', function ($query) use ($show_id) {
+                $query->select('booking_seats.seat_id')
+                    ->from('booking_seats')
+                    ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
+                    ->where('bookings.showtime_id', $show_id);
+            })->get();
+
+            $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
+            $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
+
+            $time_end = $showtimes->first()->showtime_end;
+            $show_date = $showtimes->first()->showtime_date;
+            $showtime_end = $show_date ? $show_date . ' ' . $time_end : null;
+
+            return response()->json([
+                'data' => view('Customer.booking_showtime', compact('showtimes'))->render(),
+                'unavailable_seats' => $unavailable_seats,
+                'available_seats' => $available_seats,
+                'show_id' => $show_id,
+                'showtime_end' => $showtime_end,
+            ]);
         }
 
-        $show_id = $showtimes->pluck('showtime_id');
-
-        $time_end = $showtimes->pluck('showtime_end')->first(); // '14:30'
-        // $time_end = Carbon::parse($time_end)->format('H:i');
-        $show_date = $showtimes->pluck('showtime_date')->first(); // '2024-12-04'
-        $showtime_end = $show_date . ' ' . $time_end;
-
-        $unavailable_seats = seat::whereIn('seat_id', function ($query) use ($show_id) {
-            $query->select('booking_seats.seat_id')
-                ->from('booking_seats')
-                ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
-                ->where('bookings.showtime_id', $show_id);
-        })->get();
-
-        $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
-
-        $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
-
-        return response()->json([
-            'data' => view('Customer.booking_showtime', compact('showtimes'))->render(),
-            'unavailable_seats' => $unavailable_seats,
-            'available_seats' => $available_seats,
-            'show_id' => $show_id,
-            'showtime_end' => $showtime_end,
-        ]);
+        return response()->json(
+            [
+                'data' => '<div class="h-14 mt-10 flex items-center justify-center text-2xl font-bold text-red-600">
+                <p>There is no showtime</p>
+            </div>
+            ',
+                'unavailable_seats' => [],
+                'available_seats' => [],
+                'show_id' => [],
+                'showtime_end' => '0000-00-00 00:00',
+            ]
+        );
     }
+
 
     public function seat_availablility(Request $request)
     {
