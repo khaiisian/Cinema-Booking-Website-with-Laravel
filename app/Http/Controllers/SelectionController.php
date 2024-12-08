@@ -105,7 +105,6 @@ class SelectionController extends Controller
         );
     }
 
-
     public function seat_availablility(Request $request)
     {
         $showtime_id = $request->showtime_id;

@@ -227,9 +227,9 @@ $current_time = now()->format('Y-m-d H:i');
                         $('#seat'+seat.seat_id).removeClass('bg-[#B90000] bg-[#ffbf00] booked_seat');
                         })
 
-                        let showtime_ids = response.show_id;
-                        console.log(showtime_ids)
-                        showtime_id = showtime_ids[0];
+                        let showtime_id = response.show_id;
+                        // console.log(showtime_ids)
+                        // showtime_id = showtime_ids[0];
                         $('#showtime_id').val(showtime_id);
                         console.log("Value is", showtime_id)
 
