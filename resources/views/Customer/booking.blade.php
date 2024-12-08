@@ -181,7 +181,7 @@ $current_time = now()->format('Y-m-d H:i');
                 $('.btn').removeClass('bg-[#B90000] bg-[#333333]');
                 $('.btn').addClass('bg-[#333333]');
                 $('button[data-id="'+showtime_date+'"]').addClass('bg-[#B90000]');
-            console.log(showtime_date)
+            // console.log(showtime_date)
             }
 
             function ajaxShowtime(date) {             

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ContatUsController;
 use App\Http\Controllers\SelectionController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
@@ -24,9 +25,6 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-// Route::get('/movies', function () {
-//     return view('Customer.movies');
-// })->name('movies');
 Route::get('/', [HomeController::class, 'Index'])->name('beforelogin');
 
 Route::get('/movies', [MovieController::class, 'index'])->name('movies');
@@ -38,7 +36,13 @@ Route::get('/showtimes', function () {
     return view('Customer.showtime');
 })->name('showtimes');
 
+Route::get('/contactus', function () {
+    return view('Customer.contactus');
+})->name('contactus');
+Route::post('/contactus', [ContatUsController::class, 'sendMessage']);
+
 Route::get('/home', [HomeController::class, 'Index'])->middleware(['auth', 'verified'])->name('home');
+
 Route::middleware('auth')->group(function () {
     // Route::get('/movies', [MovieController::class, 'index'])->name('movies');
     Route::post('/movies/details', [SelectionController::class, 'showMovieDetail'])->name('movies.show');

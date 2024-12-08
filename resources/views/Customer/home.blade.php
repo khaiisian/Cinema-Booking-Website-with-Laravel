@@ -74,11 +74,11 @@
 
     {{-- Upcoming Blog --}}
     <div class="py-20 bg-white">
-        @if (session('booking_token'))
+        {{-- @if (session('booking_token'))
         <p>{{ session('booking_token') }}</p>
         @else
         <p>No session</p>
-        @endif
+        @endif --}}
         <div class="bg-white max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-col gap-7">
             <h2 class="text-3xl font-bold text-[#ffbf00]">Upcoming Movies</h2>
             <div class="bg-white flex justify-center items-stretch gap-10 w-full flex-wrap _blogs">

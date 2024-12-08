@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class feedback extends Model
+class contactus extends Model
 {
+    protected $table = 'contactus';
     protected $fillable = [
-        'feedback_title',
-        'feedback_comments',
+        'contact_title',
+        'contact_msg',
+        'u_id'
     ];
 
     public function user()

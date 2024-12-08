@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('feedback', function (Blueprint $table) {
-            $table->id('feedback_id');
-            $table->string('feedback_title');
-            $table->string('feedback_comments');
+        Schema::create('contactus', function (Blueprint $table) {
+            $table->id('contact_id');
+            $table->string('contact_title');
+            $table->string('contact_msg');
             $table->unsignedBigInteger('u_id');
             $table->timestamps();
             $table->foreign('u_id')->references('u_id')->on('users')->onDelete('cascade');
