@@ -54,9 +54,9 @@ class User extends Authenticatable
         return $this->belongsTo(user_type::class);
     }
 
-    public function feedback()
+    public function contactus()
     {
-        return $this->hasMany(feedback::class);
+        return $this->hasMany(contactus::class);
     }
 
     public function booking()
