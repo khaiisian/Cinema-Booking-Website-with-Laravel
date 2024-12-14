@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class booking extends Model
 {
+    protected $primaryKey = 'booking_id';
     protected $fillable = [
         'booking_status',
         'total_price',
@@ -19,9 +20,9 @@ class booking extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function session()
+    public function showtimes()
     {
-        return $this->belongsTo(showtime::class);
+        return $this->belongsTo(showtime::class, 'showtime_id', 'showtime_id');
     }
 
     public function booking_seat()
@@ -31,7 +32,9 @@ class booking extends Model
 
     public function seats()
     {
-        return $this->belongsToMany(seat::class, 'booking_seats', 'booking_id', 'seat_id');
+        return $this->belongsToMany(Seat::class, 'booking_seats', 'booking_id', 'seat_id');
     }
+
+
     use HasFactory;
 }

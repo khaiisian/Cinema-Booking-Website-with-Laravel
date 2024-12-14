@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookingRecordController;
 use App\Http\Controllers\ContatUsController;
 use App\Http\Controllers\SelectionController;
 use App\Http\Controllers\GenreController;
@@ -64,6 +65,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/booking/booking_confirm', [BookingController::class, 'show_booking_details'])->name('show_booking_details');
 
     Route::post('/booking/book', [BookingController::class, 'booking_create'])->name('Booking');
+
+    Route::get('/booking_record', [BookingRecordController::class, 'showBookingRecord'])->name('bookingrecord');
+    Route::post('/booking_record/ajax', [BookingRecordController::class, 'ajaxBookingRecord']);
+    Route::post('/booking/cancel', [BookingRecordController::class, 'cancelBookingRecord']);
+    // Route::get('/booking_record', [BookingController::class, 'showBookingRecord'])->name('bookingrecord');
 
     // Route::get('/booking', function () {
     //     return view('Customer.booking');

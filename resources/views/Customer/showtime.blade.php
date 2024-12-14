@@ -1,6 +1,6 @@
 @php
 use Carbon\Carbon;
-$day1 = Carbon::now();
+$day1 = Carbon::now('Asia/Yangon');
 $day2 = $day1->copy()->addDay();
 $day3 = $day1->copy()->addDays(2);
 $day4 = $day1->copy()->addDays(3);

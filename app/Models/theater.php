@@ -14,7 +14,7 @@ class theater extends Model
         'capacity',
     ];
 
-    public function sessions()
+    public function showtimes()
     {
         return $this->hasMany(showtime::class);
     }

@@ -28,9 +28,9 @@ class movie extends Model
         return $this->belongsToMany(genre::class, 'genre_movies', 'movie_id', 'genre_id');
     }
 
-    public function sessions()
+    public function showtimes()
     {
-        return $this->hasMany(showtime::class);
+        return $this->hasMany(showtime::class, 'movie_id', 'movie_id');
     }
     use HasFactory;
 }

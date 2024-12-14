@@ -44,15 +44,6 @@ class BookingController extends Controller
         ]);
 
         return redirect()->route('show_booking_details');
-
-        // return view('Customer.booking_confirm', compact('seats', 'showtime_info', 'total_price'));
-
-        // return response()
-        //     ->view('Customer.booking_confirm', compact('seats', 'showtime_info', 'total_price'))
-        //     ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-        //     ->header('Pragma', 'no-cache')
-        //     ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
-
     }
 
     public function show_booking_details(Request $request)

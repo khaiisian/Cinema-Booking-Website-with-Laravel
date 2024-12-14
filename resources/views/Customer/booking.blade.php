@@ -1,11 +1,10 @@
 @php
 use Carbon\Carbon;
-$day1 = Carbon::now();
+$day1 = Carbon::now('Asia/Yangon');
 $day2 = $day1->copy()->addDay();
 $day3 = $day1->copy()->addDays(2);
 $day4 = $day1->copy()->addDays(3);
 
-$current_time = now()->format('Y-m-d H:i');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -170,9 +169,8 @@ $current_time = now()->format('Y-m-d H:i');
 
     <script>
         let selected_seats = [];
+        let showtime_end;
         $(document).ready(function () {
-
-            // Properly handle showtime_id
             let showtime_id = {!! isset($showtime_id) ? json_encode($showtime_id) : 'null' !!};
 
             let showtime_dates = @json($showtime_date);
@@ -194,16 +192,13 @@ $current_time = now()->format('Y-m-d H:i');
                    console.log('Both date and showtime_id exist');
                     data.showtime_id = showtime_id;
                  } else if (date === undefined) {
-                      data.date = 'day1';  // Provide a default value
+                      data.date = 'day1';
                       console.log('Default date value assigned');
                  } else {
                      data.date = date;
                     console.log("Date provided:", date);
-                }
-             
-               console.log('Data to send:', data);
-
-
+                }             
+                console.log('Data to send:', data);
                 console.log(data)
                 selected_seats =[];
                 // console.log(date);
@@ -233,24 +228,20 @@ $current_time = now()->format('Y-m-d H:i');
                         $('#showtime_id').val(showtime_id);
                         console.log("Value is", showtime_id)
 
-                        let current_time = "{{$current_time}}";
-
-                        let showtime_end = response.showtime_end;
+                        let current_time = new Date();
+                        showtime_end = response.showtime_end;
+                        showtime_end = new Date(showtime_end);
 
                         console.log(current_time);
 
                         console.log(showtime_end);
 
                         if(current_time>showtime_end){
-
                             $('.seats').removeClass('bg-gray-50 available_seat bg-[#B90000] bg-[#ffbf00] booked_seat')
-
                             $('.seats').addClass('bg-gray-500 overdue_seat')
                             $('#book_btn').text('Overdue booking time')
                             $('#book_btn').prop('disabled', true)
-
                             console.log('current is lareger')
-
                         } else {
                             $('.seats').removeClass('bg-gray-500 overdue_seat')    
                             $('#book_btn').text('Book')
@@ -259,10 +250,6 @@ $current_time = now()->format('Y-m-d H:i');
                         }
                 })
             }
-
-            // showUnavailable();
-            ajaxShowtime();
-            // $('.available_seat').addClass('testing');
 
             $('#day1btn').click(function () { 
                 ajaxShowtime('day1');
@@ -288,26 +275,39 @@ $current_time = now()->format('Y-m-d H:i');
                 $('.btn').addClass('bg-[#333333]');
                 $(this).addClass('bg-[#B90000]');           
             });
-
-            
-
-            // console.log(showtime_id)
-
-            // $('.available_seat').click(function(){
                 
             // })
             $('#book_btn').click(function(e){
+                $now_time = new Date();
+                console.log('Now time',$now_time);
+                $end_time = showtime_end;
+                console.log('End time', showtime_end)
+                if($now_time>$end_time){
+                    alert ("Sorry Overdue booking Time");
+                    e.preventDefault();
+                    return;
+                }
                 if(selected_seats.length==0){
                     alert ("No seat selected");
                     e.preventDefault();
                     return;
                 }
-                location.reload();
-            
             })
-
-
             
+
+            ajaxShowtime();
+
+            // function formatTime(){
+            //     $now_time = new Date();
+            //     console.log('NOW TIME', $now_time);
+            //     $format_time = new Date(showtime_end)
+            //     console.log('End Time',$format_time)
+            // }
+            // setInterval(formatTime, 1000);   
+            // setTimeout(() => {
+            //     $end_time = showtime_end;
+            //     console.log('End',$end_time)
+            // }, 1000);        
         })
 
         $(document).on('click', '.available_seat', function() {

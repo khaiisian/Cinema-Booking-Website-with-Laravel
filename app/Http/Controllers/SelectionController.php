@@ -72,7 +72,8 @@ class SelectionController extends Controller
                 $query->select('booking_seats.seat_id')
                     ->from('booking_seats')
                     ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
-                    ->where('bookings.showtime_id', $show_id);
+                    ->where('bookings.showtime_id', $show_id)
+                    ->where('bookings.booking_status', 'booked');
             })->get();
 
             $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
@@ -112,7 +113,8 @@ class SelectionController extends Controller
             $query->select('booking_seats.seat_id')
                 ->from('booking_seats')
                 ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
-                ->where('bookings.showtime_id', $showtime_id);
+                ->where('bookings.showtime_id', $showtime_id)
+                ->where('bookings.booking_status', 'booked');
         })->get();
 
         $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
