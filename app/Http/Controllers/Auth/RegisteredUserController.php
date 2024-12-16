@@ -44,8 +44,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $u_code = uniqid('User_') . $user->u_id;
-        $user->u_code = $u_code;
+        // $u_code = uniqid('User_') . $user->u_id;
+        $user->u_code = User::userCode();
         $user->save();
 
         event(new Registered($user));

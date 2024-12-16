@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -62,5 +63,15 @@ class User extends Authenticatable
     public function booking()
     {
         return $this->hasMany(booking::class);
+    }
+
+    public static function userCode()
+    {
+        // do {
+        //     $code = 'BCode_' . Str::lower(Str::random(7));  // Adding 'B' prefix
+        // } while (self::where('booking_code', $code)->exists());
+
+        $code = 'U_' . Str::substr(uniqid(), 0, 8);
+        return $code;
     }
 }

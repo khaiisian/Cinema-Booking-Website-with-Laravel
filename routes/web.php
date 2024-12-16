@@ -68,7 +68,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/booking_record', [BookingRecordController::class, 'showBookingRecord'])->name('bookingrecord');
     Route::post('/booking_record/ajax', [BookingRecordController::class, 'ajaxBookingRecord']);
-    Route::post('/booking/cancel', [BookingRecordController::class, 'cancelBookingRecord']);
+    Route::post('/booking_record/cancel', [BookingRecordController::class, 'cancelBookingRecord']);
+    Route::post('/booking_record/booking_ticket', [BookingRecordController::class, 'showBookingTicet']);
     // Route::get('/booking_record', [BookingController::class, 'showBookingRecord'])->name('bookingrecord');
 
     // Route::get('/booking', function () {

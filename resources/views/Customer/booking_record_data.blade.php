@@ -1,7 +1,9 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 @foreach ($bookings as $booking )
 <div class="w-[78%] min-h-64 rounded-xl ml-6 p-4 gap-x-5 flex bg-[#333333]">
-    <div class="img w-[33%] min-h-full rounded-lg overflow-hidden bg-white">
-        <img src="{{asset('images/'.$booking->showtimes->movie->movie_image)}}" alt="">
+    <input type="hidden" id="booking_period" value="{{$booking_period}}">
+    <div class="img w-[33%] min-h-full rounded-lg overflow-hidden ">
+        <img src="{{asset('images/'.$booking->showtimes->movie->movie_image)}}" class="h-full" alt="">
     </div>
     <div class="info w-[65%] min-h-full ">
         <h1 class="text-2xl font-bold text-[#ffbf00] mb-1">{{ $booking->showtimes->movie->movie_title }}
@@ -35,8 +37,7 @@
             @endforeach
         </div>
         <div class="text-gray-200 flex items-center pl-2 gap-x-3 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-film"
-                viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-film w-5" viewBox="0 0 16 16">
                 <path
                     d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm4 0v6h8V1zm8 8H4v6h8zM1 1v2h2V1zm2 3H1v2h2zM1 7v2h2V7zm2 3H1v2h2zm-2 3v2h2v-2zM15 1h-2v2h2zm-2 3v2h2V4zm2 3h-2v2h2zm-2 3v2h2v-2zm2 3h-2v2h2z" />
             </svg>
@@ -44,14 +45,27 @@
         </div>
 
         <div class="flex justify-between px-2 mt-8">
-            <x-secondary-button>View Ticket</x-secondary-button>
-            <form action="/booking/cancel" method="POST">
+            <form action="/booking_record/booking_ticket" method="POST">
                 @csrf
                 <input type="hidden" name="booking_id" id="booking_id" value="{{$booking->booking_id}}">
-                <x-primary-button>Cancel Booking</x-primary-button>
+                <x-primary-button>View Ticket</x-primary-button>
+            </form>
+            <form action="/booking_record/cancel" method="POST">
+                @csrf
+                <input type="hidden" name="booking_id" id="booking_id" value="{{$booking->booking_id}}">
+                <x-primary-button id="cancel_btn">Cancel Booking</x-primary-button>
             </form>
         </div>
 
     </div>
 </div>
 @endforeach
+
+<script>
+    $booking_period = $('#booking_period').val();
+    if($booking_period=='past'){
+        $('#cancel_btn').prop("disabled", true)
+    } else {
+        $('#cancel_btn').prop("disabled", false)
+    }
+</script>

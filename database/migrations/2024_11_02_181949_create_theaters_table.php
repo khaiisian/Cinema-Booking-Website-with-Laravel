@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id('theater_id');
             $table->string('theater_name');
             $table->integer('capacity');
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->date('release_date');
             $table->decimal('movie_duration', 3, 2);
             $table->string('movie_status', 20);
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

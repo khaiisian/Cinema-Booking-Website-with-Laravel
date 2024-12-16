@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id('seat_type_id');
             $table->string('seat_type');
             $table->decimal('price', 12, 2);
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

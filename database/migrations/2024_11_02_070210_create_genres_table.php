@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('genres', function (Blueprint $table) {
             $table->id('genre_id');
             $table->string('genre');
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

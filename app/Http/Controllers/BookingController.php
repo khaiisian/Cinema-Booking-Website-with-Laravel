@@ -85,6 +85,8 @@ class BookingController extends Controller
         ]);
 
         $booking->seats()->attach($seat_ids);
+        $booking->booking_code = Booking::bookingCode();
+        $booking->save();
         session()->forget('booking_details');
 
         return redirect()->route("home");

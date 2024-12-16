@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->time('showtime_start');
             $table->time('showtime_end');
             $table->date('showtime_date');
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
             $table->foreign('movie_id')->references('movie_id')->on('movies')->onDelete('cascade');
             $table->foreign('theater_id')->references('theater_id')->on('theaters')->onDelete('cascade');
