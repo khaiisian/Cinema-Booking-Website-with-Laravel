@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\genre_movie;
 use App\Models\movie;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class genre extends Model
 {
-
+    use SoftDeletes;
     protected $primaryKey = 'genre_id';
 
     protected $fillable = ['genre'];

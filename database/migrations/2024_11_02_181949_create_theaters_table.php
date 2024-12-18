@@ -11,10 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('theaters', function (Blueprint $table) {
+            $table->softDeletes();
             $table->id('theater_id');
             $table->string('theater_name');
             $table->integer('capacity');
-            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

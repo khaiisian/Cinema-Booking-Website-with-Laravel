@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\genre;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class movie extends Model
 {
-
+    use SoftDeletes;
     protected $primaryKey = 'movie_id';
 
     protected $fillable = [
@@ -16,6 +17,9 @@ class movie extends Model
         'movie_content',
         'movie_duration',
         'movie_status',
+        'movie_image',
+        'release_date',
+        'age_rating',
     ];
 
     public function mgenre()

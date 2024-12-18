@@ -11,10 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('seat_types', function (Blueprint $table) {
+            $table->softDeletes();
             $table->id('seat_type_id');
             $table->string('seat_type');
             $table->decimal('price', 12, 2);
-            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

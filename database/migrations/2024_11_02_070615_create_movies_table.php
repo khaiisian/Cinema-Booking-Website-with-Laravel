@@ -11,14 +11,15 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('movies', function (Blueprint $table) {
+            $table->softDeletes();
             $table->id('movie_id');
-            $table->string('movie_title');
-            $table->string('movie_content');
+            $table->string('movie_title', 150);
+            $table->string('movie_content', 500);
             $table->string('movie_image')->nullable();
             $table->date('release_date');
-            $table->decimal('movie_duration', 3, 2);
+            $table->decimal('movie_duration', 6, 2);
             $table->string('movie_status', 20);
-            $table->boolean('is_deleted')->default(false);
+            $table->string('age_rating');
             $table->timestamps();
         });
     }

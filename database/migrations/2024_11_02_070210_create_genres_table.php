@@ -11,9 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('genres', function (Blueprint $table) {
+            $table->softDeletes();
             $table->id('genre_id');
             $table->string('genre');
-            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

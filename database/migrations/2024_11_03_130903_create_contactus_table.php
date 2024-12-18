@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('contact_title');
             $table->string('contact_msg');
             $table->unsignedBigInteger('u_id');
-            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
             $table->foreign('u_id')->references('u_id')->on('users')->onDelete('cascade');
         });

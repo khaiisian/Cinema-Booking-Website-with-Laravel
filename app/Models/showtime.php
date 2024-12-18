@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class showtime extends Model
 {
+    use SoftDeletes;
     protected $fillable = ['showtime_start', 'showtime_end', 'showtime_date'];
     public function movie()
     {
