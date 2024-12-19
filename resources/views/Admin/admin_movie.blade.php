@@ -10,9 +10,6 @@
 
     @endif
 
-    @if (session('validatedData'))
-    <div>{{ session('validatedData') }}</div>
-    @endif
     <div class="w-full bg-white py-10">
         {{-- {{ $movies }} --}}
         <div class="w-96 mx-auto border border-gray-300 rounded-lg overflow-hidden">
@@ -65,7 +62,7 @@
                 <label for="genre" class="font-semibold text-lg text-gray-700">Genres</label>
                 <div class="flex items-start gap-x-3">
                     <div class="w-[50%] flex flex-wrap genre_div">
-                        <select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2">
+                        <select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2" data-id=0>
                             <option value="0">Select a genre</option>
                             @foreach ($genres as $genre)
                             <option value="{{$genre->genre_id}}">{{ $genre->genre }}</option>
@@ -77,6 +74,12 @@
                             viewBox="0 0 16 16">
                             <path
                                 d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                        </svg>
+                    </button>
+                    <button id="genre_minus" type="button" class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="grey" class="bi bi-dash-circle-fill w-8"
+                            viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" />
                         </svg>
                     </button>
                 </div>
@@ -149,8 +152,10 @@
     </div>
     <script>
         $(document).ready(function () {
+            // let genre_html_list=[];
+            let counter = 0;
             $('#genre_add').click(function () { 
-                let genre_html = `<select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2">
+                let genre_html = `<select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2" data-id=${++counter}>
                             <option value="0">Select a genre</option>
                             @foreach ($genres as $genre)
                             <option value="{{$genre->genre_id}}">{{ $genre->genre }}</option>
@@ -158,6 +163,15 @@
                         </select>`;
 
                 $('.genre_div').append(genre_html);           
+            });
+
+
+            $('#genre_minus').click(function () { 
+                if(counter!=0){
+                    console.log(counter)
+                    $('[data-id="' + counter + '"]').remove();
+                    counter--;
+                }
             });
 
             let selected_genres=[];
@@ -179,6 +193,11 @@
                 } 
                 
             });
+
+            $("#remove-button").click(function() {
+                $("#child-3").remove();
+            });
+
         });
 
         

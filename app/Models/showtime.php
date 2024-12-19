@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class showtime extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['showtime_start', 'showtime_end', 'showtime_date'];
+    protected $primaryKey = 'showtime_id';
+    protected $fillable = ['movie_id', 'theater_id', 'showtime_start', 'showtime_end', 'showtime_date'];
     public function movie()
     {
         return $this->belongsTo(movie::class, 'movie_id', 'movie_id');

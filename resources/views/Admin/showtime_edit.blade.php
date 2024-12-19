@@ -1,3 +1,8 @@
+@section('extra-css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.css"
+    integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
+@endsection
+
 <x-app-layout>
     @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -9,16 +14,18 @@
     </div>
     @endif
     <div class="w-full bg-white">
-        <div class="w-96 mx-auto border border-gray-300 mt-4 rounded-lg overflow-hidden">
+        <div class="w-96 mx-auto border border-gray-300 mt-4 rounded-lg overflow-hidden mb-8">
             <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">Showtime
                 Management</h2>
-            <form action="/showtime/save" method="POST" class="flex flex-col px-8 py-3" enctype="multipart/form-data">
+            <form action="/showtime/update" method="POST" class="flex flex-col px-8 py-3">
                 @csrf
-                <label for="movies" class="font-semibold text-lg text-gray-700">Movie</label>
+                <input type="hidden" name="showtime_id" value="{{$showtime->showtime_id}}">
+                <label for=" movies" class="font-semibold text-lg text-gray-700">Movie</label>
                 <select name="movies" class="movies rounded-md py-0 w-[55%] mb-4" id="movies" required>
                     <option value="0">Select a movie</option>
                     @foreach ($movies as $movie)
-                    <option value="{{$movie->movie_id}}">{{ $movie->movie_title }}</option>
+                    <option value="{{$movie->movie_id}}" {{$showtime->movie_id==$movie->movie_id?'selected':''}}>{{
+                        $movie->movie_title }}</option>
                     @endforeach
                 </select>
 
@@ -26,7 +33,10 @@
                 <select name="theaters" class="theaters rounded-md py-0 w-[55%] mb-4 " id="theaters" required>
                     <option value="0">Select a theater</option>
                     @foreach ($theaters as $theater)
-                    <option value="{{$theater->theater_id}}">{{ $theater->theater_name }}</option>
+                    <option value="{{$theater->theater_id}}" {{$showtime->
+                        theater_id==$theater->theater_id?'selected':''}}>
+                        {{
+                        $theater->theater_name }}</option>
                     @endforeach
                 </select>
 
@@ -34,7 +44,7 @@
                 <div class="flex w-[40%] mb-4">
                     <input type="time" id="showtime_start"
                         class="rounded-none rounded-s-lg bg-gray-50 border text-gray-900 leading-none focus:ring-blue-500 focus:border-blue-500 block flex-1 w-full text-sm border-gray-300 p-2.5 "
-                        min="09:00" max="18:00" value="00:00" name="showtime_start" required>
+                        min="09:00" max="18:00" value="{{$showtime->showtime_start}}" name="showtime_start" required>
                     <span
                         class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md ">
                         <svg class="w-4 h-4 text-gray-500 aria-hidden=" true xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +61,7 @@
                 <div class="flex w-[40%] mb-4">
                     <input type="time" id="showtime_end"
                         class="rounded-none rounded-s-lg bg-gray-50 border text-gray-900 leading-none focus:ring-blue-500 focus:border-blue-500 block flex-1 w-full text-sm border-gray-300 p-2.5 "
-                        min="09:00" max="18:00" value="00:00" name="showtime_end" required>
+                        min="09:00" max="18:00" value="{{$showtime->showtime_end}}" name="showtime_end" required>
                     <span
                         class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-s-0 border-s-0 border-gray-300 rounded-e-md ">
                         <svg class="w-4 h-4 text-gray-500 aria-hidden=" true xmlns="http://www.w3.org/2000/svg"
@@ -66,61 +76,21 @@
                 <div class="w-[45%]"><label class="font-semibold text-lg text-gray-700" for="showtime_date">Showtime
                         Date</label>
                     <input data-toggle="datepicker" class="rounded-md mb-4 max-w-full h-8" id="showtime_date"
-                        name="showtime_date" required>
+                        name="showtime_date" value="{{$showtime->showtime_date}}" required>
                 </div>
 
-                <x-primary-button id="save_btn" class="w-16 px-4 mt-5 mb-4 ml-2">Save</x-primary-button>
+                <x-primary-button id="update" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
             </form>
         </div>
-        <div class="max-w-6xl bg-white mx-auto dt_table mt-28">
-            <h2 class="text-4xl text-gray-700 font-bold">Showtime Table</h2>
-            <hr class="mb-4 mt-2 border-[#8a8a8a]">
-            {{-- Search Movie <input type="text" name="searchMovie" id="searchMovie" onchange="searhMovies()"
-                class="h-6"> --}}
-            {{-- {{ $showtimes }} --}}
-            <table class="" id="data_table">
-                <thead class="">
-                    <tr class="bg-[#cd1f30] text-white">
-                        <th>Showtime ID</th>
-                        <th>Movie ID</th>
-                        <th>Theater ID</th>
-                        <th>Showtime Start</th>
-                        <th>Showtime End</th>
-                        <th>Showtime Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    @foreach ($showtimes as $showtime)
-                    <tr>
-                        <td>{{ $showtime->showtime_id }}</td>
-                        <td>{{ $showtime->movie->movie_title }}</td>
-                        <td>{{ $showtime->theater->theater_name }}</td>
-                        <td>{{ date('h:i A', strtotime($showtime->showtime_start)) }}</td>
-                        <td>{{ date('h:i A', strtotime($showtime->showtime_end)) }}</td>
-                        <td>{{ $showtime->showtime_date }}</td>
-                        <td>
-                            <div class="flex gap-x-2">
-                                <form action="{{ route('showtime_edit', ['id' => $showtime->showtime_id]) }}">
-                                    @csrf
-                                    <button
-                                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
-                                        Edit
-                                    </button>
-                                </form>
-                                <form action="{{ route('showtime_destroy', ['id' => $showtime->showtime_id]) }}">
-                                    @csrf
-                                    <button
-                                        class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">
-                                        Delete
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
     </div>
+
+
+    @section('extra-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.js"
+        integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+
+    <script>
+        $('[data-toggle="datepicker"]').datepicker();
+    </script>
+    @endsection
 </x-app-layout>

@@ -84,12 +84,19 @@ Route::middleware(['role:customer'])->group(function () {
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin_home', [AdminHomeController::class, 'index'])->name('admin_home');
     Route::get('/admin_movie', [AdminMovieController::class, 'index'])->name('admin_movie');
-    Route::get('/admin_showtime', [AdminShowtimeController::class, 'index'])->name('admin_showtime');
     Route::post('/save/movies', [AdminMovieController::class, 'store'])->name('movies-store');
     Route::post('/movie_delete', [AdminMovieController::class, 'destroy'])->name('movie_delete');
     Route::post('/movie_select', [AdminMovieController::class, 'show'])->name('movie_select');
     Route::get('/movie_edit', [AdminMovieController::class, 'edit'])->name('movie_edit');
     Route::post('/update_movie', [AdminMovieController::class, 'update'])->name('update_movie');
+
+
+    Route::get('/admin_showtime', [AdminShowtimeController::class, 'index'])->name('admin_showtime');
+    Route::post('/showtime/save', [AdminShowtimeController::class, 'store'])->name('save_showtimes');
+    Route::get('/showtime/{id}/edit', [AdminShowtimeController::class, 'edit'])->name('showtime_edit');
+    Route::get('/showtime/{id}/delete', [AdminShowtimeController::class, 'destroy'])->name('showtime_destroy');
+    Route::post('/showtime/update', [AdminShowtimeController::class, 'update'])->name('update_showtime');
+
 });
 
 
