@@ -41,7 +41,7 @@ class AdminMovieController extends Controller
             'movie_image' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
             'movie_duration' => 'required|numeric|min:1',
             'release_date' => 'required|date',
-            'status' => 'required|in:showing,upcoming',
+            'status' => 'required|in:Showing,Upcoming',
             'genres' => 'required|array',
             'genres.*' => 'not_in:0|integer',
             'age_rating' => 'required|string|max:255',
@@ -79,37 +79,20 @@ class AdminMovieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(string $id)
     {
         //
-        $movie_id = $request->movie_id;
-        $movie = movie::findOrFail($movie_id);
-        $genres = $movie->genres()->pluck('genres.genre_id');
-        Session::put('movie_data', [
-            'movie_id' => $movie->movie_id,
-            'movie_title' => $movie->movie_title,
-            'movie_content' => $movie->movie_content,
-            'movie_image' => $movie->movie_image,
-            'release_date' => $movie->release_date,
-            'movie_status' => $movie->movie_status,
-            'age_rating' => $movie->age_rating,
-            'movie_duration' => $movie->movie_duration,
-            'genres' => $genres,
-
-        ]);
-        // return view('Admin.movie_edit', compact('movie', 'genres'));
-        return redirect()->route('movie_edit');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(string $id)
     {
         //
         $genres = genre::all();
-        return view('Admin.movie_edit', compact('genres'));
-
+        $movie = movie::findOrFail($id);
+        return view('Admin.movie_edit', compact('genres', 'movie'));
     }
 
     /**
@@ -175,11 +158,10 @@ class AdminMovieController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         //
-        $movie_id = $request->movie_id;
-        $movie = movie::findOrFail($movie_id);
+        $movie = movie::findOrFail($id);
         $movie_image = $movie->movie_image;
         $path = public_path('images/' . $movie_image);
 

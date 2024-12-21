@@ -114,7 +114,10 @@
                         <td class="border">{{ $movie->movie_id }}</td>
                         <td class="border">{{ $movie->movie_title }}</td>
                         <td class="border">{{ $movie->movie_content }}</td>
-                        <td class="border">{{ $movie->movie_image }}</td>
+                        <td class="border">
+                            <div class="w-28"><img src="{{asset('images/'. $movie->movie_image )}}" alt=""
+                                    class="w-full h-full" srcset=""></div>
+                        </td>
                         <td class="border">{{ $movie->release_date }}</td>
                         <td class="border">{{ $movie->movie_duration }}</td>
                         <td class="border">{{ $movie->movie_status }}</td>
@@ -126,19 +129,17 @@
                             @endforeach</td>
                         <td class="border">
                             <div class="flex gap-x-2">
-                                <form action="/movie_select" method="POST">
+                                <form action="{{ route('movie_edit', ['id' => $movie->movie_id]) }}">
                                     @csrf
-                                    <input type="hidden" name="movie_id" value="{{$movie->movie_id}}">
                                     <button
-                                        class="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                                         Edit
                                     </button>
                                 </form>
-                                <form action="/movie_delete" method="POST">
+                                <form action="{{ route('movie_destroy', ['id' => $movie->movie_id]) }}">
                                     @csrf
-                                    <input type="hidden" name="movie_id" value="{{$movie->movie_id}}">
                                     <button
-                                        class="bg-red-500 hover:bg-red-400 text-white font-semibold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">
+                                        class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">
                                         Delete
                                     </button>
                                 </form>

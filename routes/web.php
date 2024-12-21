@@ -85,10 +85,9 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin_home', [AdminHomeController::class, 'index'])->name('admin_home');
     Route::get('/admin_movie', [AdminMovieController::class, 'index'])->name('admin_movie');
     Route::post('/save/movies', [AdminMovieController::class, 'store'])->name('movies-store');
-    Route::post('/movie_delete', [AdminMovieController::class, 'destroy'])->name('movie_delete');
-    Route::post('/movie_select', [AdminMovieController::class, 'show'])->name('movie_select');
-    Route::get('/movie_edit', [AdminMovieController::class, 'edit'])->name('movie_edit');
-    Route::post('/update_movie', [AdminMovieController::class, 'update'])->name('update_movie');
+    Route::get('/movie/{id}/delete', [AdminMovieController::class, 'destroy'])->name('movie_destroy');
+    Route::get('/movie/{id}/edit', [AdminMovieController::class, 'edit'])->name('movie_edit');
+    Route::post('/movie/update', [AdminMovieController::class, 'update'])->name('update_movie');
 
 
     Route::get('/admin_showtime', [AdminShowtimeController::class, 'index'])->name('admin_showtime');

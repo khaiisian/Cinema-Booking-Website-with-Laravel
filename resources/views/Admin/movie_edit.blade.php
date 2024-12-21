@@ -1,3 +1,7 @@
+@section('extra-css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.css"
+    integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
+@endsection
 <x-app-layout>
     @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -14,24 +18,24 @@
         <div class="w-96 mx-auto border border-gray-300 rounded-lg overflow-hidden">
             <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">Movie
                 Management</h2>
-            <form action="/update_movie" method="POST" class="flex flex-col px-8 py-3" enctype="multipart/form-data">
+            <form action="/movie/update" method="POST" class="flex flex-col px-8 py-3" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="movie_id" value="{{ session('movie_data')['movie_id'] }}">
+                <input type="hidden" name="movie_id" value="{{ $movie->movie_id }}">
 
                 {{-- Movie Title --}}
                 <label class="font-semibold text-lg text-gray-700" for="movie_title">Movie Title</label>
-                <input type="text" name="movie_title" id="movie_title"
-                    value="{{ session('movie_data')['movie_title'] }}" class="rounded-md mb-4 h-8">
+                <input type="text" name="movie_title" id="movie_title" value="{{ $movie->movie_title }}"
+                    class="rounded-md mb-4 h-8">
 
                 {{-- Movie Content --}}
                 <label class="font-semibold text-lg text-gray-700" for="movie_content">Movie Content</label>
                 <textarea name="movie_content" id="movie_content" cols="30" rows="3"
-                    class="rounded-md mb-4">{{ session('movie_data')['movie_content'] }}</textarea>
+                    class="rounded-md mb-4">{{ $movie->movie_content }}</textarea>
 
                 {{-- Movie Image --}}
                 <label class="block font-semibold text-lg text-gray-700" for="movie_image">Image</label>
                 <div class="w-28 rounded-lg overflow-hidden my-2">
-                    <img src="{{asset('images/'.session('movie_data')['movie_image'])}}" alt="">
+                    <img src="{{asset('images/'. $movie->movie_image)}}" alt="">
                 </div>
                 {{-- <input type="hidden" name="pre_image" id="pre_image" value="{{$movie->movie_image}}"> --}}
                 <input
@@ -43,13 +47,12 @@
                     <div class="w-[45%]">
                         <label class="font-semibold text-lg text-gray-700" for="movie_duration">Duration (mins)</label>
                         <input type="number" name="movie_duration" id="movie_duration"
-                            class="rounded-md mb-4 max-w-full h-8"
-                            value="{{ session('movie_data')['movie_duration'] }}">
+                            class="rounded-md mb-4 max-w-full h-8" value="{{ $movie->movie_duration }}">
                     </div>
                     <div class="w-[45%]">
                         <label class="font-semibold text-lg text-gray-700" for="release_date">Release Date</label>
                         <input type="text" data-toggle="datepicker" id="release_date"
-                            class="rounded-md mb-4 max-w-full h-8" value="{{ session('movie_data')['release_date'] }}"
+                            class="rounded-md mb-4 max-w-full h-8" value="{{ $movie->release_date }}"
                             name="release_date">
                     </div>
                 </div>
@@ -59,28 +62,28 @@
                 <div class="flex gap-x-5 mb-4">
                     <div class="flex items-center gap-x-2">
                         <input type="radio" name="status" id="showing" value="Showing"
-                            {{session('movie_data')['movie_status']==='Showing' ?'checked':''}}> Showing
+                            {{$movie->movie_status==='Showing' ?'checked':''}}> Showing
                     </div>
                     <div class="flex items-center gap-x-2">
                         <input type="radio" name="status" id="upcoming" value="Upcoming"
-                            {{session('movie_data')['movie_status']==='Upcoming' ?'checked':''}}> Upcoming
+                            {{$movie->movie_status==='Upcoming' ?'checked':''}}> Upcoming
                     </div>
                 </div>
 
                 {{-- Age Rating --}}
                 <label class="font-semibold text-lg text-gray-700" for="age_rating">Age Rating</label>
                 <input type="text" name="age_rating" id="age_rating" class="rounded-md mb-4 h-8 w-[45%]"
-                    value="{{ session('movie_data')['age_rating'] }}">
+                    value="{{ $movie->age_rating }}">
 
                 {{-- Genres --}}
                 <label for="genre" class="font-semibold text-lg text-gray-700">Genres</label>
                 <div class="flex items-start gap-x-3">
                     <div class="w-[50%] flex flex-wrap genre_div">
-                        @foreach (session('movie_data')['genres'] as $genre_id)
+                        @foreach ($movie->genres as $mgenre)
                         <select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2">
                             <option value="0">Select a genre</option>
                             @foreach ($genres as $genre)
-                            <option value="{{$genre->genre_id}}" {{ $genre_id===$genre->genre_id ? 'selected'
+                            <option value="{{$genre->genre_id}}" {{ $mgenre->genre_id===$genre->genre_id ? 'selected'
                                 : '' }}>
                                 {{ $genre->genre }}
                             </option>
@@ -97,11 +100,19 @@
                     </button>
                 </div>
 
-                <x-primary-button id="update_btn" class="w-16 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
+                <x-primary-button id="update" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
             </form>
 
         </div>
     </div>
+    @section('extra-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.js"
+        integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+
+    <script>
+        $('[data-toggle="datepicker"]').datepicker();
+    </script>
+    @endsection
 
     <script>
         $(document).ready(function () {
