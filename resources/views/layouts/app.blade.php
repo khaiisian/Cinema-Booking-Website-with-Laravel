@@ -9,7 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <link href="DataTables/datatables.min.css" rel="stylesheet">
+
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -19,13 +19,14 @@
     <link rel="stylesheet" href="{{ asset('CSS/app.css') }}">
     {{-- @yield('css') --}}
 
+    <link href="DataTables/datatables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.css"
         integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    @yield('extra-css')
+    @yield('header-link')
 </head>
 
 <body class="font-sans antialiased min-h-screen">
@@ -60,8 +61,6 @@
 
     <script>
         $(document).ready(function () {
-            let table = new DataTable('#data_table');
-
             $('[data-toggle="datepicker"]').datepicker();
         });
     </script>

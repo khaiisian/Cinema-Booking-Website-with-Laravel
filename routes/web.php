@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminMovieController;
 use App\Http\Controllers\Admin\AdminShowtimeController;
@@ -96,6 +97,9 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/showtime/{id}/delete', [AdminShowtimeController::class, 'destroy'])->name('showtime_destroy');
     Route::post('/showtime/update', [AdminShowtimeController::class, 'update'])->name('update_showtime');
 
+    Route::get('/admin_booking', [AdminBookingController::class, 'index'])->name('admin_booking');
+    Route::get('/booking/{id}/show', [AdminBookingController::class, 'show'])->name('booking_show');
+    Route::get('/booking/{id}/admin_cancel', [AdminBookingController::class, 'edit'])->name('admin_cancel');
 });
 
 
