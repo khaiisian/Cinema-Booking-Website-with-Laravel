@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class contactus extends Model
 {
     protected $table = 'contactus';
+    protected $primaryKey = 'contact_id';
+
     protected $fillable = [
         'contact_title',
         'contact_msg',
@@ -16,7 +18,7 @@ class contactus extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'u_id', 'u_id');
     }
 
     use HasFactory;

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminBookingController;
+use App\Http\Controllers\Admin\AdminContactUsController;
 use App\Http\Controllers\Admin\AdminGenreController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminMovieController;
@@ -118,6 +119,9 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/seat_type_save', [AdminSeatTypeController::class, 'store'])->name('seat_type_save');
     Route::get('/seat_type/{id}/edit', [AdminSeatTypeController::class, 'edit'])->name('seat_type_edit');
 
+    // Admin Contact Us
+    Route::get('/admin_contact', [AdminContactUsController::class, 'index'])->name('admin_contact');
+    Route::get('/contact/{id}/delete', [AdminContactUsController::class, 'destroy'])->name('contact_delete');
 });
 
 
