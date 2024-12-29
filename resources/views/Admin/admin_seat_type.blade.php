@@ -78,7 +78,7 @@
                                             </svg>
                                         </button>
                                     </form>
-                                    <form action="{{route('seat_type_edit', ['id'=>$seat_type->seat_type_id])}}">
+                                    <form action="{{route('seat_type_delete', ['id'=>$seat_type->seat_type_id])}}">
                                         @csrf
                                         <button
                                             class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">

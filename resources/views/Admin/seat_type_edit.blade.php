@@ -13,7 +13,7 @@
         <div class="w-80 mx-auto border border-gray-300 rounded-lg overflow-hidden">
             <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">Seat Types
                 Management</h2>
-            <form action="{{route('seat_type_save')}}" method="POST" class="flex flex-col px-8 py-3"
+            <form action="{{route('seat_type_update')}}" method="POST" class="flex flex-col px-8 py-3"
                 enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="seat_type_id" value="{{$seat_type->seat_type_id}}">
@@ -22,7 +22,7 @@
                     value="{{$seat_type->seat_type}}">
                 <label class="font-semibold text-lg text-gray-700" for="price">Price</label>
                 <input type="number" name="price" id="price" class="rounded-md mb-4 h-8" value="{{$seat_type->price}}">
-                <x-primary-button id="save_btn" class="w-16 px-4 mt-5 mb-4 ml-2">Save</x-primary-button>
+                <x-primary-button id="save_btn" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
             </form>
         </div>
 

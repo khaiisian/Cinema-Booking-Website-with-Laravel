@@ -119,6 +119,8 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin_seat_type', [AdminSeatTypeController::class, 'index'])->name('admin_seat_type');
     Route::post('/seat_type_save', [AdminSeatTypeController::class, 'store'])->name('seat_type_save');
     Route::get('/seat_type/{id}/edit', [AdminSeatTypeController::class, 'edit'])->name('seat_type_edit');
+    Route::post('/seat_type/update', [AdminSeatTypeController::class, 'update'])->name('seat_type_update');
+    Route::get('/seat_type/{id}/delete', [AdminSeatTypeController::class, 'destroy'])->name('seat_type_delete');
 
     // Admin Contact Us
     Route::get('/admin_contact', [AdminContactUsController::class, 'index'])->name('admin_contact');

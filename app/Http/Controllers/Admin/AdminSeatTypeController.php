@@ -88,5 +88,8 @@ class AdminSeatTypeController extends Controller
     public function destroy(string $id)
     {
         //
+        $seat_type = seat_type::findOrFail($id);
+        $seat_type->delete();
+        return redirect()->route('admin_seat_type');
     }
 }
