@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminMovieController;
 use App\Http\Controllers\Admin\AdminSeatTypeController;
 use App\Http\Controllers\Admin\AdminShowtimeController;
+use App\Http\Controllers\Admin\AdminTheaterController;
 use App\Http\Controllers\Customer\BookingController;
 use App\Http\Controllers\Customer\BookingRecordController;
 use App\Http\Controllers\Customer\ContatUsController;
@@ -122,6 +123,13 @@ Route::middleware(['role:admin'])->group(function () {
     // Admin Contact Us
     Route::get('/admin_contact', [AdminContactUsController::class, 'index'])->name('admin_contact');
     Route::get('/contact/{id}/delete', [AdminContactUsController::class, 'destroy'])->name('contact_delete');
+
+    // Admin Theater
+    Route::get('/admin_theater', [AdminTheaterController::class, 'index'])->name('admin_theater');
+    Route::post('/theater_save', [AdminTheaterController::class, 'store'])->name('theater_save');
+    Route::get('/theater/{id}/edit', [AdminTheaterController::class, 'edit'])->name('theater_edit');
+    Route::post('/theater/update', [AdminTheaterController::class, 'update'])->name('theater_upate');
+    Route::get('/theater/{id}/delete', [AdminTheaterController::class, 'destroy'])->name('theater_delete');
 });
 
 
