@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\genre;
+use App\Models\seat_type;
 use Illuminate\Http\Request;
 
-class AdminGenreController extends Controller
+class AdminSeatTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class AdminGenreController extends Controller
     public function index()
     {
         //
-        $genres = genre::all();
-        return view('Admin.admin_genres', compact('genres'));
+        $seat_types = seat_type::all();
+        return view('Admin.admin_seat_type', compact('seat_types'));
     }
 
     /**
@@ -33,15 +33,15 @@ class AdminGenreController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'genre' => 'required|string|max:255',
-            'genre_description' => 'required|string|max:255',
+            'seat_type' => 'required|string|max:255',
+            'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
         ]);
-        genre::create([
-            'genre' => $validatedData['genre'],
-            'genre_description' => $validatedData['genre_description'],
+        seat_type::create([
+            'seat_type' => $validatedData['seat_type'],
+            'price' => $validatedData['price'],
         ]);
 
-        return redirect()->route('admin_genre');
+        return redirect()->route('admin_seat_type');
     }
 
     /**
@@ -58,8 +58,8 @@ class AdminGenreController extends Controller
     public function edit(string $id)
     {
         //
-        $genre = genre::findOrFail($id);
-        return view('Admin.genre_edit', compact('genre'));
+        $seat_type = seat_type::findOrFail($id);
+        return view('Admin.seat_type_edit', compact('seat_type'));
     }
 
     /**
@@ -69,16 +69,17 @@ class AdminGenreController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'genre' => 'required|string|max:255',
-            'genre_description' => 'required|string|max:255'
-        ]);
-        $genre = genre::findOrFail($request->genre_id);
-        $genre->update([
-            'genre' => $validatedData['genre'],
-            'genre_description' => $validatedData['genre_description'],
+            'seat_type' => 'required|string|max:255',
+            'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
         ]);
 
-        return redirect()->route('admin_genre');
+        $seat_type = seat_type::findOrFail($request->seat_type_id);
+        $seat_type->update([
+            'seat_type' => $validatedData['seat_type'],
+            'price' => $validatedData['price'],
+        ]);
+
+        return redirect()->route('admin_seat_type');
     }
 
     /**
@@ -87,8 +88,5 @@ class AdminGenreController extends Controller
     public function destroy(string $id)
     {
         //
-        $genre = genre::findOrFail($id);
-        $genre->delete();
-        return redirect()->route('admin_genre');
     }
 }

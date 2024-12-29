@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class seat_type extends Model
 {
     use SoftDeletes;
+    protected $primaryKey = 'seat_type_id';
     protected $fillable = [
         'seat_type',
         'price',

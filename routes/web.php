@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\AdminGenreController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminMovieController;
+use App\Http\Controllers\Admin\AdminSeatTypeController;
 use App\Http\Controllers\Admin\AdminShowtimeController;
 use App\Http\Controllers\Customer\BookingController;
 use App\Http\Controllers\Customer\BookingRecordController;
@@ -111,6 +112,12 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/genre/{id}/edit', [AdminGenreController::class, 'edit'])->name('genre_edit');
     Route::post('/genre/update', [AdminGenreController::class, 'update'])->name('genre_update');
     Route::get('/genre/{id}/delete', [AdminGenreController::class, 'destroy'])->name('genre_delete');
+
+    // Admin Seat Types
+    Route::get('/admin_seat_type', [AdminSeatTypeController::class, 'index'])->name('admin_seat_type');
+    Route::post('/seat_type_save', [AdminSeatTypeController::class, 'store'])->name('seat_type_save');
+    Route::get('/seat_type/{id}/edit', [AdminSeatTypeController::class, 'edit'])->name('seat_type_edit');
+
 });
 
 

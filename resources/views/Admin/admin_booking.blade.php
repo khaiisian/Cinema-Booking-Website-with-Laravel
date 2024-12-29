@@ -1,4 +1,5 @@
 @section('header-link')
+<link href="DataTables/datatables.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 <x-app-layout>
@@ -100,6 +101,9 @@
             </table>
         </div>
     </div>
+    @section('extra-scripts')
+    <script src="DataTables/datatables.min.js"></script>
+    @endsection
 </x-app-layout>
 <script>
     $(document).ready(function () {                

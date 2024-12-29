@@ -13,25 +13,23 @@
 
     @endif
     <div class="w-full bg-white py-10">
-
-        <div class="w-96 mx-auto border border-gray-300 rounded-lg overflow-hidden">
-            <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">Movie
+        <div class="w-80 mx-auto border border-gray-300 rounded-lg overflow-hidden">
+            <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">Seat Types
                 Management</h2>
-            <form action="{{route('save_genre')}}" method="POST" class="flex flex-col px-8 py-3"
+            <form action="{{route('seat_type_save')}}" method="POST" class="flex flex-col px-8 py-3"
                 enctype="multipart/form-data">
                 @csrf
-                <label class="font-semibold text-lg text-gray-700" for="genre">Genre Name</label>
-                <input type="text" name="genre" id="genre" class="rounded-md mb-4 h-8">
-                <label class="font-semibold text-lg text-gray-700" for="genre_description">Genre Description</label>
-                <textarea name="genre_description" id="genre_description" cols="30" rows="3"
-                    class="rounded-md mb-4"></textarea>
+                <label class="font-semibold text-lg text-gray-700" for="seat_type">Seat Type Name</label>
+                <input type="text" name="seat_type" id="seat_type" class="rounded-md mb-4 h-8">
+                <label class="font-semibold text-lg text-gray-700" for="price">Price</label>
+                <input type="number" name="price" id="price" class="rounded-md mb-4 h-8">
                 <x-primary-button id="save_btn" class="w-16 px-4 mt-5 mb-4 ml-2">Save</x-primary-button>
             </form>
         </div>
 
         <div class="max-w-4xl bg-white mx-auto dt_table mt-28">
             <div class="max-w-7xl bg-white mx-auto dt_table mt-28">
-                <h2 class="text-4xl text-gray-700 font-bold">Movies Table</h2>
+                <h2 class="text-4xl text-gray-700 font-bold">Seat Type Table</h2>
                 <hr class="mb-4 mt-2 border-[#8a8a8a]">
                 {{-- Search Movie <input type="text" name="searchMovie" id="searchMovie" onchange="searhMovies()"
                     class="h-6"> --}}
@@ -40,13 +38,13 @@
                     <thead class="">
                         <tr class="bg-[#cd1f30] text-white ">
                             <th>
-                                <p class="text-center">Genre ID</p>
+                                <p class="text-center">Seat Type ID</p>
                             </th>
                             <th>
-                                <p class="text-center">Genre Name</p>
+                                <p class="text-center">Seat Type</p>
                             </th>
                             <th>
-                                <p class="text-center">Description</p>
+                                <p class="text-center">Price</p>
                             </th>
                             <th>
                                 <p class="text-center">
@@ -56,20 +54,20 @@
                         </tr>
                     </thead>
                     <tbody id="tableBody">
-                        @foreach ($genres as $genre)
+                        @foreach ($seat_types as $seat_type)
                         <tr class="border-b">
                             <td>
-                                <p class="text-center">{{ $genre->genre_id }}</p>
+                                <p class="text-center">{{ $seat_type->seat_type_id }}</p>
                             </td>
                             <td>
-                                <p class="text-center">{{ $genre->genre }}</p>
+                                <p class="text-center">{{ $seat_type->seat_type }}</p>
                             </td>
                             <td>
-                                <p class="text-justify">{{ $genre->genre_description }}</p>
+                                <p class="text-center">{{ $seat_type->price }}</p>
                             </td>
                             <td class="">
                                 <div class="flex gap-x-4 justify-center">
-                                    <form action="{{route('genre_edit', ['id'=>$genre->genre_id])}}">
+                                    <form action="{{route('seat_type_edit', ['id'=>$seat_type->seat_type_id])}}">
                                         @csrf
                                         <button
                                             class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded">
@@ -80,7 +78,7 @@
                                             </svg>
                                         </button>
                                     </form>
-                                    <form action="{{route('genre_delete', ['id'=>$genre->genre_id])}}">
+                                    <form action="{{route('seat_type_edit', ['id'=>$seat_type->seat_type_id])}}">
                                         @csrf
                                         <button
                                             class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
@@ -99,6 +97,7 @@
                 </table>
             </div>
         </div>
+
     </div>
     @section('extra-scripts')
     <script src="DataTables/datatables.min.js"></script>

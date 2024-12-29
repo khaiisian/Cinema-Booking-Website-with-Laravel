@@ -108,14 +108,11 @@
     @section('extra-scripts')
     <script src="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.js"
         integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
-
-    <script>
-        $('[data-toggle="datepicker"]').datepicker();
-    </script>
     @endsection
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function () {            
+        $('[data-toggle="datepicker"]').datepicker();
         $('#genre_add').click(function () { 
             let genre_html = `<select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2">
                         <option value="0">Select a genre</option>

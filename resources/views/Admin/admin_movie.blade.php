@@ -1,3 +1,8 @@
+@section('header-link')
+<link href="DataTables/datatables.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.css"
+    integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
+@endsection
 <x-app-layout>
     @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -159,10 +164,16 @@
             </table>
         </div>
     </div>
-</x-app-layout>
 
-<script>
-    $(document).ready(function () {
+    @section('extra-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.js"
+        integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+    <script src="DataTables/datatables.min.js"></script>
+    @endsection
+
+    <script>
+        $(document).ready(function () {
+        $('[data-toggle="datepicker"]').datepicker();
         let table = new DataTable('#data_table');
         // let genre_html_list=[];
         let counter = 0;
@@ -209,4 +220,5 @@
     });
 
     
-</script>
+    </script>
+</x-app-layout>
