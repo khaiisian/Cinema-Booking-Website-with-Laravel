@@ -163,7 +163,7 @@
 
 <script>
     $(document).ready(function () {
-    let table = new DataTable('#data_table');
+        let table = new DataTable('#data_table');
         // let genre_html_list=[];
         let counter = 0;
         $('#genre_add').click(function () { 

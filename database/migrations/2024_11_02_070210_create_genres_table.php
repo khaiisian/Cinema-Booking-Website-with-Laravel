@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->softDeletes();
             $table->id('genre_id');
             $table->string('genre');
+            $table->string('genre_description');
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminBookingController;
+use App\Http\Controllers\Admin\AdminGenreController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminMovieController;
 use App\Http\Controllers\Admin\AdminShowtimeController;
@@ -84,22 +85,32 @@ Route::middleware(['role:customer'])->group(function () {
 
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin_home', [AdminHomeController::class, 'index'])->name('admin_home');
+
+    // Admin Movies
     Route::get('/admin_movie', [AdminMovieController::class, 'index'])->name('admin_movie');
     Route::post('/save/movies', [AdminMovieController::class, 'store'])->name('movies-store');
     Route::get('/movie/{id}/delete', [AdminMovieController::class, 'destroy'])->name('movie_destroy');
     Route::get('/movie/{id}/edit', [AdminMovieController::class, 'edit'])->name('movie_edit');
     Route::post('/movie/update', [AdminMovieController::class, 'update'])->name('update_movie');
 
-
+    // Admin Showtimes
     Route::get('/admin_showtime', [AdminShowtimeController::class, 'index'])->name('admin_showtime');
     Route::post('/showtime/save', [AdminShowtimeController::class, 'store'])->name('save_showtimes');
     Route::get('/showtime/{id}/edit', [AdminShowtimeController::class, 'edit'])->name('showtime_edit');
     Route::get('/showtime/{id}/delete', [AdminShowtimeController::class, 'destroy'])->name('showtime_destroy');
     Route::post('/showtime/update', [AdminShowtimeController::class, 'update'])->name('update_showtime');
 
+    // Admin Booking
     Route::get('/admin_booking', [AdminBookingController::class, 'index'])->name('admin_booking');
     Route::get('/booking/{id}/show', [AdminBookingController::class, 'show'])->name('booking_show');
     Route::get('/booking/{id}/admin_cancel', [AdminBookingController::class, 'edit'])->name('admin_cancel');
+
+    // Admin Genre
+    Route::get('/admin_genre', [AdminGenreController::class, 'index'])->name('admin_genre');
+    Route::post('/genre/save', [AdminGenreController::class, 'store'])->name('save_genre');
+    Route::get('/genre/{id}/edit', [AdminGenreController::class, 'edit'])->name('genre_edit');
+    Route::post('/genre/update', [AdminGenreController::class, 'update'])->name('genre_update');
+    Route::get('/genre/{id}/delete', [AdminGenreController::class, 'destroy'])->name('genre_delete');
 });
 
 

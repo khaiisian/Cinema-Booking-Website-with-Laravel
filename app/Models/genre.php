@@ -13,7 +13,7 @@ class genre extends Model
     use SoftDeletes;
     protected $primaryKey = 'genre_id';
 
-    protected $fillable = ['genre'];
+    protected $fillable = ['genre', 'genre_description'];
 
     public function mgenre()
     {

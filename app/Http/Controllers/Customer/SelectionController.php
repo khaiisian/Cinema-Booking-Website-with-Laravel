@@ -102,6 +102,7 @@ class SelectionController extends Controller
                 'unavailable_seats' => [],
                 'available_seats' => [],
                 'show_id' => [],
+                'no_showtime' => true,
                 'showtime_end' => '0000-00-00 00:00',
             ]
         );

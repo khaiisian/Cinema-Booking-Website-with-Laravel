@@ -209,6 +209,15 @@ $day4 = $day1->copy()->addDays(3);
                     // dataType: 'json',
                     success: function(response){
                         $('#showtime_info').html(response.data); // Showtime information
+                        if(response.no_showtime){
+                            console.log('no showime_seat');                            
+                            $('.seats').removeClass('bg-gray-50 available_seat bg-[#B90000] bg-[#ffbf00] booked_seat')
+                            $('.seats').addClass('bg-gray-500 overdue_seat')
+                            $('#book_btn').text('Overdue booking time')
+                            $('#book_btn').prop('disabled', true)
+                            return;
+                        }
+                        console.log('return Checking')
 
                         let unavailable_seats = response.unavailable_seats;
                         unavailable_seats.forEach(seat => {
