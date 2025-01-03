@@ -11,12 +11,13 @@ class seat extends Model
     use SoftDeletes;
     protected $primaryKey = 'seat_id';
     protected $fillable = [
-        'seat_code'
+        'seat_code',
+        'seat_status'
     ];
 
     public function seat_type()
     {
-        return $this->belongsTo(seat_type::class, 'seat_type_id', 'seat_type_id');
+        return $this->belongsTo(seat_type::class, 'seat_type_id');
     }
 
     public function theater()

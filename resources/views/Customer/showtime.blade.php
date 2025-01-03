@@ -13,7 +13,7 @@ $day4 = $day1->copy()->addDays(3);
 
 <x-app-layout>
     <header class="max-w-6xl mx-auto sm:px-6 lg:px-8 py-10 flex justify-center items-center gap-4">
-        <h2 class="text-3xl font-bold text-[#ffbf00]">Movie Showtimes</h2>
+        <h2 class="text-4xl font-bold text-[#ffbf00]">Movie Showtimes</h2>
     </header>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-5">
         <div class="bg-gray-200 lg:px-0 py-1 max-w-4xl mx-auto flex justify-evenly items-center rounded-lg btn">

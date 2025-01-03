@@ -25,7 +25,7 @@
 </head>
 
 <body class="font-sans antialiased min-h-screen">
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen flex flex-col justify-between">
         <div class="app_nav">
             @include('layouts.navigation')
         </div>

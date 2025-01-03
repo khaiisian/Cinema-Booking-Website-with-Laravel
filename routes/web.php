@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminContactUsController;
 use App\Http\Controllers\Admin\AdminGenreController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminMovieController;
+use App\Http\Controllers\Admin\AdminSeatController;
 use App\Http\Controllers\Admin\AdminSeatTypeController;
 use App\Http\Controllers\Admin\AdminShowtimeController;
 use App\Http\Controllers\Admin\AdminTheaterController;
@@ -132,6 +133,11 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/theater/{id}/edit', [AdminTheaterController::class, 'edit'])->name('theater_edit');
     Route::post('/theater/update', [AdminTheaterController::class, 'update'])->name('theater_upate');
     Route::get('/theater/{id}/delete', [AdminTheaterController::class, 'destroy'])->name('theater_delete');
+
+    // Admin Seat
+    Route::get('/admin_seats', [AdminSeatController::class, 'index'])->name('admin_seats');
+    Route::post('/ajax/seat_info', [AdminSeatController::class, 'AjaxSeatInfo'])->name('seat_info');
+    Route::post('/seat/update', [AdminSeatController::class, 'update'])->name('seat_update');
 });
 
 
