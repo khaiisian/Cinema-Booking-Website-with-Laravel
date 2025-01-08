@@ -15,8 +15,8 @@
                 Management</h2>
             <div class="flex gap-x-5 mb-4 border border-gray-300 py-2 px-3 rounded-lg mt-4">
                 <div class="flex items-center gap-x-2">
-                    <input type="radio" name="monitor_status" class="monitor_status" id="Booking"
-                        value="Booking">Booking Status
+                    <input type="radio" name="monitor_status" class="monitor_status" id="Booking" value="Booking"
+                        checked>Booking Status
                 </div>
                 <div class="flex items-center gap-x-2">
                     <input type="radio" name="monitor_status" class="monitor_status" id="Operational"
@@ -25,7 +25,7 @@
             </div>
             <div id="seat_management_body">
                 {{-- @include('Admin.operational_seat'); --}}
-                {{-- @include('Admin.bookingstatus_seat') --}}
+                @include('Admin.bookingstatus_seat')
             </div>
         </div>
 
@@ -271,7 +271,7 @@
                                 unavailable_seats.forEach(unavailable_seat => {
                                 seatHtml = `
                                 <div>
-                                    <div class="w-7 h-8 mx-auto rounded-sm ${seat.seat_id === unavailable_seat.seat_id ? 'bg-[#B90000] booked' : 'bg-gray-50'}"
+                                    <div class="w-7 h-8 mx-auto rounded-sm booking_seats ${seat.seat_id === unavailable_seat.seat_id ? 'bg-[#B90000] Booked' : 'bg-gray-50 Available'}"
                                         id="seat${seat.seat_id}" data-id="${seat.seat_id}">
                                     </div>
                                     <p class="text-center text-gray-50">${seat.seat_code}</p>
@@ -281,7 +281,7 @@
                             } else {
                                 seatHtml = `
                                 <div>
-                                    <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50"
+                                    <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50 booking_seats Available"
                                         id="seat${seat.seat_id}" data-id="${seat.seat_id}">
                                     </div>
                                     <p class="text-center text-gray-50">${seat.seat_code}</p>
@@ -341,7 +341,7 @@
                             } else {
                                 seatHtml = `
                                 <div>
-                                    <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50"
+                                    <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50 booking_seats Available"
                                         id="seat${seat.seat_id}" data-id="${seat.seat_id}">
                                     </div>
                                     <p class="text-center text-gray-50">${seat.seat_code}</p>

@@ -29,27 +29,38 @@ $day4 = $day1->copy()->addDays(3);
         </div>
         <p id="theater_title" class="text-2xl text-gray-100 font-semibold text-center mb-5">{{
             $showtime->theater->theater_name }}</p>
-        {{-- {{ $showtime }} <br>
-        {{ $unavailable_seats }} --}}
+        {{-- {{ $unavailable_seats }} --}}
         <div id="std_seats" class="w-[90%] mx-auto grid grid-cols-12 gap-x-0 gap-y-10">
             @foreach ($seats as $seat)
+            @if ($seat->seat_type_id == 1 || $seat->seat_type_id == 2)
+            {{ $isUnavailable = false }}
             @foreach ($unavailable_seats as $unavailable_seat)
-            @if ($seat->seat_type_id==1|| $seat->seat_type_id==2)
+            @if ($seat->seat_id == $unavailable_seat->seat_id)
+            {{ $isUnavailable = true }}
+            @break
+            @endif
+            @endforeach
             <div>
-                <div class="w-7 h-8 mx-auto rounded-sm booking_seats {{$seat->seat_id==$unavailable_seat->seat_id?'bg-[#B90000] Booked':'bg-gray-50 Available'}}"
-                    id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
+                <div class="w-7 h-8 mx-auto rounded-sm booking_seats {{ $isUnavailable ? 'bg-[#B90000] Booked' : 'bg-gray-50 Available' }}"
+                    id="seat{{ $seat->seat_id }}" data-id="{{ $seat->seat_id }}"></div>
                 <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
             </div>
             @endif
             @endforeach
-            @endforeach
         </div>
         <div id="exp_seats" class="w-[85%] mx-auto grid grid-cols-10 gap-x-0 gap-y-10 mt-10">
             @foreach ($seats as $seat)
-            @if ($seat->seat_type_id==3|| $seat->seat_type_id==4)
+            @if ($seat->seat_type_id == 3 || $seat->seat_type_id == 4)
+            {{ $isUnavailable = false }}
+            @foreach ($unavailable_seats as $unavailable_seat)
+            @if ($seat->seat_id == $unavailable_seat->seat_id)
+            {{ $isUnavailable = true }}
+            @break
+            @endif
+            @endforeach
             <div>
-                <div class="w-7 h-8 mx-auto rounded-sm booking_seats {{$seat->seat_id==$unavailable_seat->seat_id?'bg-[#B90000] Booked':'bg-gray-50 Available'}}"
-                    id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
+                <div class="w-7 h-8 mx-auto rounded-sm booking_seats {{ $isUnavailable ? 'bg-[#B90000] Booked' : 'bg-gray-50 Available' }}"
+                    id="seat{{ $seat->seat_id }}" data-id="{{ $seat->seat_id }}"></div>
                 <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
             </div>
             @endif

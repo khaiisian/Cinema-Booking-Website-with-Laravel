@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="{{ asset('CSS/navigation.css') }}">
 
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 nav_bars">
+<nav x-data="{ open: false }" class="border-b border-gray-100 nav_bars 
+    {{ auth()->check() && auth()->user()->u_type === 'admin' ? 'bg-[#cd1f30]' : 'bg-[#333333]' }}">
+
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 ">
@@ -42,8 +44,45 @@
                 {{-- Nav for admin --}}
                 @elseif(auth()->user()->u_type==="admin")
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
-                        {{ __('Admin Home') }}
+                    <x-nav-link :href="route('admin_home')" :active="request()->routeIs('admin_home')"
+                        class="nav_links">
+                        {{ __('Home') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_movie')" :active="request()->routeIs('admin_movie')"
+                        class="nav_links">
+                        {{ __('Movies') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_theater')" :active="request()->routeIs('admin_theater')"
+                        class="nav_links">
+                        {{ __('Theaters') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_showtime')" :active="request()->routeIs('admin_showtime')"
+                        class="nav_links">
+                        {{ __('Showtimes') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_booking')" :active="request()->routeIs('admin_booking')"
+                        class="nav_links">
+                        {{ __('Bookings') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_genre')" :active="request()->routeIs('admin_genre')"
+                        class="nav_links">
+                        {{ __('Genres') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_seats')" :active="request()->routeIs('admin_seats')"
+                        class="nav_links">
+                        {{ __('Seats') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_seat_type')" :active="request()->routeIs('admin_seat_type')"
+                        class="nav_links">
+                        {{ __('Seat Types') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_contact')" :active="request()->routeIs('admin_contact')"
+                        class="nav_links">
+                        {{ __('Messages') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin_users')" :active="request()->routeIs('admin_users')"
+                        class="nav_links">
+                        {{ __('Users') }}
                     </x-nav-link>
                 </div>
                 @endif
@@ -76,6 +115,7 @@
             {{-- dropdown for after login --}}
             {{-- @else --}}
             <div class="flex justify-center">
+                @if (auth()->user()->u_type=='customer')
                 <div class="booking_history flex items-center">
                     <a href="{{route('bookingrecord')}}"><svg xmlns="http://www.w3.org/2000/svg" fill="white"
                             class="bi bi-journal-bookmark-fill w-7" viewBox="0 0 16 16">
@@ -87,6 +127,7 @@
                                 d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
                         </svg></a>
                 </div>
+                @endif
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">

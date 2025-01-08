@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminSeatController;
 use App\Http\Controllers\Admin\AdminSeatTypeController;
 use App\Http\Controllers\Admin\AdminShowtimeController;
 use App\Http\Controllers\Admin\AdminTheaterController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Customer\BookingController;
 use App\Http\Controllers\Customer\BookingRecordController;
 use App\Http\Controllers\Customer\ContatUsController;
@@ -142,6 +143,12 @@ Route::middleware(['role:admin'])->group(function () {
     Route::post('/ajaxTheater', [AdminSeatController::class, 'ajaxTheater'])->name('ajaxTheater');
     Route::post('/admin/ajaxtheater_showtime', [AdminSeatController::class, 'ajaxTheaterShowtime'])->name('ajaxTheaterShowtime');
     Route::post('/admin/showtimes_seats_ajax', [AdminSeatController::class, 'ajaxShowtimeSeat'])->name('ajaxShowtimeSeat');
+
+    // Admin Users
+    Route::get('/admin_users', [AdminUserController::class, 'index'])->name('admin_users');
+    Route::get('/admin_user/{id}/edit', [AdminUserController::class, 'edit'])->name('admin_user_edit');
+    Route::post('/admin_user/update', [AdminUserController::class, 'update'])->name('admin_user_update');
+    Route::get('/admin_user/{id}/delete', [AdminUserController::class, 'destroy'])->name('admin_user_delete');
 });
 
 
