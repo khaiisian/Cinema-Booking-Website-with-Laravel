@@ -138,6 +138,10 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin_seats', [AdminSeatController::class, 'index'])->name('admin_seats');
     Route::post('/ajax/seat_info', [AdminSeatController::class, 'AjaxSeatInfo'])->name('seat_info');
     Route::post('/seat/update', [AdminSeatController::class, 'update'])->name('seat_update');
+    Route::post('/ajax/seat_monitor_status', [AdminSeatController::class, 'AjaxSeatMonitor'])->name('seat_monitor_status');
+    Route::post('/ajaxTheater', [AdminSeatController::class, 'ajaxTheater'])->name('ajaxTheater');
+    Route::post('/admin/ajaxtheater_showtime', [AdminSeatController::class, 'ajaxTheaterShowtime'])->name('ajaxTheaterShowtime');
+    Route::post('/admin/showtimes_seats_ajax', [AdminSeatController::class, 'ajaxShowtimeSeat'])->name('ajaxShowtimeSeat');
 });
 
 

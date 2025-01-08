@@ -15,66 +15,17 @@
                 Management</h2>
             <div class="flex gap-x-5 mb-4 border border-gray-300 py-2 px-3 rounded-lg mt-4">
                 <div class="flex items-center gap-x-2">
-                    <input type="radio" name="monitor_status" id="Booking" value="Booking">Booking Status
+                    <input type="radio" name="monitor_status" class="monitor_status" id="Booking"
+                        value="Booking">Booking Status
                 </div>
                 <div class="flex items-center gap-x-2">
-                    <input type="radio" name="monitor_status" id="Operational" value="Operational">Operational Status
+                    <input type="radio" name="monitor_status" class="monitor_status" id="Operational"
+                        value="Operational">Operational Status
                 </div>
             </div>
-            <div class="w-full flex justify-between">
-                <div class="seat_layout w-[70%] py-8 bg-[#292929] rounded-xl">
-                    <div class="w-[90%] mx-auto mb-6">
-                        <select name="" id="" class="rounded-md h-9 py-0">
-                            <option value="">Theater A</option>
-                            <option value="">Theater B</option>
-                        </select>
-                    </div>
-                    <div id="std_seats" class="w-[90%] mx-auto grid grid-cols-12 gap-x-0 gap-y-10">
-                        @foreach ($seats as $seat)
-                        @if ($seat->seat_type_id==1|| $seat->seat_type_id==2)
-                        @if ($seat->seat_status=='usable')
-                        <div>
-                            <div class="w-7 h-8 bg-gray-50 mx-auto rounded-sm available_seat seats"
-                                id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
-                            <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
-                        </div>
-                        @elseif($seat->seat_status=='maintenance')
-                        <div>
-                            <div class="w-7 h-8 bg-gray-600 mx-auto rounded-sm available_seat seats"
-                                id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
-                            <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
-                        </div>
-                        @endif
-                        @endif
-                        @endforeach
-                    </div>
-                    <div id="exp_seats" class="w-[85%] mx-auto grid grid-cols-10 gap-x-0 gap-y-10 mt-10">
-                        @foreach ($seats as $seat)
-                        @if ($seat->seat_type_id==3|| $seat->seat_type_id==4)
-                        @if ($seat->seat_status=='usable')
-                        <div>
-                            <div class="w-7 h-8 bg-gray-50 mx-auto rounded-sm available_seat seats"
-                                id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
-                            <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
-                        </div>
-                        @elseif($seat->seat_status=='maintenance')
-                        <div>
-                            <div class="w-7 h-8 bg-gray-600 mx-auto rounded-sm available_seat seats"
-                                id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
-                            <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
-                        </div>
-                        @endif
-                        @endif
-                        @endforeach
-                    </div>
-                </div>
-                <div class="seat_info w-[28%]  border border-gray-300 bg-gray-50 rounded-lg px-4 py-4">
-                    <p class="text-2xl font-semibold">Seat information</p>
-                    <div class="" id="seat_info">
-                        <p class="mt-3 seat_p">Select a seat to see information</p>
-                        {{-- @include('Admin.seat_info') --}}
-                    </div>
-                </div>
+            <div id="seat_management_body">
+                {{-- @include('Admin.operational_seat'); --}}
+                {{-- @include('Admin.bookingstatus_seat') --}}
             </div>
         </div>
 
@@ -82,40 +33,445 @@
 
     <script>
         $(document).ready(function () {
-            $('.seats').click(function () { 
+            $(document).on('click', '.seats', function () {
                 let seat_id = $(this).data('id');
                 console.log(seat_id);
+                let status = 'operational';
+
+                ajaxSeatInfo(seat_id, status);
+            });
+
+            $(document).on('click', '.booking_seats', function () {
+                let seat_id = $(this).data('id');
+                let status = '';
+                if($(this).hasClass('Booked')){
+                    status = 'Booked';
+                } else if ($(this).hasClass('Available')){
+                    status = 'Available';
+                }
+                ajaxSeatInfo(seat_id, status)
+            });
+
+
+            $(document).on('change', '#theater_id', function () {
+                let theater_id = $('#theater_id').val();
+                console.log(theater_id)
+                $.ajax({
+                    type: "POST",
+                    url: "/ajaxTheater",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        theater_id:theater_id,
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response.msg);
+                        console.log(response.data);
+                        const seats = response.data;
+
+                        $('#std_seats').html('');
+                        $('#exp_seats').html('');
+                        
+
+                        seats.forEach(seat => {
+                        const seatHtml = `
+                            <div>
+                               <div class="w-7 h-8 mx-auto rounded-sm available_seat seats ${seat.seat_status === 'usable' ? 'bg-green-500' : 'bg-red-600'}"
+                                   id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+                               </div>
+                               <p class="text-center text-gray-50">${seat.seat_code}</p>
+                           </div>
+                       `;
+                         
+                       // Append to the appropriate container
+                        if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+                            $('#std_seats').append(seatHtml);
+                        } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+                            $('#exp_seats').append(seatHtml);
+                        }
+                        });
+
+                    }
+                });
+            });
+            
+            // $('#showtime_date').change(function () { 
+            //     let showtime_day = $('#showtime_date').val();
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "/admin/ajaxtheater_showtime",
+            //         data: {
+            //             _token: '{{ csrf_token() }}',
+            //             showtime_day: showtime_day
+            //         },
+            //         dataType: "json",
+            //         success: function (response) {
+            //             // console.log(response.msg)
+            //             // console.log(response.data)
+            //             // console.log(response.showtime_id)
+
+            //             $("#showtime_option").html('');
+            //             let showtimes = response.showtimes
+            //             // console.log(showtimes)
+
+            //             showtimes.forEach(showtime => {
+            //                 const optionHtml = `
+            //                     <option value="${showtime.showtime_id}">
+            //                         ${showtime.showtime_start}: &nbsp;${showtime.movie.movie_title}
+            //                     </option>
+            //                 `;
+            //                 $('#showtime_option').append(optionHtml);
+
+            //             });
+
+            //             seats = response.seats;
+            //             console.log(seats);
+            //             unavailable_seats = response.unavailable_seats;
+
+            //             $('#std_seats').html('');
+            //             $('#exp_seats').html('');
+            //             console.log(unavailable_seats);
+            //             seats.forEach(seat => {
+            //                 let seatHtml = ``;
+            //                 if(unavailable_seats.length > 0 ){
+            //                     unavailable_seats.forEach(unavailable_seat => {
+            //                     seatHtml = `
+            //                     <div>
+            //                         <div class="w-7 h-8 mx-auto rounded-sm ${seat.seat_id === unavailable_seat.seat_id ? 'bg-[#B90000] booked' : 'bg-gray-50'}"
+            //                             id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+            //                         </div>
+            //                         <p class="text-center text-gray-50">${seat.seat_code}</p>
+            //                     </div>
+            //                     `;                            
+            //                 }); 
+            //                 } else {
+            //                     seatHtml = `
+            //                     <div>
+            //                         <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50"
+            //                             id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+            //                         </div>
+            //                         <p class="text-center text-gray-50">${seat.seat_code}</p>
+            //                     </div>
+            //                     `;
+            //                 } 
+            //             if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+            //                 $('#std_seats').append(seatHtml);
+            //             } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+            //                 $('#exp_seats').append(seatHtml);
+            //             }
+            //             });
+
+
+            //             let showtime = response.showtime;
+            //             $('#theater_title').html('');
+            //             console.log('theater', showtime.theater.theater_name)
+            //             $('#theater_title').html(showtime.theater.theater_name);
+            //         }
+            //     });                
+            // });
+
+            // $('#showtime_option').change(function () { 
+            //     let showtime_id = $('#showtime_option').val();
+            //     console.log( 'Showtime_id' ,showtime_id);
+
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "/admin/showtimes_seats_ajax",
+            //         data: {
+            //             _token: "{{ csrf_token() }}",
+            //             showtime_id: showtime_id,
+            //         },
+            //         dataType: "json",
+            //         success: function (response) {
+            //             console.log(response.msg)
+            //             seats = response.seats;
+            //             console.log(seats);
+            //             unavailable_seats = response.unavailable_seats;
+
+            //             $('#std_seats').html('');
+            //             $('#exp_seats').html('');
+            //             console.log(unavailable_seats);
+            //             seats.forEach(seat => {
+            //                 let seatHtml = ``;
+            //                 if(unavailable_seats.length > 0 ){
+            //                     unavailable_seats.forEach(unavailable_seat => {
+            //                     seatHtml = `
+            //                     <div>
+            //                         <div class="w-7 h-8 mx-auto rounded-sm ${seat.seat_id === unavailable_seat.seat_id ? 'bg-[#B90000] booked' : 'bg-gray-50'}"
+            //                             id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+            //                         </div>
+            //                         <p class="text-center text-gray-50">${seat.seat_code}</p>
+            //                     </div>
+            //                     `;                            
+            //                 }); 
+            //                 } else {
+            //                     seatHtml = `
+            //                     <div>
+            //                         <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50"
+            //                             id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+            //                         </div>
+            //                         <p class="text-center text-gray-50">${seat.seat_code}</p>
+            //                     </div>
+            //                     `;
+            //                 } 
+            //             if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+            //                 $('#std_seats').append(seatHtml);
+            //             } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+            //                 $('#exp_seats').append(seatHtml);
+            //             }
+            //             });
+            //             let showtime = response.showtime;
+            //             $('#theater_title').html('');
+            //             console.log('theater is', showtime.theater.theater_name)
+            //             $('#theater_title').html(showtime.theater.theater_name);
+            //         }
+            //     });
+                
+            // });
+
+            $(document).on('change', '#showtime_date', function () {
+                let showtime_day = $('#showtime_date').val();
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/ajaxtheater_showtime",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        showtime_day: showtime_day
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        // console.log(response.msg)
+                        // console.log(response.data)
+                        // console.log(response.showtime_id)
+
+                        $("#showtime_option").html('');
+                        let showtimes = response.showtimes
+                        // console.log(showtimes)
+
+                        showtimes.forEach(showtime => {
+                            const optionHtml = `
+                                <option value="${showtime.showtime_id}">
+                                    ${showtime.showtime_start}: &nbsp;${showtime.movie.movie_title}
+                                </option>
+                            `;
+                            $('#showtime_option').append(optionHtml);
+
+                        });
+
+                        seats = response.seats;
+                        console.log(seats);
+                        unavailable_seats = response.unavailable_seats;
+
+                        $('#std_seats').html('');
+                        $('#exp_seats').html('');
+                        console.log(unavailable_seats);
+                        seats.forEach(seat => {
+                            let seatHtml = ``;
+                            if(unavailable_seats.length > 0 ){
+                                unavailable_seats.forEach(unavailable_seat => {
+                                seatHtml = `
+                                <div>
+                                    <div class="w-7 h-8 mx-auto rounded-sm ${seat.seat_id === unavailable_seat.seat_id ? 'bg-[#B90000] booked' : 'bg-gray-50'}"
+                                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+                                    </div>
+                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
+                                </div>
+                                `;                            
+                            }); 
+                            } else {
+                                seatHtml = `
+                                <div>
+                                    <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50"
+                                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+                                    </div>
+                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
+                                </div>
+                                `;
+                            } 
+                        if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+                            $('#std_seats').append(seatHtml);
+                        } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+                            $('#exp_seats').append(seatHtml);
+                        }
+                        });
+
+
+                        let showtime = response.showtime;
+                        $('#theater_title').html('');
+                        console.log('theater', showtime.theater.theater_name)
+                        $('#theater_title').html(showtime.theater.theater_name);
+                    }
+                }); 
+            });
+
+            $(document).on('change', '#showtime_option', function () {
+                let showtime_id = $('#showtime_option').val();
+                console.log( 'Showtime_id' ,showtime_id);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/showtimes_seats_ajax",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        showtime_id: showtime_id,
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response.msg)
+                        seats = response.seats;
+                        console.log(seats);
+                        unavailable_seats = response.unavailable_seats;
+
+                        $('#std_seats').html('');
+                        $('#exp_seats').html('');
+                        console.log(unavailable_seats);
+                        seats.forEach(seat => {
+                            let seatHtml = ``;
+                            if(unavailable_seats.length > 0 ){
+                                unavailable_seats.forEach(unavailable_seat => {
+                                seatHtml = `
+                                <div>
+                                    <div class="w-7 h-8 mx-auto rounded-sm ${seat.seat_id === unavailable_seat.seat_id ? 'bg-[#B90000] booked' : 'bg-gray-50'}"
+                                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+                                    </div>
+                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
+                                </div>
+                                `;                            
+                            }); 
+                            } else {
+                                seatHtml = `
+                                <div>
+                                    <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50"
+                                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+                                    </div>
+                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
+                                </div>
+                                `;
+                            } 
+                        if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+                            $('#std_seats').append(seatHtml);
+                        } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+                            $('#exp_seats').append(seatHtml);
+                        }
+                        });
+                        let showtime = response.showtime;
+                        $('#theater_title').html('');
+                        console.log('theater is', showtime.theater.theater_name)
+                        $('#theater_title').html(showtime.theater.theater_name);
+                    }
+                });
+            });
+
+            // $('#theater_id').change(function () { 
+            //     let theater_id = $('#theater_id').val();
+            //     console.log(theater_id)
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "/ajaxTheater",
+            //         data: {
+            //             _token: "{{ csrf_token() }}",
+            //             theater_id:theater_id,
+            //         },
+            //         dataType: "json",
+            //         success: function (response) {
+            //             console.log(response.msg);
+            //             console.log(response.data);
+            //             const seats = response.data;
+
+            //             const stdSeatsContainer = $('#std_seats');
+            //             const expSeatsContainer = $('#exp_seats');
+
+            //             stdSeatsContainer.html('');
+            //             expSeatsContainer.html('');
+                        
+
+            //             seats.forEach(seat => {
+            //             const seatHtml = `
+            //                 <div>
+            //                    <div class="w-7 h-8 mx-auto rounded-sm available_seat seats ${seat.seat_status === 'usable' ? 'bg-green-500' : 'bg-red-600'}"
+            //                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
+            //                    </div>
+            //                    <p class="text-center text-gray-50">${seat.seat_code}</p>
+            //                </div>
+            //            `;
+                         
+            //            // Append to the appropriate container
+            //             if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+            //                 stdSeatsContainer.append(seatHtml);
+            //             } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+            //                 expSeatsContainer.append(seatHtml);
+            //             }
+            //        });
+
+            //         }
+            //     });
+            // });
+
+            // $('.seats').click(function () { 
+            //     let seat_id = $(this).data('id');
+            //     console.log(seat_id);
+            //     $.ajax({
+            //     type: "POST",
+            //     url: "/ajax/seat_info",
+            //     data: {
+            //        _token: "{{ csrf_token() }}",
+            //       id: seat_id,
+            //     },
+            //     dataType: "json",
+            //     success: function (response) {
+            //         console.log(response.message);
+            //         console.log(response.seat);
+            //         $('#seat_info').html(response.data);
+            //         if (response.success) { // Assuming server returns a 'success' key
+            //             $('.seat_p').remove();
+            //         } 
+            //     }   
+            //     });
+
+            // });
+
+            $('.monitor_status').change(function () { 
+                let monitor_status =$(this).val();
+                console.log(monitor_status); 
+                
+                $.ajax({
+                    type: "POST",
+                    url: "/ajax/seat_monitor_status",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        monitor_status: monitor_status,
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response.view)
+                        console.log(response.data)
+                        let seat_body = response.view;
+                        $('#seat_management_body').html(seat_body);
+                    }
+                });
+            });    
+            
+            function ajaxSeatInfo(seat_id, status){
                 $.ajax({
                 type: "POST",
                 url: "/ajax/seat_info",
                 data: {
                    _token: "{{ csrf_token() }}",
                   id: seat_id,
+                  status: status,
                 },
                 dataType: "json",
                 success: function (response) {
                     console.log(response.message);
                     console.log(response.seat);
                     $('#seat_info').html(response.data);
-                  if (response.success) { // Assuming server returns a 'success' key
-                      $('.seat_p').remove();
-                 } 
-                //  else {
-                //        alert("Failed to fetch seat information.");
-                //    }
-                },
-                // error: function (xhr, status, error) {
-                //     console.error("Error: " + error);
-                //     alert("An error occurred while fetching seat information.");
-                // }
-            });
-
-            });
+                    if (response.success) { // Assuming server returns a 'success' key
+                        $('.seat_p').remove();
+                    } 
+                }   
+                });
+            }
         });
-
-        // $(document).on('click', '#operational_status',function () {
-            
-        // });
     </script>
 
 </x-app-layout>
