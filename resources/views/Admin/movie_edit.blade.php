@@ -1,6 +1,7 @@
 @section('header-link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.css"
     integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 <x-app-layout>
     @if (count($errors) > 0)
@@ -98,9 +99,16 @@
                                 d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
                         </svg>
                     </button>
+                    <button id="genre_minus" type="button" class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="grey" class="bi bi-dash-circle-fill w-8"
+                            viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" />
+                        </svg>
+                    </button>
                 </div>
 
-                <x-primary-button id="update" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
+                <x-primary-button id="update_btn" class="update_btn" class="w-20 px-4 mt-5 mb-4 ml-2">Update
+                </x-primary-button>
             </form>
 
         </div>
@@ -109,40 +117,71 @@
     <script src="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.js"
         integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
     @endsection
-
-    <script>
-        $(document).ready(function () {            
-        $('[data-toggle="datepicker"]').datepicker();
+</x-app-layout>
+<script>
+    $(document).ready(function () {            
+    $('[data-toggle="datepicker"]').datepicker();
+    let counter = 0;
         $('#genre_add').click(function () { 
-            let genre_html = `<select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2">
-                        <option value="0">Select a genre</option>
-                        @foreach ($genres as $genre)
-                        <option value="{{$genre->genre_id}}">{{ $genre->genre }}</option>
-                        @endforeach
-                    </select>`;
+        let genre_html = `<select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2" data-id=${++counter}>
+                    <option value="0">Select a genre</option>
+                    @foreach ($genres as $genre)
+                    <option value="{{$genre->genre_id}}">{{ $genre->genre }}</option>
+                    @endforeach
+                </select>`;
 
-            $('.genre_div').append(genre_html);           
+        $('.genre_div').append(genre_html);           
         });
 
-        let selected_genres=[];
+
+        $('#genre_minus').click(function () { 
+        if(counter!=0){
+            console.log(counter)
+            $('[data-id="' + counter + '"]').remove();
+            counter--;
+        }
+        });
+
+    let selected_genres=[];
+    let genre_duplicate = false;
+
+    $(document).on('click', '#update_btn', function (e) {
+        e.preventDefault();
+        
+        let selected_genres = [];
         let genre_duplicate = false;
-        $('#save_btn').click(function (e) {
-            $('.genres').each(function () {
-                let selected_genre = $(this).val();
-                if(selected_genres.includes(selected_genre)){
-                    genre_duplicate = true;
-                    return false;
-                } 
-                selected_genres.push(selected_genre);                 
-            });
-            
-            console.log(selected_genres)  
-            if(genre_duplicate){
-                e.preventDefault();
-                alert('please select different genres')
-            } 
-            
+
+        $('.genres').each(function () {
+            let selected_genre = $(this).val();
+            if (selected_genres.includes(selected_genre)) {
+                genre_duplicate = true;
+                return false;
+            }
+            selected_genres.push(selected_genre);
+        });
+
+        console.log(selected_genres);
+        if (genre_duplicate) {
+            alert('Please select different genres');
+            return;
+        }
+
+        Swal.fire({
+            title: "Update the movie!",
+            text: "Are you sure to update the movie?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Are you sure to update the movie?");
+                $(this).closest('form').submit();
+            } else {
+                console.log("Updating movie is cancelled.");
+            }
         });
     });
-    </script>
-</x-app-layout>
+});
+</script>

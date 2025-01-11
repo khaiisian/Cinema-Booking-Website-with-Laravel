@@ -2,6 +2,7 @@
 <link href="DataTables/datatables.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.css"
     integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 <x-app-layout>
     @if (count($errors) > 0)
@@ -147,8 +148,8 @@
                                 </form>
                                 <form action="{{ route('movie_destroy', ['id' => $movie->movie_id]) }}">
                                     @csrf
-                                    <button
-                                        class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
+                                    <button type="submit"
+                                        class="delete_movie bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                             class="bi bi-trash3-fill w-6" viewBox="0 0 16 16">
                                             <path
@@ -171,54 +172,76 @@
     <script src="DataTables/datatables.min.js"></script>
     @endsection
 
-    <script>
-        $(document).ready(function () {
+
+</x-app-layout>
+
+<script>
+    $(document).ready(function () {
         $('[data-toggle="datepicker"]').datepicker();
         let table = new DataTable('#data_table');
         // let genre_html_list=[];
         let counter = 0;
         $('#genre_add').click(function () { 
-            let genre_html = `<select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2" data-id=${++counter}>
-                        <option value="0">Select a genre</option>
-                        @foreach ($genres as $genre)
-                        <option value="{{$genre->genre_id}}">{{ $genre->genre }}</option>
-                        @endforeach
-                    </select>`;
+        let genre_html = `<select name="genres[]" class="genres rounded-md h-8 py-0 w-[96%] mb-2" data-id=${++counter}>
+                    <option value="0">Select a genre</option>
+                    @foreach ($genres as $genre)
+                    <option value="{{$genre->genre_id}}">{{ $genre->genre }}</option>
+                    @endforeach
+                </select>`;
 
-            $('.genre_div').append(genre_html);           
+        $('.genre_div').append(genre_html);           
         });
 
 
         $('#genre_minus').click(function () { 
-            if(counter!=0){
-                console.log(counter)
-                $('[data-id="' + counter + '"]').remove();
-                counter--;
-            }
+        if(counter!=0){
+            console.log(counter)
+            $('[data-id="' + counter + '"]').remove();
+            counter--;
+        }
         });
 
         let selected_genres=[];
         let genre_duplicate = false;
         $('#save_btn').click(function (e) {
-            $('.genres').each(function () {
-                let selected_genre = $(this).val();
-                if(selected_genres.includes(selected_genre)){
-                    genre_duplicate = true;
-                    return false;
-                } 
-                selected_genres.push(selected_genre);                 
-            });
-            
-            console.log(selected_genres)  
-            if(genre_duplicate){
-                e.preventDefault();
-                alert('please select different genres')
+        $('.genres').each(function () {
+            let selected_genre = $(this).val();
+            if(selected_genres.includes(selected_genre)){
+                genre_duplicate = true;
+                return false;
             } 
-            
+            selected_genres.push(selected_genre);                 
+        });
+        
+        console.log(selected_genres)  
+        if(genre_duplicate){
+            e.preventDefault();
+            alert('please select different genres')
+        } 
+        
         });
 
-    });
+        $(document).on('click', '.delete_movie', function (e) {
+            e.preventDefault();
+            Swal.fire({
+            title: "Are you sure you want to delete the movie?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log("Are you sure to delete the movie?");
+                    $(this).closest('form').submit();
+                } else {
+                    console.log("Removing movie is confirmed.");
+                }
+            });
+        });
 
-    
-    </script>
-</x-app-layout>
+});
+
+
+</script>

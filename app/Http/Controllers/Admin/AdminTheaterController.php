@@ -76,7 +76,7 @@ class AdminTheaterController extends Controller
             'theater_name' => $validatedData['theater_name'],
             'capacity' => $validatedData['capacity'],
         ]);
-        return redirect()->route('admin_theater');
+        return redirect()->route('admin_theater')->with('message', 'Theater Updated Successfully');
     }
 
     /**

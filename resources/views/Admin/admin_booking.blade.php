@@ -108,8 +108,9 @@
 <script>
     $(document).ready(function () {                
         let table = new DataTable('#data_table');
-        $('.cancel_booking').click(function (e) { 
-        e.preventDefault();
+
+        $(document).on('click', '.cancel_booking', function (e) {
+            e.preventDefault();
 
         Swal.fire({
             title: "Are you sure you want to cancel the booking?",
@@ -127,7 +128,7 @@
                 console.log("Booking cancellation not confirmed. Submission stopped.");
             }
         });
-    });
+        });
 
     });
 </script>

@@ -1,5 +1,6 @@
 @section('header-link')
 <link href="DataTables/datatables.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 <x-app-layout>
 
@@ -65,7 +66,7 @@
                             <form action="{{route('admin_user_delete', ['id'=>$user->u_id])}}">
                                 @csrf
                                 <button
-                                    class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
+                                    class="delete_btn bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                         class="bi bi-trash3-fill w-6" viewBox="0 0 16 16">
                                         <path
@@ -143,7 +144,7 @@
                             <form action="{{route('admin_user_delete', ['id'=>$user->u_id])}}">
                                 @csrf
                                 <button
-                                    class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
+                                    class="delete bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                         class="bi bi-trash3-fill w-6" viewBox="0 0 16 16">
                                         <path
@@ -166,5 +167,22 @@
     $(document).ready(function () {                
         let table = new DataTable('#data_table');
         let table2 = new DataTable('#data_table_2');
+
+        $(document).on('click', '.delete_btn', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to delete this user?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).closest('form').submit();
+                }
+            })
+        });
     });
 </script>

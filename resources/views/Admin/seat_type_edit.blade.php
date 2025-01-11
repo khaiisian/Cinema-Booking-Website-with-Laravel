@@ -1,3 +1,6 @@
+@section('header-link')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endsection
 <x-app-layout>
     @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -22,10 +25,28 @@
                     value="{{$seat_type->seat_type}}">
                 <label class="font-semibold text-lg text-gray-700" for="price">Price</label>
                 <input type="number" name="price" id="price" class="rounded-md mb-4 h-8" value="{{$seat_type->price}}">
-                <x-primary-button id="save_btn" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
+                <x-primary-button id="update_btn" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
             </form>
         </div>
 
     </div>
     <div class="w-3 bg-yellow-100">Hello</div>
 </x-app-layout>
+<script>
+    $(document).on('click', '#update_btn',function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to update this seat type?",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                    $(this).closest('form').submit();
+            }
+        })
+    });
+</script>

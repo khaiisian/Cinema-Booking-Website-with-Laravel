@@ -32,14 +32,10 @@ $day4 = $day1->copy()->addDays(3);
         {{-- {{ $unavailable_seats }} --}}
         <div id="std_seats" class="w-[90%] mx-auto grid grid-cols-12 gap-x-0 gap-y-10">
             @foreach ($seats as $seat)
-            @if ($seat->seat_type_id == 1 || $seat->seat_type_id == 2)
-            {{ $isUnavailable = false }}
-            @foreach ($unavailable_seats as $unavailable_seat)
-            @if ($seat->seat_id == $unavailable_seat->seat_id)
-            {{ $isUnavailable = true }}
-            @break
-            @endif
-            @endforeach
+            @if (in_array($seat->seat_type_id, [1, 2]))
+            @php
+            $isUnavailable = $unavailable_seats->contains('seat_id', $seat->seat_id);
+            @endphp
             <div>
                 <div class="w-7 h-8 mx-auto rounded-sm booking_seats {{ $isUnavailable ? 'bg-[#B90000] Booked' : 'bg-gray-50 Available' }}"
                     id="seat{{ $seat->seat_id }}" data-id="{{ $seat->seat_id }}"></div>
@@ -47,6 +43,7 @@ $day4 = $day1->copy()->addDays(3);
             </div>
             @endif
             @endforeach
+
         </div>
         <div id="exp_seats" class="w-[85%] mx-auto grid grid-cols-10 gap-x-0 gap-y-10 mt-10">
             @foreach ($seats as $seat)

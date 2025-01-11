@@ -79,7 +79,7 @@
                                 <form action="{{route('contact_delete', ['id'=>$contact_msg->contact_id])}}">
                                     @csrf
                                     <button
-                                        class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
+                                        class="delete_btn bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                             class="bi bi-trash3-fill w-6" viewBox="0 0 16 16">
                                             <path
@@ -103,5 +103,22 @@
 <script>
     $(document).ready(function () {                
         let table = new DataTable('#data_table');
+
+        $(document).on('click', '.delete_btn', function (e) {
+            e.preventDefault();
+            Swal.fire({
+            title: "Are you sure you want to delete this message?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).closest('form').submit();
+                } 
+            });
+        });
     });
 </script>

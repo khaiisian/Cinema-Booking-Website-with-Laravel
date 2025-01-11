@@ -1,6 +1,7 @@
 @section('header-link')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.css"
     integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 
 <x-app-layout>
@@ -79,7 +80,7 @@
                         name="showtime_date" value="{{$showtime->showtime_date}}" required>
                 </div>
 
-                <x-primary-button id="update" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
+                <x-primary-button id="update_btn" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
             </form>
         </div>
     </div>
@@ -93,5 +94,21 @@
 <script>
     $(document).ready(function () {
         $('[data-toggle="datepicker"]').datepicker();
+    });
+    $(document).on('click', '#update_btn', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Update the showtime!",
+            text: "Are you sure to update the showtime?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(this).closest('form').submit();
+            }
+        });
     });
 </script>

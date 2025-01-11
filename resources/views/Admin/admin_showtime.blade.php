@@ -2,6 +2,7 @@
 <link href="DataTables/datatables.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fengyuanchen/datepicker@0.6.5/dist/datepicker.min.css"
     integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 <x-app-layout>
     @if (count($errors) > 0)
@@ -87,8 +88,8 @@
                 <thead class="">
                     <tr class="bg-[#cd1f30] text-white">
                         <th>Showtime ID</th>
-                        <th>Movie ID</th>
-                        <th>Theater ID</th>
+                        <th>Movie Name</th>
+                        <th>Theater Name</th>
                         <th>Showtime Start</th>
                         <th>Showtime End</th>
                         <th>Showtime Date</th>
@@ -98,12 +99,22 @@
                 <tbody id="tableBody">
                     @foreach ($showtimes as $showtime)
                     <tr>
-                        <td class="flex justify-center">{{ $showtime->showtime_id }}</td>
-                        <td>{{ $showtime->movie->movie_title }}</td>
+                        <td>
+                            <p class="text-center">{{ $showtime->showtime_id }}</p>
+                        </td>
+                        <td>
+                            <p class="">{{ $showtime->movie->movie_title }}</p>
+                        </td>
                         <td>{{ $showtime->theater->theater_name }}</td>
-                        <td>{{ date('h:i A', strtotime($showtime->showtime_start)) }}</td>
-                        <td>{{ date('h:i A', strtotime($showtime->showtime_end)) }}</td>
-                        <td class="flex justify-center">{{ $showtime->showtime_date }}</td>
+                        <td>
+                            <p class="text-center">{{ date('h:i A', strtotime($showtime->showtime_start)) }}</p>
+                        </td>
+                        <td>
+                            <p class="text-center">{{ date('h:i A', strtotime($showtime->showtime_end)) }}</p>
+                        </td>
+                        <td>
+                            <p class="text-center">{{ $showtime->showtime_date }}</p>
+                        </td>
                         <td>
                             <div class="flex gap-x-4">
                                 <form action="{{ route('showtime_edit', ['id' => $showtime->showtime_id]) }}">
@@ -120,7 +131,7 @@
                                 <form action="{{ route('showtime_destroy', ['id' => $showtime->showtime_id]) }}">
                                     @csrf
                                     <button
-                                        class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
+                                        class="delete_btn bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-2 border-b-4 border-red-700 hover:border-red-500 rounded">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                             class="bi bi-trash3-fill w-6" viewBox="0 0 16 16">
                                             <path
@@ -141,10 +152,27 @@
         integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
     <script src="DataTables/datatables.min.js"></script>
     @endsection
-    <script>
-        $(document).ready(function () {     
-        $('[data-toggle="datepicker"]').datepicker();   
-        let table = new DataTable('#data_table');
-    });
-    </script>
 </x-app-layout>
+<script>
+    $(document).ready(function () {     
+    $('[data-toggle="datepicker"]').datepicker();   
+    let table = new DataTable('#data_table');
+
+    $(document).on('click', '.delete_btn', function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Delete the showtime!",
+            text: "Are you sure to delete the showtime?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(this).closest('form').submit();
+            }
+        });
+    });
+});
+</script>

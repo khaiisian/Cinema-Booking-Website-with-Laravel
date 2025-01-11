@@ -1,3 +1,6 @@
+@section('header-link')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endsection
 <x-app-layout>
     @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -22,8 +25,29 @@
                 <label class="font-semibold text-lg text-gray-700" for="genre_description">Genre Description</label>
                 <textarea name="genre_description" id="genre_description" cols="30" rows="3"
                     class="rounded-md mb-4">{{ $genre->genre_description }}</textarea>
-                <x-primary-button id="save_btn" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
+                <x-primary-button id="update_btn" class="w-20 px-4 mt-5 mb-4 ml-2">Update</x-primary-button>
             </form>
         </div>
     </div>
 </x-app-layout>
+<script>
+    $('#update_btn').click(function (e) { 
+        e.preventDefault();
+        Swal.fire({
+            title: "Update Genre!",
+            text: "Are you sure to update the genre?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log("Are you sure to delete the movie?");
+                    $(this).closest('form').submit();
+                } else {
+                    console.log("Removing movie is confirmed.");
+                }
+            });
+    });
+</script>

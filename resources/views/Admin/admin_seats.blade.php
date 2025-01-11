@@ -1,3 +1,6 @@
+@section('header-link')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endsection
 <x-app-layout>
     @if (count($errors) > 0)
     <div class="alert alert-danger">
@@ -240,9 +243,6 @@
                     },
                     dataType: "json",
                     success: function (response) {
-                        // console.log(response.msg)
-                        // console.log(response.data)
-                        // console.log(response.showtime_id)
 
                         $("#showtime_option").html('');
                         let showtimes = response.showtimes
@@ -261,47 +261,35 @@
                         seats = response.seats;
                         console.log(seats);
                         unavailable_seats = response.unavailable_seats;
+                        console.log( 'unavailable', unavailable_seats);
 
                         $('#std_seats').html('');
                         $('#exp_seats').html('');
-                        console.log(unavailable_seats);
+                        // console.log(unavailable_seats);
                         seats.forEach(seat => {
-                            let seatHtml = ``;
-                            if(unavailable_seats.length > 0 ){
-                                unavailable_seats.forEach(unavailable_seat => {
-                                seatHtml = `
-                                <div>
-                                    <div class="w-7 h-8 mx-auto rounded-sm booking_seats ${seat.seat_id === unavailable_seat.seat_id ? 'bg-[#B90000] Booked' : 'bg-gray-50 Available'}"
-                                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
-                                    </div>
-                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
+                            let isUnavailable = unavailable_seats.some(unavailable_seat => seat.seat_id === unavailable_seat.seat_id);
+                            let seatHtml = `
+                            <div>
+                                <div class="w-7 h-8 mx-auto rounded-sm booking_seats ${isUnavailable ? 'bg-[#B90000] Booked' : 'bg-gray-50 Available'}"
+                                    id="seat${seat.seat_id}" data-id="${seat.seat_id}">
                                 </div>
-                                `;                            
-                            }); 
-                            } else {
-                                seatHtml = `
-                                <div>
-                                    <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50 booking_seats Available"
-                                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
-                                    </div>
-                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
-                                </div>
-                                `;
-                            } 
-                        if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
-                            $('#std_seats').append(seatHtml);
-                        } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
-                            $('#exp_seats').append(seatHtml);
-                        }
+                                <p class="text-center text-gray-50">${seat.seat_code}</p>
+                            </div>
+                            `;
+
+                            if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+                                $('#std_seats').append(seatHtml);
+                            } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+                                $('#exp_seats').append(seatHtml);
+                            }
                         });
 
-
-                        let showtime = response.showtime;
-                        $('#theater_title').html('');
-                        console.log('theater', showtime.theater.theater_name)
-                        $('#theater_title').html(showtime.theater.theater_name);
-                    }
-                }); 
+                            let showtime = response.showtime;
+                            $('#theater_title').html('');
+                            console.log('theater', showtime.theater.theater_name)
+                            $('#theater_title').html(showtime.theater.theater_name);
+                        }
+                    }); 
             });
 
             $(document).on('change', '#showtime_option', function () {
@@ -326,33 +314,21 @@
                         $('#exp_seats').html('');
                         console.log(unavailable_seats);
                         seats.forEach(seat => {
-                            let seatHtml = ``;
-                            if(unavailable_seats.length > 0 ){
-                                unavailable_seats.forEach(unavailable_seat => {
-                                seatHtml = `
-                                <div>
-                                    <div class="w-7 h-8 mx-auto rounded-sm ${seat.seat_id === unavailable_seat.seat_id ? 'bg-[#B90000] booked' : 'bg-gray-50'}"
-                                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
-                                    </div>
-                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
+                            let isUnavailable = unavailable_seats.some(unavailable_seat => seat.seat_id === unavailable_seat.seat_id);
+                            let seatHtml = `
+                            <div>
+                                <div class="w-7 h-8 mx-auto rounded-sm booking_seats ${isUnavailable ? 'bg-[#B90000] Booked' : 'bg-gray-50 Available'}"
+                                    id="seat${seat.seat_id}" data-id="${seat.seat_id}">
                                 </div>
-                                `;                            
-                            }); 
-                            } else {
-                                seatHtml = `
-                                <div>
-                                    <div class="w-7 h-8 mx-auto rounded-sm bg-gray-50 booking_seats Available"
-                                        id="seat${seat.seat_id}" data-id="${seat.seat_id}">
-                                    </div>
-                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
-                                </div>
-                                `;
-                            } 
-                        if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
-                            $('#std_seats').append(seatHtml);
-                        } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
-                            $('#exp_seats').append(seatHtml);
-                        }
+                                <p class="text-center text-gray-50">${seat.seat_code}</p>
+                            </div>
+                            `;
+
+                            if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+                                $('#std_seats').append(seatHtml);
+                            } else if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+                                $('#exp_seats').append(seatHtml);
+                            }
                         });
                         let showtime = response.showtime;
                         $('#theater_title').html('');
@@ -471,6 +447,24 @@
                 }   
                 });
             }
+
+            $(document).on('click', '#update_seat_status', function (e) {
+                console.log('update button clicked');
+                e.preventDefault();
+                Swal.fire({
+                title: "Update Seat Status!",
+                text: "Are you sure to update the status?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).closest('form').submit();
+                    }
+                });
+            });
         });
     </script>
 
