@@ -19,48 +19,64 @@ class SelectionController extends Controller
     //
     public function showMovieDetail(Request $request)
     {
+        $today = Carbon::today();
         $booking_token = Str::uuid();
         session(['booking_token' => $booking_token]);
 
-        $id = $request->movie_id;
-        $movie = movie::findOrFail($id);
+        $movie_id = $request->movie_id;
+        $movie = movie::findOrFail($movie_id);
 
-        $showtime_id = $request->showtime_id;
-        $showtime_date = showtime::where('showtime_id', $showtime_id)->pluck('showtime_date');
+        if ($request->has('showtime_id')) {
+            $showtime_id = $request->showtime_id;
+            $showtime_date = showtime::where('showtime_id', $showtime_id)->pluck('showtime_date');
+            $showtime = showtime::where('showtime_id', $showtime_id)->first();
+        } else {
+            $showtime = showtime::where('movie_id', $movie_id)
+                ->where('showtime_date', '>=', $today)
+                ->orderBy('showtime_date')
+                ->first();
+            $showtime_id = $showtime->showtime_id;
+            $showtime_date = showtime::where('showtime_id', $showtime_id)->pluck('showtime_date');
+        }
 
         $theater = theater::with('seat')->get();
         $seats = seat::all();
+        if ($showtime->theater_id == 1) {
+            $seats = seat::where('theater_id', 1)->get();
+        } else if ($showtime->theater_id == 2) {
+            $seats = seat::where('theater_id', 2)->get();
+        }
 
-        return view('Customer.booking', compact('movie', 'theater', 'seats', 'id', 'showtime_id', 'showtime_date'));
+        return view('Customer.booking', compact('movie', 'theater', 'seats', 'movie_id', 'showtime_id', 'showtime_date'));
     }
 
     public function ajaxShowtime(Request $request)
     {
         $date = $request->date;
-        $id = $request->id;
+        $movie_id = $request->movie_id;
 
         if ($request->has('showtime_id')) {
-            $show_id = $request->showtime_id;
-            $showtimes = Showtime::where('showtime_id', $show_id)->get();
+            $showtime_id = $request->showtime_id;
+            $showtimes = Showtime::where('showtime_id', $showtime_id)->get();
         } else {
             if ($date == 'day1') {
                 $showtimes = Showtime::where('showtime_date', today())
-                    ->where('movie_id', $id)
+                    ->where('movie_id', $movie_id)
                     ->with('movie', 'theater')
                     ->get();
             } elseif ($date == 'day2') {
                 $showtimes = Showtime::where('showtime_date', today()->addDay())
-                    ->where('movie_id', $id)
+                    ->where('movie_id', $movie_id)
                     ->with('movie', 'theater')
                     ->get();
             } elseif ($date == 'day3') {
                 $showtimes = Showtime::where('showtime_date', today()->addDays(2))
-                    ->where('movie_id', $id)
+                    ->where('movie_id', $movie_id)
                     ->with('movie', 'theater')
                     ->get();
             } elseif ($date == 'day4') {
                 $showtimes = Showtime::where('showtime_date', today()->addDays(3))
-                    ->where('movie_id', $id)
+                    ->where('movie_id', $movie_id)
                     ->with('movie', 'theater')
                     ->get();
             }
@@ -68,6 +84,14 @@ class SelectionController extends Controller
 
         if ($showtimes && !$showtimes->isEmpty()) {
             $show_id = $showtimes->first()->showtime_id;
+
+            $showtime = $showtimes->first();
+
+            if ($showtime->theater_id == 1) {
+                $seats = seat::where('theater_id', 1)->get();
+            } else if ($showtime->theater_id == 2) {
+                $seats = seat::where('theater_id', 2)->get();
+            }
 
             $unavailable_seats = Seat::whereIn('seat_id', function ($query) use ($show_id) {
                 $query->select('booking_seats.seat_id')
@@ -90,6 +114,7 @@ class SelectionController extends Controller
                 'available_seats' => $available_seats,
                 'show_id' => $show_id,
                 'showtime_end' => $showtime_end,
+                'seats' => $seats
             ]);
         }
 
@@ -108,25 +133,25 @@ class SelectionController extends Controller
         );
     }
 
-    public function seat_availablility(Request $request)
-    {
-        $showtime_id = $request->showtime_id;
-        $unavailable_seats = seat::whereIn('seat_id', function ($query) use ($showtime_id) {
-            $query->select('booking_seats.seat_id')
-                ->from('booking_seats')
-                ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
-                ->where('bookings.showtime_id', $showtime_id)
-                ->where('bookings.booking_status', 'booked');
-        })->get();
+    // public function seat_availablility(Request $request)
+    // {
+    //     $showtime_id = $request->showtime_id;
+    //     $unavailable_seats = seat::whereIn('seat_id', function ($query) use ($showtime_id) {
+    //         $query->select('booking_seats.seat_id')
+    //             ->from('booking_seats')
+    //             ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
+    //             ->where('bookings.showtime_id', $showtime_id)
+    //             ->where('bookings.booking_status', 'booked');
+    //     })->get();
 
-        $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
+    //     $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
 
-        $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
+    //     $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
 
 
-        return response()->json(['unavailable_seats' => $unavailable_seats, 'available_seats' => $available_seats]);
+    //     return response()->json(['unavailable_seats' => $unavailable_seats, 'available_seats' => $available_seats]);
 
-    }
+    // }
 
     // public function booking_create(Request $request)
     // {

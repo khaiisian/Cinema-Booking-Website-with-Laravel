@@ -66,7 +66,7 @@ Route::middleware(['role:customer'])->group(function () {
 
     Route::post('/movies/ajaxShowtimes', [SelectionController::class, 'ajaxShowtime']);
 
-    Route::post('/booking/seat_available', [SelectionController::class, 'seat_availablility']);
+    // Route::post('/booking/seat_available', [SelectionController::class, 'seat_availablility']);
 
     // Route::post('/booking/book', [SelectionController::class, 'booking_create']);
 

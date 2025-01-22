@@ -9,7 +9,7 @@
     <div class="w-full bg-gray-100 py-10">
         <div class="w-[80%] m-auto min-h-screen">
             <h1 class="text-3xl text-gray-700 font-bold">Admin Dashboard</h1>
-            <div class="dashboard grid grid-cols-4 gap-x-4 gap-y-7 px-1 py-3">
+            <div class="dashboard grid grid-cols-4 gap-x-6 gap-y-7 px-1 py-3">
                 <div class="bg-white min-h-32 flex flex-col border border-gray-200 rounded-lg overflow-hidden">
                     <div class="h-[40%] w-[100%] bg-red-600 flex items-center px-2">
                         <p class="text-xl font-semibold text-[#FFDE00] tracking-wide">Movies</p>
@@ -202,11 +202,6 @@
             },
             title: {
                 text: 'Porpular Movies in 2025'
-            },
-            subtitle: {
-                text:
-                    'Source: <a target="_blank" ' +
-                    'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>'
             },
             xAxis: {
                 categories: movie_title_lst,
