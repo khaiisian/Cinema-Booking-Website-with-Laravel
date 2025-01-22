@@ -14,7 +14,6 @@
 
     @endif
     <div class="w-full bg-white py-10">
-
         <div class="w-96 mx-auto border border-gray-300 rounded-lg overflow-hidden">
             <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">Movie
                 Management</h2>
