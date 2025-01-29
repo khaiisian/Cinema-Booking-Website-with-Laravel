@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="py-10 min-h-screen bg-gray-100">
         <div class="text-5xl text-center font-bold mb-12 text-[#ffbf00]">Contact Us</div>
-        <div class="max-w-6xl flex justify-center mx-auto">
-            <div class="contact_form w-[35%]">
+        <div class="max-w-6xl flex justify-center flex-wrap md:flex-nowrap mx-auto">
+            <div class="contact_form w-[60%] md:w-[35%]">
                 <form action="/contactus" method="POST" class="flex flex-col p-6 gap-1">
                     @csrf
                     <div class="text-3xl font-bold mb-7 text-[#333333]">GET IN TOUCH</div>
@@ -16,7 +16,7 @@
                     </x-primary-button>
                 </form>
             </div>
-            <div class="contact_info w-[43%] p-3 rounded-lg bg-white">
+            <div class="contact_info w-[60%] md:w-[43%] p-3 rounded-lg bg-white">
                 <div class="map rounded-lg overflow-hidden">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.201265549021!2d96.12605877492115!3d16.816368583976658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1eb34335a92f5%3A0xea3210d0410309d7!2sTimes%20City%20Yangon!5e0!3m2!1sen!2smm!4v1733690871432!5m2!1sen!2smm"

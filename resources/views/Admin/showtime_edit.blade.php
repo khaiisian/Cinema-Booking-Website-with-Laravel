@@ -5,15 +5,17 @@
 @endsection
 
 <x-app-layout>
-    @if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+    @if ($errors->any())
+    <script>
+        const errors = @json($errors->all());
+        let errorMessage = "Validation Errors:\n";
+        errors.forEach(error => {
+            errorMessage += `- ${error}\n`;
+        });
+        alert(errorMessage);
+    </script>
     @endif
+
     <div class="w-full bg-white">
         <div class="w-96 mx-auto border border-gray-300 mt-4 rounded-lg overflow-hidden mb-8">
             <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">Showtime

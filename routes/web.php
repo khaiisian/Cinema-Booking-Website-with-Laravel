@@ -50,25 +50,17 @@ Route::get('/showtimes', function () {
 Route::get('/contactus', function () {
     return view('Customer.contactus');
 })->name('contactus');
-Route::post('/contactus', [ContatUsController::class, 'sendMessage']);
 
-Route::get('/home', [HomeController::class, 'Index'])->middleware(['auth', 'verified'])->name('home');
+Route::get('/aboutus', function () {
+    return view('Customer.about_us');
+})->name('aboutus');
 
 Route::middleware(['role:customer'])->group(function () {
-    // Route::get('/movies', [MovieController::class, 'index'])->name('movies');
-    Route::post('/movies/details', [SelectionController::class, 'showMovieDetail'])->name('movies.show');
-    // Route::post('/movies/ajax', [MovieController::class, 'ajax']);
+    Route::get('/home', action: [HomeController::class, 'Index'])->name('home');
 
-    // Route::get('/showtimes', function () {
-    //     return view('Customer.showtime');
-    // })->name('showtimes');
-    // Route::post('showtimes/ajax', [ShowtimeController::class, 'showtime_ajax']);
+    Route::post('/movies/details', [SelectionController::class, 'showMovieDetail'])->name('movies.show');
 
     Route::post('/movies/ajaxShowtimes', [SelectionController::class, 'ajaxShowtime']);
-
-    // Route::post('/booking/seat_available', [SelectionController::class, 'seat_availablility']);
-
-    // Route::post('/booking/book', [SelectionController::class, 'booking_create']);
 
     Route::post('/booking/booking_details', [BookingController::class, 'booking_details'])->name('booking_details');
 
@@ -77,15 +69,16 @@ Route::middleware(['role:customer'])->group(function () {
     Route::post('/booking/book', [BookingController::class, 'booking_create'])->name('Booking');
 
     Route::get('/booking_record', [BookingRecordController::class, 'showBookingRecord'])->name('bookingrecord');
-    Route::post('/booking_record/ajax', [BookingRecordController::class, 'ajaxBookingRecord']);
-    Route::post('/booking_record/cancel', [BookingRecordController::class, 'cancelBookingRecord']);
-    Route::post('/booking_record/booking_ticket', [BookingRecordController::class, 'showBookingTicet']);
-    // Route::get('/booking_record', [BookingController::class, 'showBookingRecord'])->name('bookingrecord');
 
-    // Route::get('/booking', function () {
-    //     return view('Customer.booking');
-    // });
+    Route::post('/booking_record/ajax', [BookingRecordController::class, 'ajaxBookingRecord']);
+
+    Route::post('/booking_record/cancel', [BookingRecordController::class, 'cancelBookingRecord']);
+
+    Route::post('/booking_record/booking_ticket', [BookingRecordController::class, 'showBookingTicet']);
+
+    Route::post('/contactus', [ContatUsController::class, 'sendMessage']);
 });
+
 
 
 Route::middleware(['role:admin'])->group(function () {

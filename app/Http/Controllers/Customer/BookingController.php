@@ -15,10 +15,6 @@ class BookingController extends Controller
     //
     public function booking_details(Request $request)
     {
-        $booking_token = session('booking_token');
-        if (!$booking_token) {
-            return redirect()->route("home");
-        }
 
         $showtime_id = $request->showtime_id;
         $seat_ids = json_decode($request->input('selectedSeats', '[]'), true);

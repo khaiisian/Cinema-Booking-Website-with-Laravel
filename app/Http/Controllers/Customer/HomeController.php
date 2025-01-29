@@ -15,16 +15,20 @@ class HomeController extends Controller
     //
     public function Index()
     {
-
         if (request()->is('/') && Auth::check()) {
+            $user = Auth::user();
+
+            if ($user->u_type === 'admin') {
+                return redirect()->route('admin_home');
+            } elseif ($user->type === 'customer') {
+                return redirect()->route('home');
+            }
             return redirect('/home');
         }
 
         $movies = movie::all();
-        // $sessions = session::all();$students = Student::where('status', 1)
 
         $todayShowtimes = showtime::where('showtime_date', today())->with('movie', 'theater')->get();
-        // $session_movie = $todayShowtimes->pluck('movie');
 
         return view('Customer.home', compact('movies', 'todayShowtimes'));
     }

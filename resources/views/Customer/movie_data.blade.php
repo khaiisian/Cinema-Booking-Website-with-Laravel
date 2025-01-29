@@ -1,7 +1,13 @@
-<div class="flex justify-start flex-wrap gap-x-10 gap-y-10">
+@php
+use Carbon\Carbon;
+@endphp
+<div class="flex justify-center lg:justify-start flex-wrap gap-x-8 md:gap-x-10 gap-y-10">
     @foreach ($movies as $movie)
+    @php
+    $date = Carbon::parse($movie->release_date);
+    @endphp
     <div
-        class="bg-[#242424] sm:rounded-lg min-h-[24rem] w-[17rem] flex flex-col items-center gap-x-3 px-3 pb-5 upmovie_blog">
+        class="bg-[#242424] sm:rounded-lg rounded-xl min-h-[24rem] w-[17rem] flex flex-col items-center gap-x-3 px-3 pb-5 ">
         <div class="w-[100%] h-[15rem] bg-[#EBEBEB] rounded-lg overflow-hidden mt-3 upmovie_img">
             <!-- Image goes here -->
             <img class="w-full h-full" src="{{asset('images/'.$movie->movie_image)}}" alt="{{$movie->movie_image}}">
@@ -13,7 +19,7 @@
                         fill="currentColor" width="12" height="12" class="bi bi-calendar" viewBox="0 0 16 16">
                         <path
                             d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                    </svg> {{ $movie->release_date }}</div>
+                    </svg> {{ $date->format('F j, l') }}</div>
             </div>
             <form action="{{route('movies.show')}}" method="POST">
                 @csrf

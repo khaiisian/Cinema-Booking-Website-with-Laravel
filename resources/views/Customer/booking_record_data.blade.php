@@ -1,4 +1,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @foreach ($bookings as $booking )
 <div class="w-[78%] min-h-64 rounded-xl ml-6 p-4 gap-x-5 flex bg-[#333333]">
     <input type="hidden" id="booking_period" value="{{$booking_period}}">
@@ -45,15 +46,15 @@
         </div>
 
         <div class="flex justify-between px-2 mt-8">
-            <form action="/booking_record/booking_ticket" method="POST">
+            <form action="/booking_record/booking_ticket" id="" method="POST">
                 @csrf
                 <input type="hidden" name="booking_id" id="booking_id" value="{{$booking->booking_id}}">
                 <x-primary-button>View Ticket</x-primary-button>
             </form>
-            <form action="/booking_record/cancel" method="POST">
+            <form action="/booking_record/cancel" method="POST" class="cancel_form">
                 @csrf
                 <input type="hidden" name="booking_id" id="booking_id" value="{{$booking->booking_id}}">
-                <x-primary-button id="cancel_btn">Cancel Booking</x-primary-button>
+                <x-primary-button class="cancel_btn">Cancel Booking</x-primary-button>
             </form>
         </div>
 
@@ -64,8 +65,35 @@
 <script>
     $booking_period = $('#booking_period').val();
     if($booking_period=='past'){
-        $('#cancel_btn').prop("disabled", true)
+        $('#cancel_btn').prop("disabled", true)                                                                  
+        $('#cancel_btn').addClass('cursor-not-allowed') 
     } else {
         $('#cancel_btn').prop("disabled", false)
     }
+
+
+
+    $(document).ready(function () {
+        $('.cancel_btn').click(function (e) { 
+            e.preventDefault();
+
+            Swal.fire({
+                title: "Are you sure you want to cancel the booking?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                console.log("Booking cancellation confirmed. Proceeding with submission.");
+                $(this).closest('form').submit();
+            } else {
+                console.log("Booking cancellation not confirmed. Submission stopped.");
+            }
+            });
+            
+        });    
+    });
 </script>

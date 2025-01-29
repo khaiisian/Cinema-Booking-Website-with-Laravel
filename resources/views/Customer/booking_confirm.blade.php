@@ -13,21 +13,13 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
 
-    {{--
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> --}}
     <link rel="stylesheet" href="{{ asset('CSS/app.css') }}">
     @yield('css')
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script>
-        // $(document).ready(function() {
-        //     if (performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
-        //         window.location.reload(true);
-        //     }
-        // });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -35,11 +27,6 @@
         @php
         $_showtime = $booking_details['showtime_info'][0];
         @endphp
-        @if (session('booking_token'))
-        <p>{{ session('booking_token') }}</p>
-        @else
-        <p>No session</p>
-        @endif
         <h1 class="text-3xl font-semibold mb-4 text-[#ffbf00]">Booking Details</h1>
         {{-- hello
         {{ $_showtime }} --}}
@@ -81,9 +68,8 @@
                     @endforeach
                 </p>
                 <p class="ml-1 mb-2">Total : {{ $booking_details['total_price'] }} kyats</p>
-                <form action="/booking/book" method="POST">
+                <form action="/booking/book" id="confirm_form" method="POST">
                     @csrf
-                    <input type="hidden" name="booking_token" value="{{ session('booking_token') }}">
                     <input type="hidden" name="showtime_id" id="showtime_id" value="{{$_showtime->showtime_id}}">
                     <input type="hidden" name="seat_ids" id="seat_ids"
                         value="{{json_encode($booking_details['seats'])}}">
@@ -96,8 +82,25 @@
             </div>
         </div>
     </div>
-    {{-- {{$seats}} --}}
-    {{-- {{$total_price}} --}}
+
+    <script>
+        $(document).ready(function () {
+            $("#confirm_form").on("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        $.post($(this).attr("action"), $(this).serialize(), function () {
+          Swal.fire({
+            title: "Booking Success!",
+            text: "Your Booking is successful.",
+            icon: "success",
+            confirmButtonText: "OK"
+          }).then(() => {
+            location.reload();
+          });
+        });
+      });
+        });
+    </script>
 </body>
 
 </html>

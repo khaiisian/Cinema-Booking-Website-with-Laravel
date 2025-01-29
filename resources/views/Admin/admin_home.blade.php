@@ -9,7 +9,7 @@
     <div class="w-full bg-gray-100 py-10">
         <div class="w-[80%] m-auto min-h-screen">
             <h1 class="text-3xl text-gray-700 font-bold">Admin Dashboard</h1>
-            <div class="dashboard grid grid-cols-4 gap-x-6 gap-y-7 px-1 py-3">
+            <div class="dashboard grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-7 px-1 py-3">
                 <div class="bg-white min-h-32 flex flex-col border border-gray-200 rounded-lg overflow-hidden">
                     <div class="h-[40%] w-[100%] bg-red-600 flex items-center px-2">
                         <p class="text-xl font-semibold text-[#FFDE00] tracking-wide">Movies</p>
@@ -100,9 +100,9 @@
 
             </div>
 
-            <div class="charts flex justify-center items-center gap-x-4 mt-4">
-                <div id="container" class="w-[50%]"></div>
-                <div id="revenue_container" class="w-[50%]"></div>
+            <div class="charts flex justify-center flex-col md:flex-row items-center gap-x-4 gap-y-4 mt-4">
+                <div id="container" class="w-[95%] md:w-[50%]"></div>
+                <div id="revenue_container" class="w-[95%] md:w-[50%]"></div>
             </div>
         </div>
     </div>

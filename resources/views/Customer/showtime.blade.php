@@ -16,13 +16,22 @@ $day4 = $day1->copy()->addDays(3);
         <h2 class="text-4xl font-bold text-[#ffbf00]">Movie Showtimes</h2>
     </header>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-5">
-        <div class="bg-gray-200 lg:px-0 py-1 max-w-4xl mx-auto flex justify-evenly items-center rounded-lg btn">
-            <button class="w-[24%] py-2 btn bg-gray-50 rounded-md act" id="day1_btn">{{ $day1->format('F j, l')
-                }}</button>
-            <button class="w-[24%] py-2 btn" id="day2_btn">{{ $day2->format('F j, l') }}</button>
-            <button class="w-[24%] py-2 btn" id="day3_btn">{{ $day3->format('F j, l') }}</button>
-            <button class="w-[24%] py-2 btn" id="day4_btn">{{ $day4->format('F j, l') }}</button>
+        <div
+            class="bg-gray-200 lg:px-0 py-1 max-w-4xl mx-auto flex flex-wrap sm:flex-nowrap justify-evenly items-center rounded-lg btn">
+            <button class="w-full sm:w-[24%] py-2 mb-2 sm:mb-0 btn bg-gray-50 rounded-md act" id="day1_btn">
+                {{ $day1->format('F j, l') }}
+            </button>
+            <button class="w-full sm:w-[24%] py-2 mb-2 sm:mb-0 btn" id="day2_btn">
+                {{ $day2->format('F j, l') }}
+            </button>
+            <button class="w-full sm:w-[24%] py-2 mb-2 sm:mb-0 btn" id="day3_btn">
+                {{ $day3->format('F j, l') }}
+            </button>
+            <button class="w-full sm:w-[24%] py-2 btn" id="day4_btn">
+                {{ $day4->format('F j, l') }}
+            </button>
         </div>
+
 
         <div class="max-w-5xl mx-auto mt-5 lg:px-6" id="showtimes_blog">
         </div>

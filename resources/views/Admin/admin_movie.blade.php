@@ -5,15 +5,15 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 <x-app-layout>
-    @if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-
+    @if ($errors->any())
+    <script>
+        const errors = @json($errors->all());
+        let errorMessage = "Validation Errors:\n";
+        errors.forEach(error => {
+            errorMessage += `- ${error}\n`;
+        });
+        alert(errorMessage);
+    </script>
     @endif
 
     <div class="w-full bg-white py-10">
@@ -34,9 +34,6 @@
                 <input
                     class="block w-full text-md text-gray-200 border border-gray-300 rounded-lg cursor-pointer focus:outline-none bg-gray-700 placeholder-gray-400 mb-4"
                     id="movie_image" name="movie_image" type="file" accept="image/*">
-
-
-
 
                 <div class="flex justify-between">
                     <div class="w-[45%]"><label class="font-semibold text-lg text-gray-700"
@@ -63,7 +60,18 @@
                 </div>
 
                 <label class="font-semibold text-lg text-gray-700" for="age_rating">Age Rating</label>
-                <input type="text" name="age_rating" id="age_rating" class="rounded-md mb-4 h-8 w-[45%]">
+                {{-- <input type="text" name="age_rating" id="age_rating" class="rounded-md mb-4 h-8 w-[45%]"> --}}
+
+                <select name="age_rating" class="age_rating rounded-md h-8 py-0 w-[55%] mb-2">
+                    <option value="0">Select age rating</option>
+                    <option value="PRG">PRG</option>
+                    <option value="PG-13">PG-13</option>
+                    <option value="PRT">PRT</option>
+                    <option value="PR8">PR8</option>
+                    <option value="PR">PR</option>
+                    <option value="R">R</option>
+                </select>
+
 
                 <label for="genre" class="font-semibold text-lg text-gray-700">Genres</label>
                 <div class="flex items-start gap-x-3">
@@ -106,7 +114,7 @@
                         <th>Movie Title</th>
                         <th>Movie Content</th>
                         <th>Image</th>
-                        <th>Release date</th>
+                        <th>Release Date</th>
                         <th>Duration</th>
                         <th>Status</th>
                         <th>Age Rating</th>
@@ -124,7 +132,9 @@
                             <div class="w-28"><img src="{{asset('images/'. $movie->movie_image )}}" alt=""
                                     class="w-full h-full" srcset=""></div>
                         </td>
-                        <td class="border">{{ $movie->release_date }}</td>
+                        <td class="border w-28 text-center">
+                            <p>{{ $movie->release_date }}</p>
+                        </td>
                         <td class="border">{{ $movie->movie_duration }}</td>
                         <td class="border">{{ $movie->movie_status }}</td>
                         <td class="border">{{ $movie->age_rating }}</td>

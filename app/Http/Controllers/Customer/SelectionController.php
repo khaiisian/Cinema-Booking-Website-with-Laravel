@@ -20,11 +20,10 @@ class SelectionController extends Controller
     public function showMovieDetail(Request $request)
     {
         $today = Carbon::today();
-        $booking_token = Str::uuid();
-        session(['booking_token' => $booking_token]);
 
         $movie_id = $request->movie_id;
-        $movie = movie::findOrFail($movie_id);
+        $movies = movie::where('movie_id', $movie_id)->with('genres')->get();
+        $movie = $movies[0];
 
         if ($request->has('showtime_id')) {
             $showtime_id = $request->showtime_id;
@@ -35,6 +34,15 @@ class SelectionController extends Controller
                 ->where('showtime_date', '>=', $today)
                 ->orderBy('showtime_date')
                 ->first();
+            if ($showtime == null) {
+                return view('Customer.booking', [
+                    'movie' => $movie,
+                    'movie_id' => $movie_id,
+                    'showtime_id' => null,
+                    'showtime_date' => [],
+                    'msg' => 'The Movie is not currently Showing yet.'
+                ]);
+            }
             $showtime_id = $showtime->showtime_id;
             $showtime_date = showtime::where('showtime_id', $showtime_id)->pluck('showtime_date');
         }
@@ -99,10 +107,12 @@ class SelectionController extends Controller
                     ->join('bookings', 'booking_seats.booking_id', '=', 'bookings.booking_id')
                     ->where('bookings.showtime_id', $show_id)
                     ->where('bookings.booking_status', 'booked');
-            })->get();
+            })->where('seat_status', 'usable')->get();
 
             $unavailable_seat_ids = $unavailable_seats->pluck('seat_id');
-            $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->get();
+            $available_seats = Seat::whereNotIn('seat_id', $unavailable_seat_ids)->
+                where('seat_status', 'usable')->
+                get();
 
             $time_end = $showtimes->first()->showtime_end;
             $show_date = $showtimes->first()->showtime_date;

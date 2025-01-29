@@ -1,8 +1,5 @@
 <x-app-layout>
 
-    {{-- <h2 class="text-2xl font-bold">Ticket Details</h2> --}}
-    {{-- {{ $booking }}
-    {{ $qrCode }} --}}
     <div class="max-w-2xl min-h-[45vh] mt-11 mx-auto">
         <div class="w-[100%] min-h-56 flex">
             <div
@@ -13,10 +10,10 @@
                             <img src="{{ asset('images/logo.png') }}" alt="Logo">
                         </div>
                         <div class="ml-3">
-                            <h2 class="text-3xl text-[#FABC12] font-bold">Eclipse</h2>
+                            <h2 class="text-xl text-[#FABC12] font-bold">Eclipse</h2>
                         </div>
                     </div>
-                    <h2 class="text-3xl text-[#FABC12] font-bold ml-3">{{ $booking->showtimes->movie->movie_title }}
+                    <h2 class="text-xl text-[#FABC12] font-bold ml-3">{{ $booking->showtimes->movie->movie_title }}
                     </h2>
                 </div>
                 <div class="w-full h-[40%] grid grid-cols-2 text-[#FABC12] pl-3 mb-2">

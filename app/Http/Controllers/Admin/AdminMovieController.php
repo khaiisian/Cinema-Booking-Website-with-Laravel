@@ -44,7 +44,7 @@ class AdminMovieController extends Controller
             'status' => 'required|in:Showing,Upcoming',
             'genres' => 'required|array',
             'genres.*' => 'not_in:0|integer',
-            'age_rating' => 'required|string|max:255',
+            'age_rating' => 'required|string|in:PRG,PG-13,PRT,PR8,PR,R',
         ]);
 
         $releaseDate = Carbon::createFromFormat('m/d/Y', $validatedData['release_date'])->format('Y-m-d');
@@ -103,7 +103,7 @@ class AdminMovieController extends Controller
         //
         $validatedData = $request->validate([
             'movie_title' => 'required|string|max:255',
-            'movie_content' => 'required|string|max:255',
+            'movie_content' => 'required|string|max:500',
             'movie_image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             'movie_duration' => 'required|numeric|min:1',
             'release_date' => 'required|date',

@@ -18,7 +18,6 @@ class RoleMiddleware
         if (auth()->check() && auth()->user()->u_type === $role) {
             return $next($request);
         }
-
-        return redirect('/unauthorized')->with('error', 'Access denied.');
+        abort(403, 'You are not authorized to access this page');
     }
 }

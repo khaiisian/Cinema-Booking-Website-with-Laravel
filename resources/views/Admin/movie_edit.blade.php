@@ -4,16 +4,17 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 <x-app-layout>
-    @if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-
+    @if ($errors->any())
+    <script>
+        const errors = @json($errors->all());
+        let errorMessage = "Validation Errors:\n";
+        errors.forEach(error => {
+            errorMessage += `- ${error}\n`;
+        });
+        alert(errorMessage);
+    </script>
     @endif
+
     <div class="w-full bg-white py-10">
         {{-- {{ $movies }} --}}
         <div class="w-96 mx-auto border border-gray-300 rounded-lg overflow-hidden">
@@ -73,6 +74,12 @@
 
                 {{-- Age Rating --}}
                 <label class="font-semibold text-lg text-gray-700" for="age_rating">Age Rating</label>
+                <select name="age_rating" class="age_rating rounded-md h-8 py-0 w-[50%] mb-2">
+                    <option value="0">Select a genre</option>
+                    @foreach ($genres as $genre)
+                    <option value="{{$genre->genre_id}}">{{ $genre->genre }}</option>
+                    @endforeach
+                </select>
                 <input type="text" name="age_rating" id="age_rating" class="rounded-md mb-4 h-8 w-[45%]"
                     value="{{ $movie->age_rating }}">
 

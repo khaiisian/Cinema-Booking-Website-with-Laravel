@@ -51,9 +51,11 @@ class AdminHomeController extends Controller
             ->join('showtimes', 'movies.movie_id', '=', 'showtimes.movie_id')
             ->join('bookings', 'showtimes.showtime_id', '=', 'bookings.showtime_id')
             ->join('booking_seats', 'bookings.booking_id', '=', 'booking_seats.booking_id')
+            ->where('bookings.booking_status', '=', 'booked') // Filter by 'booked' status
             ->groupBy('movies.movie_id', 'movies.movie_title')
             ->orderByDesc('total_booking_seats')
             ->get();
+
 
         return view('Admin.admin_home', compact('movies', 'customers', 'admins', 'theaters', 'bookings', 'messages', 'seat_types', 'seats', 'popular_movies', 'weekDates', 'weekRevenue'));
     }

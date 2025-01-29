@@ -93,12 +93,12 @@ class BookingRecordController extends Controller
 
     public function cancelBookingRecord(Request $request)
     {
-        // $booking_id = $request->booking_id;
-        // $booking = booking::findOrFail($booking_id);
-        // $booking->booking_status = 'canceled';
-        // $booking->save();
+        $booking_id = $request->booking_id;
+        $booking = booking::findOrFail($booking_id);
+        $booking->booking_status = 'canceled';
+        $booking->save();
 
-        // return redirect()->route('bookingrecord');
+        return redirect()->route('bookingrecord');
     }
 
     public function showBookingTicet(Request $request)

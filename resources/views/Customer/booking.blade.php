@@ -33,7 +33,8 @@ $day4 = $day1->copy()->addDays(3);
 <body class="font-sans antialiased bg-gray-100 ">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-10 px-1">
         <div id="top_bar" class="pb-4">
-            <a href="" class="flex justify-center items-center w-9 rounded-md p-1 bg-black">
+            <a href="javascript:window.history.back()"
+                class="flex justify-center items-center w-9 rounded-md p-1 bg-[#242424]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-arrow-left"
                     viewBox="0 0 16 16" class="fill-white">
                     <path fill-rule="evenodd"
@@ -41,36 +42,54 @@ $day4 = $day1->copy()->addDays(3);
                 </svg>
             </a>
         </div>
-        <div id="detail_body" class=" flex justify-between">
-            <div id="movie_side" class="w-[34%] bg-[#333333] p-6 rounded-lg">
+        <div id="detail_body" class=" flex flex-col items-center lg:items-start lg:flex-row lg:justify-between">
+            <div id="movie_side" class="w-[80%] md:w-[60%] lg:w-[34%] bg-[#333333] p-6 rounded-lg">
                 <div id="movie_img" class="h-96 mx-auto rounded-lg overflow-hidden">
                     <img class="w-full h-full" src="{{asset('images/'.$movie->movie_image)}}"
                         alt="{{$movie->movie_image}}">
                 </div>
                 <div id="movie_info" class=" p-3">
-                    <h2 class="text-xl font-bold text-[#ffbf00]">{{ $movie->movie_title }}</h2>
-                    <p class="text-white">{{ $movie->movie_content }}</p>
+                    <h2 class="text-xl font-bold text-[#ffbf00] mb-2">{{ $movie->movie_title }}</h2>
+                    <p class="text-white mb-1">{{ $movie->movie_content }}</p>
+                    <p class="text-white">Genre : @foreach ($movie->genres as $genre)
+                        {{ $genre->genre }}@if(! $loop->last),&nbsp;
+                        @endif
+                        @endforeach</p>
                 </div>
             </div>
-            <div id="booking_side" class="w-[66%] min-h-screen rounded-lg overflow-hidden px-3">
-                <div class="flex justify-between text-white" id=" showtimes">
-                    <button class="w-[23%] h-16 bg-[#B90000] rounded-lg btn" data-id="{{$day1->format('Y-m-d')}}"
-                        id="day1btn">{{
-                        $day1->format('F j')
-                        }}</button>
-                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" data-id="{{$day2->format('Y-m-d')}}"
-                        id="day2btn">{{
-                        $day2->format('F j')
-                        }}</button>
-                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" data-id="{{$day3->format('Y-m-d')}}"
-                        id="day3btn">{{
-                        $day3->format('F j')
-                        }}</button>
-                    <button class="w-[23%] h-16 bg-[#333333] rounded-lg btn" data-id="{{$day4->format('Y-m-d')}}"
-                        id="day4btn">{{
-                        $day4->format('F j')
-                        }}</button>
+            @if (isset($msg))
+            <div class="w-[63%]">
+                <div role="alert">
+                    <div class="bg-[#242424] text-white font-bold rounded-t px-4 py-2">
+                        <h2 class="text-2xl text-red-500">Sorry</h2>
+                    </div>
+                    <div class="border border-none rounded-b bg-gray-400 px-4 py-3 text-red-700">
+                        <p class="text-lg">{{ $msg }}</p>
+                    </div>
                 </div>
+            </div>
+            @else
+            <div id="booking_side"
+                class="w-[90%] md:w-[80%] lg:w-[66%] mt-10 lg:mt-0 min-h-screen rounded-lg overflow-hidden px-3">
+                <div class="flex flex-wrap justify-between gap-4 text-white" id="showtimes">
+                    <button class="w-full sm:w-[48%] lg:w-[23%] h-16 bg-[#B90000] rounded-lg btn"
+                        data-id="{{$day1->format('Y-m-d')}}" id="day1btn">
+                        {{ $day1->format('F j') }}
+                    </button>
+                    <button class="w-full sm:w-[48%] lg:w-[23%] h-16 bg-[#333333] rounded-lg btn"
+                        data-id="{{$day2->format('Y-m-d')}}" id="day2btn">
+                        {{ $day2->format('F j') }}
+                    </button>
+                    <button class="w-full sm:w-[48%] lg:w-[23%] h-16 bg-[#333333] rounded-lg btn"
+                        data-id="{{$day3->format('Y-m-d')}}" id="day3btn">
+                        {{ $day3->format('F j') }}
+                    </button>
+                    <button class="w-full sm:w-[48%] lg:w-[23%] h-16 bg-[#333333] rounded-lg btn"
+                        data-id="{{$day4->format('Y-m-d')}}" id="day4btn">
+                        {{ $day4->format('F j') }}
+                    </button>
+                </div>
+
 
                 <div class="w-[100%] min-h-44 mt-4 rounded-lg bg-[#333333] py-3 px-3" id="showtime_info">
                     {{-- @include('Customer.booking_showtime') --}}
@@ -79,26 +98,30 @@ $day4 = $day1->copy()->addDays(3);
 
                 <div
                     class="w-[100%] min-h-screen bg-[#333333] rounded-lg overflow-hidden mt-4 py-14 flex flex-col justify-center">
-
                     {{-- Seat satatus --}}
-                    <div class="flex gap-x-6 px-6 mb-6 justify-between">
-                        <div class="flex items-center gap-x-2 text-gray-50">
-                            <div class="w-5 h-6 bg-gray-50 mx-auto rounded-sm"></div>
+                    <div class="flex flex-wrap gap-4 px-6 mb-6 justify-between sm:justify-start text-gray-50">
+                        <div class="flex items-center gap-x-2 w-full sm:w-auto">
+                            <div class="w-5 h-6 bg-gray-50 rounded-sm"></div>
                             <p class="text-sm">Available seats</p>
                         </div>
-                        <div class="flex items-center gap-x-2 text-gray-50">
-                            <div class="w-5 h-6 bg-[#ffbf00] mx-auto rounded-sm"></div>
+                        <div class="flex items-center gap-x-2 w-full sm:w-auto">
+                            <div class="w-5 h-6 bg-[#ffbf00] rounded-sm"></div>
                             <p class="text-sm">Selected seats</p>
                         </div>
-                        <div class="flex gap-x-2 items-center text-gray-50">
-                            <div class="w-5 h-6 bg-[#B90000] mx-auto rounded-sm"></div>
+                        <div class="flex items-center gap-x-2 w-full sm:w-auto">
+                            <div class="w-5 h-6 bg-[#B90000] rounded-sm"></div>
                             <p class="text-sm">Booked seats</p>
                         </div>
-                        <div class="flex gap-x-2 items-center text-gray-50">
-                            <div class="w-5 h-6 bg-gray-500 mx-auto rounded-sm"></div>
+                        <div class="flex items-center gap-x-2 w-full sm:w-auto">
+                            <div class="w-5 h-6 bg-gray-500 rounded-sm"></div>
                             <p class="text-sm">Overdue seats</p>
                         </div>
+                        <div class="flex items-center gap-x-2 w-full sm:w-auto">
+                            <div class="w-5 h-6 bg-[#FC7318] rounded-sm"></div>
+                            <p class="text-sm">Undermaintenance</p>
+                        </div>
                     </div>
+
 
                     {{-- Seat Types --}}
                     <div class="flex justify-start gap-x-2 text-gray-50 text-sm px-4 mb-12">
@@ -159,8 +182,10 @@ $day4 = $day1->copy()->addDays(3);
                             </x-primary-button>
                         </div>
                     </form>
+
                 </div>
             </div>
+            @endif
         </div>
     </div>
     <div>
@@ -175,11 +200,13 @@ $day4 = $day1->copy()->addDays(3);
 
             let showtime_dates = @json($showtime_date);
             let showtime_date = showtime_dates[0];
-            if(showtime_date){
-                $('.btn').removeClass('bg-[#B90000] bg-[#333333]');
-                $('.btn').addClass('bg-[#333333]');
-                $('button[data-id="'+showtime_date+'"]').addClass('bg-[#B90000]');
-            // console.log(showtime_date)
+                if(showtime_date){
+                    $('.btn').removeClass('bg-[#B90000] bg-[#333333]');
+                    $('.btn').addClass('bg-[#333333]');
+                    $('button[data-id="'+showtime_date+'"]').addClass('bg-[#B90000]');
+                }
+            if (!showtime_dates.length === 0){
+                
             }
 
             function ajaxShowtime(date) {             
@@ -213,10 +240,13 @@ $day4 = $day1->copy()->addDays(3);
                             console.log('no showime_seat');                            
                             $('.seats').removeClass('bg-gray-50 available_seat bg-[#B90000] bg-[#ffbf00] booked_seat')
                             $('.seats').addClass('bg-gray-500 overdue_seat')
-                            $('#book_btn').text('Overdue booking time')
-                            $('#book_btn').prop('disabled', true)
+                            $('#book_btn').text('No showtime')
+                            $('#book_btn').prop('disabled', true)                            
+                            $('#book_btn').addClass('cursor-not-allowed')
                             return;
                         }
+                                                   
+                        $('#book_btn').removeClass('cursor-not-allowed')
                         console.log('return Checking')
                         console.log('seats', response.seats)
 
@@ -227,25 +257,32 @@ $day4 = $day1->copy()->addDays(3);
                         let html_std_seats = '';
                         let html_exp_seats = '';
                         seats.forEach(seat => {
-                            if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
-                                html_std_seats += `
+                        let seatColor = 'bg-gray-50';    
+
+                        if (seat.seat_status === 'maintenance') {
+                            seatColor = 'bg-[#FC7318]'; 
+                        }
+    
+                        if (seat.seat_type_id === 1 || seat.seat_type_id === 2) {
+                            html_std_seats += `
+                            <div>
+                                <div class="w-7 h-8 ${seatColor} mx-auto rounded-sm available_seat seats"
+                                id="seat${seat.seat_id}" data-id="${seat.seat_id}"></div>
+                                <p class="text-center text-gray-50">${seat.seat_code}</p>
+                            </div>
+                            `;
+                        }
+                        if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
+                            html_exp_seats += `
                                 <div>
-                                    <div class="w-7 h-8 bg-gray-50 mx-auto rounded-sm available_seat seats"
-                                    id="seat${seat.seat_id}" data-id="${seat.seat_id}"></div>
-                                    <p class="text-center text-gray-50">${seat.seat_code}</p>
-                                </div>
-                                `;
-                            }
-                            if (seat.seat_type_id === 3 || seat.seat_type_id === 4) {
-                                html_exp_seats += `
-                                <div>
-                                    <div class="w-7 h-8 bg-gray-50 mx-auto rounded-sm available_seat seats"
+                                    <div class="w-7 h-8 ${seatColor} mx-auto rounded-sm available_seat seats"
                                     id="seat${seat.seat_id}" data-id="${seat.seat_id}"></div>
                                     <p class="text-center text-gray-50">${seat.seat_code}</p>
                                 </div>
                                 `;
                             }
                         });
+
                         $('#std_seats').html(html_std_seats);
                         $('#exp_seats').html(html_exp_seats);
 
@@ -262,8 +299,6 @@ $day4 = $day1->copy()->addDays(3);
                         })
 
                         let showtime_id = response.show_id;
-                        // console.log(showtime_ids)
-                        // showtime_id = showtime_ids[0];
                         $('#showtime_id').val(showtime_id);
                         console.log("Value is", showtime_id)
 
@@ -279,12 +314,14 @@ $day4 = $day1->copy()->addDays(3);
                             $('.seats').removeClass('bg-gray-50 available_seat bg-[#B90000] bg-[#ffbf00] booked_seat')
                             $('.seats').addClass('bg-gray-500 overdue_seat')
                             $('#book_btn').text('Overdue booking time')
-                            $('#book_btn').prop('disabled', true)
+                            $('#book_btn').prop('disabled', true)                                                          
+                            $('#book_btn').addClass('cursor-not-allowed') 
                             console.log('current is lareger')
                         } else {
                             $('.seats').removeClass('bg-gray-500 overdue_seat')    
                             $('#book_btn').text('Book')
-                            $('#book_btn').prop('disabled', false)                     
+                            $('#book_btn').prop('disabled', false)                                                        
+                            $('#book_btn').removeClass('cursor-not-allowed')                  
                         }
                         }
                 })
@@ -334,23 +371,10 @@ $day4 = $day1->copy()->addDays(3);
             })
             
 
-            ajaxShowtime();
-
-            // function formatTime(){
-            //     $now_time = new Date();
-            //     console.log('NOW TIME', $now_time);
-            //     $format_time = new Date(showtime_end)
-            //     console.log('End Time',$format_time)
-            // }
-            // setInterval(formatTime, 1000);   
-            // setTimeout(() => {
-            //     $end_time = showtime_end;
-            //     console.log('End',$end_time)
-            // }, 1000);        
+            ajaxShowtime();      
         })
 
         $(document).on('click', '.available_seat', function() {
-    // Your click logic
                 const seat_id = $(this).data('id');
                 console.log('seat id', seat_id);
 
@@ -370,34 +394,7 @@ $day4 = $day1->copy()->addDays(3);
 
         });
 
-        // $(document).on('click', '.showtime_btn', function(){
-        //     let showtime_id = $('.showtime_btn').data('id');
-        //     $('#showtime_id').val(showtime_id);
-        //     console.log("Value isss", showtime_id);
-        //     console.log("SHOW TIME ID", showtime_id)
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: '/booking/seat_available',
-        //         data: {
-        //             _token: "{{ csrf_token() }}",
-        //             showtime_id: showtime_id,
-        //         },
-        //         dataType: 'json',
-        //         success:function(response){
-        //             let unavailable_seats = response.unavailable_seats;
-        //                 unavailable_seats.forEach(seat => {
-        //                 $('#seat'+seat.seat_id).removeClass('bg-gray-50 bg-[#ffbf00] available_seat');
-        //                 $('#seat'+seat.seat_id).addClass('bg-[#B90000] booked_seat');
-        //                 });
-
-        //                 let available_seats = response.available_seats;
-        //                 available_seats.forEach(seat=>{
-        //                 $('#seat'+seat.seat_id).addClass('bg-gray-50 bg-[#ffbf00] available_seat');
-        //                 $('#seat'+seat.seat_id).removeClass('bg-[#B90000] bg-[#ffbf00] booked_seat');
-        //                 })
-        //         }
-        //     })
-        // })
+        
     </script>
 </body>
 

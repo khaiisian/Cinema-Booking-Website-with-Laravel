@@ -34,7 +34,7 @@
                     <x-nav-link :href="route('showtimes')" :active="request()->routeIs('showtimes')" class="nav_links">
                         {{ __('Showtimes') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
+                    <x-nav-link :href="route('aboutus')" :active="request()->routeIs('aboutus')" class="nav_links">
                         {{ __('About Us') }}
                     </x-nav-link>
                     <x-nav-link :href="route('contactus')" :active="request()->routeIs('contactus')" class="nav_links">
@@ -43,7 +43,7 @@
                 </div>
                 {{-- Nav for admin --}}
                 @elseif(auth()->user()->u_type==="admin")
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden xl:space-x-8 xl:-my-px xl:ms-10 xl:flex">
                     <x-nav-link :href="route('admin_home')" :active="request()->routeIs('admin_home')"
                         class="nav_links">
                         {{ __('Home') }}
@@ -99,7 +99,7 @@
                     <x-nav-link :href="route('showtimes')" :active="request()->routeIs('showtimes')" class="nav_links">
                         {{ __('Showtimes') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="nav_links">
+                    <x-nav-link :href="route('aboutus')" :active="request()->routeIs('aboutus')" class="nav_links">
                         {{ __('About Us') }}
                     </x-nav-link>
                     <x-nav-link :href="route('contactus')" :active="request()->routeIs('contactus')" class="nav_links">
@@ -127,8 +127,7 @@
                                 d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
                         </svg></a>
                 </div>
-                @endif
-                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <div class="hidden md:flex md:items-center md:ms-6">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button id="dropdown_btn"
@@ -164,7 +163,7 @@
                     </x-dropdown>
                 </div>
 
-                <div class="-me-2 flex items-center sm:hidden">
+                <div class="-me-2 flex items-center md:hidden">
                     <button @click="open = ! open"
                         class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -177,6 +176,58 @@
                         </svg>
                     </button>
                 </div>
+
+                @elseif(auth()->user()->u_type==="admin")
+                <div class="hidden xl:flex xl:items-center xl:ms-6">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button id="dropdown_btn"
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ Auth::user()->acc_name }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('profile.edit')" class="dropdown_content">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
+                                        this.closest('form').submit();" class="dropdown_content">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
+                <div class="-me-2 flex items-center xl:hidden">
+                    <button @click="open = ! open"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                @endif
             </div>
             {{-- @endif --}}
             @endauth
@@ -250,33 +301,86 @@
 
     {{-- @if(auth()->check()) --}}
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden xl:hidden">
         @if(auth()->check())
         @if(auth()->user()->u_type==="customer")
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
-                {{ __('CUSTOMER HOME') }}
+                {{ __('Home') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('movies')" :active="request()->routeIs('movies')"
+                class="responsive_links">
+                {{ __('Movies') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('showtimes')" :active="request()->routeIs('showtimes')"
+                class="responsive_links">
+                {{ __('Showtimes') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contactus')" :active="request()->routeIs('contactus')"
+                class="responsive_links">
+                {{ __('Contact Us') }}
             </x-responsive-nav-link>
         </div>
         @elseif(auth()->user()->u_type==="admin")
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
-                {{ __('ADMIN HOME') }}
+            <x-responsive-nav-link :href="route('admin_home')" :active="request()->routeIs('admin_home')"
+                class="responsive_links">
+                {{ __('Home') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_movie')" :active="request()->routeIs('admin_movie')"
+                class="responsive_links">
+                {{ __('Movies') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_theater')" :active="request()->routeIs('admin_theater')"
+                class="responsive_links">
+                {{ __('Theaters') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_showtime')" :active="request()->routeIs('admin_showtime')"
+                class="responsive_links">
+                {{ __('Showtimes') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_booking')" :active="request()->routeIs('admin_booking')"
+                class="responsive_links">
+                {{ __('Bookings') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_genre')" :active="request()->routeIs('admin_genre')"
+                class="responsive_links">
+                {{ __('Genres') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_seats')" :active="request()->routeIs('admin_seats')"
+                class="responsive_links">
+                {{ __('Seats') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_seat_type')" :active="request()->routeIs('admin_seat_type')"
+                class="responsive_links">
+                {{ __('Seat Types') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_contact')" :active="request()->routeIs('admin_contact')"
+                class="responsive_links">
+                {{ __('Messages') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin_users')" :active="request()->routeIs('admin_users')"
+                class="responsive_links">
+                {{ __('Users') }}
             </x-responsive-nav-link>
         </div>
+
         @endif
         @else
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
-                {{ __('Eclipse') }}
+                {{ __('Home') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
-                {{ __('Movie') }}
+            <x-responsive-nav-link :href="route('movies')" :active="request()->routeIs('movies')"
+                class="responsive_links">
+                {{ __('Movies') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
-                {{ __('Session') }}
+            <x-responsive-nav-link :href="route('showtimes')" :active="request()->routeIs('showtimes')"
+                class="responsive_links">
+                {{ __('Showtimes') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" class="responsive_links">
+            <x-responsive-nav-link :href="route('contactus')" :active="request()->routeIs('contactus')"
+                class="responsive_links">
                 {{ __('Contact Us') }}
             </x-responsive-nav-link>
         </div>

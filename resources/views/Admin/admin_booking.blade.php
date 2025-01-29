@@ -3,26 +3,21 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 <x-app-layout>
-    @if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+    @if ($errors->any())
+    <script>
+        const errors = @json($errors->all());
+        let errorMessage = "Validation Errors:\n";
+        errors.forEach(error => {
+            errorMessage += `- ${error}\n`;
+        });
+        alert(errorMessage);
+    </script>
     @endif
 
     <div class="w-full bg-white py-3">
-        {{-- @foreach ($bookings as $booking)
-        {{ $booking }}
-        @endforeach --}}
         <div class="max-w-6xl bg-white mx-auto dt_table pt-10">
             <h2 class="text-4xl text-gray-700 font-bold">Booking Table</h2>
             <hr class="mb-4 mt-2 border-[#8a8a8a]">
-            {{-- Search Movie <input type="text" name="searchMovie" id="searchMovie" onchange="searhMovies()"
-                class="h-6"> --}}
-            {{-- {{ $showtimes }} --}}
             <table class="" id="data_table">
                 <thead class="">
                     <tr class="bg-[#cd1f30] text-white">

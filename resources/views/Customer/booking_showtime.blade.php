@@ -4,8 +4,7 @@
     <p class="text-white">There is no showtime for this day.</p>
     @endif
     @foreach ($showtimes as $showtime)
-    <button
-        class="flex flex-wrap justify-between px-2 py-2 gap-y-3 w-[100%] text-white border border-gray-500 rounded-lg showtime_btn"
+    <div class="flex flex-wrap justify-between px-2 py-2 gap-y-3 w-[100%] text-white border border-gray-500 rounded-lg showtime_btn"
         data-id="{{$showtime->showtime_id}}" id="showtime_btn">
         {{-- @php
         $showtime = $showtimes->first();
@@ -17,8 +16,7 @@
                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
             </svg>
             <p>&nbsp;: {{ date('h:i A', strtotime($showtime->showtime_start)) }} - {{ date('h:i A',
-                strtotime($showtime->showtime_end )) }} {{
-                $showtime->showtime_id }}</p>
+                strtotime($showtime->showtime_end )) }} </p>
         </div>
         <div class="flex items-center w-[30%] p-1 h-6"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                 fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
@@ -37,7 +35,7 @@
             </svg>
             <p>&nbsp;: {{ $showtime->theater->theater_name }}</p>
         </div>
-    </button>
+    </div>
     @endforeach
 </div>
 
