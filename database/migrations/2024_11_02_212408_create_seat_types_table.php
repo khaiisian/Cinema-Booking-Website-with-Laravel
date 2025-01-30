@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('seat_types', function (Blueprint $table) {
             $table->softDeletes();
             $table->id('seat_type_id');
-            $table->string('seat_type');
+            $table->string('seat_type', 50);
             $table->decimal('price', 12, 2);
             $table->timestamps();
         });

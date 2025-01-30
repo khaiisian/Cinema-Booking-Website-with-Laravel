@@ -66,12 +66,12 @@
                 </div>
 
                 <form action="" class="pl-4">
-                    <input type="text" name="" placeholder="Enter message title" id=""
+                    <input type="text" name="" placeholder="Message title" id=""
                         class="border-t-0 border-l-0 border-r-0 border-b-2 border-white bg-transparent p-1 w-full sm:w-44 md:w-56 lg:w-72 h-8 focus:outline-none focus:ring-0 focus:border-b-white">
 
                     <br>
 
-                    <input type="text" name="" placeholder="Enter message title" id=""
+                    <input type="text" name="" placeholder="Enter message" id=""
                         class="border-t-0 border-l-0 border-r-0 border-b-2 border-white bg-transparent p-1 w-full sm:w-44 md:w-56 lg:w-72 h-8 focus:outline-none focus:ring-0 focus:border-b-white">
 
                     <br>

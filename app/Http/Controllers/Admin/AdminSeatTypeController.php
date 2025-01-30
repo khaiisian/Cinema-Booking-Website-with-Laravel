@@ -33,7 +33,7 @@ class AdminSeatTypeController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'seat_type' => 'required|string|max:255',
+            'seat_type' => 'required|string|max:50',
             'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
         ]);
         seat_type::create([
@@ -69,7 +69,7 @@ class AdminSeatTypeController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'seat_type' => 'required|string|max:255',
+            'seat_type' => 'required|string|max:50',
             'price' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
         ]);
 

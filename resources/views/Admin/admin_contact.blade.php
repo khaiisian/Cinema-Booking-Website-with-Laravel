@@ -16,7 +16,7 @@
 
     <div class="w-full bg-white py-3">
         <div class="max-w-7xl bg-white mx-auto dt_table mt-28">
-            <h2 class="text-4xl text-gray-700 font-bold">Seat Type Table</h2>
+            <h2 class="text-4xl text-gray-700 font-bold">Messages Table</h2>
             <hr class="mb-4 mt-2 border-[#8a8a8a]">
             {{-- Search Movie <input type="text" name="searchMovie" id="searchMovie" onchange="searhMovies()"
                 class="h-6"> --}}

@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('genres', function (Blueprint $table) {
             $table->softDeletes();
             $table->id('genre_id');
-            $table->string('genre');
-            $table->string('genre_description');
+            $table->string('genre', 100);
+            $table->string('genre_description', 500);
             $table->timestamps();
         });
     }

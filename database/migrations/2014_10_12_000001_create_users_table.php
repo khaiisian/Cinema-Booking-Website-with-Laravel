@@ -13,12 +13,12 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->softDeletes();
             $table->id('u_id');
-            $table->string('u_code')->nullable()->unique();
-            $table->string('u_name');
+            $table->string('u_code', 100)->nullable()->unique();
+            $table->string('u_name', 150);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('acc_name');
+            $table->string('acc_name', 150)->nullable();
             $table->string('u_type')->default("customer");  // Ensure this matches user_types' u_type_id
             // $table->unsignedBigInteger('u_type_id');  // Ensure this matches user_types' u_type_id
             $table->rememberToken();

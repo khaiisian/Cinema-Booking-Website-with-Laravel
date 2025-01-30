@@ -33,7 +33,7 @@ class AdminGenreController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'genre' => 'required|string|max:255',
+            'genre' => 'required|string|max:50',
             'genre_description' => 'required|string|max:500',
         ]);
         genre::create([
@@ -69,7 +69,7 @@ class AdminGenreController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'genre' => 'required|string|max:255',
+            'genre' => 'required|string|max:50',
             'genre_description' => 'required|string|max:500'
         ]);
         $genre = genre::findOrFail($request->genre_id);

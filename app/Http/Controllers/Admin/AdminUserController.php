@@ -65,8 +65,8 @@ class AdminUserController extends Controller
         $id = $request->u_id;
         $user = User::findOrFail($id);
         $validatedData = $request->validate([
-            'u_name' => ['required', 'string', 'max:255'],
-            'acc_name' => ['required', 'string', 'max:255'],
+            'u_name' => ['required', 'string', 'max:150'],
+            'acc_name' => ['required', 'string', 'max:150'],
         ]);
 
         $user->update([

@@ -37,7 +37,7 @@
 
 
         <div class="max-w-4xl bg-white mx-auto dt_table mt-28">
-            <h2 class="text-4xl text-gray-700 font-bold">Seat Type Table</h2>
+            <h2 class="text-4xl text-gray-700 font-bold">Theater Table</h2>
             <hr class="mb-4 mt-2 border-[#8a8a8a]">
             <table class="" id="data_table">
                 <thead class="">
