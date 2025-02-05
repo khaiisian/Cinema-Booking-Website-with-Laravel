@@ -15,7 +15,7 @@
 
     <div class="w-full bg-white py-10">
         <div class="w-96 mx-auto border border-gray-300 rounded-lg overflow-hidden">
-            <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">Movie
+            <h2 class="text-2xl font-bold text-white text-center py-4 bg-[#cd1f30] ">User
                 Management</h2>
             <form action="{{ route('admin_user_update') }}" method="POST" class="flex flex-col px-8 py-3"
                 enctype="multipart/form-data">

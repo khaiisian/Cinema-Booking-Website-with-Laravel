@@ -149,34 +149,16 @@ $day4 = $day1->copy()->addDays(3);
 
                     <form action="/booking/booking_details" method="POST">
                         <div id="std_seats" class="w-[90%] mx-auto grid grid-cols-12 gap-x-0 gap-y-10">
-                            {{-- @foreach ($seats as $seat)
-                            @if ($seat->seat_type_id==1|| $seat->seat_type_id==2)
-                            <div>
-                                <div class="w-7 h-8 bg-gray-50 mx-auto rounded-sm available_seat seats"
-                                    id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
-                                <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
-                            </div>
-                            @endif
-                            @endforeach --}}
+
                         </div>
                         <div id="exp_seats" class="w-[85%] mx-auto grid grid-cols-10 gap-x-0 gap-y-10 mt-10">
-                            {{-- @foreach ($seats as $seat)
-                            @if ($seat->seat_type_id==3|| $seat->seat_type_id==4)
-                            <div>
-                                <div class="w-7 h-8 bg-gray-50 mx-auto rounded-sm available_seat seats"
-                                    id="seat{{$seat->seat_id}}" data-id="{{$seat->seat_id}}"></div>
-                                <p class="text-center text-gray-50">{{ $seat->seat_code }}</p>
-                            </div>
-                            @endif
-                            @endforeach --}}
+
                         </div>
                         <div class="mt-16 min-w-[100%] flex justify-end px-20">
                             @csrf
                             <input type="hidden" name="showtime_id" id="showtime_id">
                             <input type="hidden" name="selectedSeats" id="selectedSeats">
-                            {{-- <x-primary-button id="book_btn">
-                                Book
-                            </x-primary-button> --}}
+
                             <x-primary-button type="submit" id="book_btn">
                                 Book
                             </x-primary-button>

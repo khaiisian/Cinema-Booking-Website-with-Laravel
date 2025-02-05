@@ -9,12 +9,7 @@
             </div>
         </div>
         <div class="max-w-3xl mx-auto min-h-full py-8 flex flex-col gap-y-8 " id="record_data">
-            {{-- {{ $booking=$bookings[0] }}
-            {{ $booking->seats }} --}}
-            {{-- {{$movie}} --}}
-            {{-- @foreach ($booking as $booking)
-            {{ $booking->seats }}
-            @endforeach --}}
+
             @include('Customer.booking_record_data')
         </div>
     </div>

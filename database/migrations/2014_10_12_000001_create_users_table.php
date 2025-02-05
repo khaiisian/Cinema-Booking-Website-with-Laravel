@@ -19,15 +19,9 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('acc_name', 150)->nullable();
-            $table->string('u_type')->default("customer");  // Ensure this matches user_types' u_type_id
-            // $table->unsignedBigInteger('u_type_id');  // Ensure this matches user_types' u_type_id
+            $table->string('u_type')->default("customer");
             $table->rememberToken();
             $table->timestamps();
-
-            // $table->foreign('u_type_id')
-            //     ->references('u_type_id')
-            //     ->on('user_types')
-            //     ->onDelete('cascade');
         });
     }
 

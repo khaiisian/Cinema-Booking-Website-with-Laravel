@@ -40,46 +40,7 @@
                         <div>{{ $qrCode }}</div>
                     </div>
 
-                    {{-- <select name="booking_status" class="booking_status rounded-md py-0 w-[40%] mb-4 "
-                        id="booking_status" required>
-                        <option value="booked" {{$booking->booking_status=='booked'?'selected':''}}>Booked</option>
-                        <option value="canceled" {{$booking->booking_status=='canceled'?'selected':''}}>Canceled
-                        </option>
-                    </select> --}}
 
-                    {{-- <label class="block font-semibold text-lg text-gray-700" for="seat">Seats</label>
-                    <div class="flex items-start gap-x-3 mb-6">
-                        <div class="w-[50%] flex flex-wrap seat_div">
-                            @foreach ($booking->seats as $b_seat)
-                            <select name="seats[]" class="seats rounded-md py-0 w-[96%] mb-2" data-id=0>
-                                @foreach ($seats as $seat)
-                                <option value="{{$seat->seat_id}}" {{$seat->seat_id==$b_seat->seat_id?'selected':''}}>{{
-                                    $b_seat->seat_code }}</option>
-                                @endforeach
-                            </select>
-                            @endforeach
-                        </div>
-                        <button id="seat_add" type="button" class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="grey" class="bi bi-plus-circle-fill w-8"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-                            </svg>
-                        </button>
-                        <button id="seat_minus" type="button" class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="grey" class="bi bi-dash-circle-fill w-8"
-                                viewBox="0 0 16 16">
-                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" />
-                            </svg>
-                        </button>
-                    </div> --}}
-
-                    {{-- <div class="grid grid-cols-2  w-[60%]"><label class="block font-semibold text-lg text-gray-700"
-                            for="total_price">Total
-                            Price</label>
-                        <input type="text" name="total_price" id="total_price" class="rounded-md mb-4 h-7 w-28"
-                            value="{{$booking->total_price}}" readonly>
-                    </div> --}}
 
                     <x-primary-button id="" class="w-20 px-4 mt-5 mb-4 ml-2">Back</x-primary-button>
                 </div>
